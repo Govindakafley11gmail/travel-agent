@@ -1,18 +1,40 @@
-// app/dashboard/page.tsx
+"use client";
 
+import { useState } from "react";
 import Sidebar from "@/component/dashboard/sidebar";
-
+import DashboardContent from "@/component/dashboard/DashboardContent";
+import UserCard from "@/component/dashboard/UserCard";
+import ProfileCard from "@/component/dashboard/ProfileCard";
+import { menuItems } from "@/component/dashboard/sidebar";
 export default function DashboardPage() {
+  const [activeItem, setActiveItem] = useState("");
+
+  // Mapping of menu item to content component
+  const renderContent = () => {
+    switch (activeItem) {
+     
+      case "dashboard":
+        return <DashboardContent />;
+      case "user":
+        return <UserCard />;
+      case "profile":
+        return <ProfileCard />;
+      case "settings":
+        // return <SettingsCard />;
+      default:
+        return <DashboardContent />;
+    }
+  };
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />
 
       {/* Main Content */}
-      <div className="flex-1 p-10 bg-gray-100 overflow-auto">
-        <h1 className="text-3xl font-bold mb-5">Welcome to Dashboard</h1>
-        <p>This is your dashboard content area.</p>
-      </div>
+      <main className="flex-1 p-6 bg-gray-50 overflow-auto">
+        {renderContent()}
+      </main>
     </div>
   );
 }

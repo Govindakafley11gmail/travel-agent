@@ -3,12 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, ShoppingBag, Heart, User, Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function MainNav() {
   const [open, setOpen] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+ const router = useRouter();
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+      router.push("/dashboard");
+  }
   const navItems = ["Home", "Destinations", "Travel Agent Tours", "Travel Insight", "Pages"];
 
   return (
@@ -180,6 +186,7 @@ export default function MainNav() {
                   </div>
 
                   <button
+                  onClick={handleSubmit}
                     type="submit"
                     className="bg-gradient-to-r from-green-500 to-green-700 text-white rounded-xl py-3 font-semibold shadow-lg hover:from-green-600 hover:to-green-800 transition"
                   >
