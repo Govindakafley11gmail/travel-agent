@@ -1,11 +1,29 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import Image from "next/image"
-import image from "../../image/Paro_Taktsang.jpg"
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import Image from "next/image";
+import image from "../../image/Paro_Taktsang.jpg";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import { useState, useEffect } from "react";
 export default function HomePage() {
+  const [api, setApi] = useState<any>();
+const [current, setCurrent] = useState(0);
+
+useEffect(() => {
+  if (!api) return;
+
+  setCurrent(api.selectedScrollSnap());
+
+  api.on("select", () => {
+    setCurrent(api.selectedScrollSnap());
+  });
+}, [api]);
   const destinations = [
     {
       title: "Paris, France",
@@ -19,51 +37,72 @@ export default function HomePage() {
       title: "Bali, Indonesia",
       img: image,
     },
-  ]
+  ];
+  const slides = [
+    {
+      image: "/image1.jpg",
+      alt: "Beautiful nature scene 1",
+    },
+    {
+      image: "/image2.jpg",
+      alt: "Beautiful nature scene 2",
+    },
+    {
+      image: "/image3.jpg",
+      alt: "Beautiful nature scene 3",
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navbar */}
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-green-600 to-green-400 text-white py-20 px-6 md:px-16">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex-1"
-          >
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-              Explore the World with{" "}
-              <span className="text-yellow-200">Travel Agent</span>
-            </h1>
-            <p className="text-lg md:text-xl mb-6 text-green-50">
-              Find your next adventure, book your trip, and experience unforgettable
-              memories with us.
-            </p>
-            <Button className="bg-yellow-300 hover:bg-yellow-400 text-green-800 font-semibold px-6 py-3 rounded-xl">
-              Start Exploring
-            </Button>
-          </motion.div>
+      <section className="relative text-white px-0">
+        <div className="w-full relative h-[400px] md:h-[500px]">
+          <Carousel
+            opts={{
+              loop: true,
+              align: "start",
+            }}
+                      setApi={setApi}
 
-          {/* Right Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex-1 flex justify-center"
+            orientation="vertical"
+            className="w-full h-full"
           >
-            <Image
-              src={image}
-              alt="Travel"
-              width={500}
-              height={350}
-              className="rounded-2xl shadow-lg object-cover"
-              priority
+            <CarouselContent className=" h-[400px] md:h-[500px] p-0 ">
+              {slides.map((slide, index) => (
+                <CarouselItem
+                  key={index}
+                  className=" h-[700px] md:h-[500px] m-0 p-0"
+                >
+                  <div className="relative  w-full h-full overflow-hidden rounded-none">
+                    <Image
+                      fill
+                      src={slide.image}
+                      alt={slide.alt}
+                      className="object-cover"
+                      priority={index === 0}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          <div className="absolute right-78 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-10">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => api?.scrollTo(index)}
+              className={`w-3 h-3 rounded-full transition-all ${
+                current === index
+                  ? "bg-white scale-125"
+                  : "bg-white/50 hover:bg-white/75"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
             />
-          </motion.div>
+          ))}
+        </div>
         </div>
       </section>
 
@@ -123,8 +162,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-        
       </section>
     </div>
-  )
+  );
 }

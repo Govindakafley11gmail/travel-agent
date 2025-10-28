@@ -42,6 +42,9 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
+@theme{
+  --color-icongrey:#E9ECEF
+}
 
 :root {
   --radius: 0.625rem;
@@ -110,6 +113,13 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  /* overflow: hidden; Prevents scrolling */
 }
 
 @layer base {
