@@ -159,7 +159,7 @@ export default function CultureMain() {
         maincontainer="w-full"
         heading="Hello this is the Festival of Bhutan"
         subheading="Experience the vibrant culture, traditions, and spiritual celebrations of Bhutan in the Paro Festival."
-        Itinerary="View Itinerary"
+        Itinerary="Book us"
         headingstyle="font-mono"
       />
       <TourBand

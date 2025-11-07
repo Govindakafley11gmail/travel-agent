@@ -13,9 +13,10 @@ import PolicyPage, {
 import TourBand from "@/component/tour-band/tour- band";
 import TourAbout from "@/component/tour-highlights/tour-highlights";
 import { tourInfo, mockTourData, photoSets } from "@/data/paro-places-data";
-import { Check, MapPin, X } from "lucide-react";
+import { Check, MapPin, User, X } from "lucide-react";
 import TripsForFistTimer from "../pages/trips-for-first-timer";
 import Footer from "@/component/footer";
+import IncludedExclusionComponent, { IncludedExclusion } from "@/component/what-is-included/what-is-included";
 
 export default function PunakhaMain() {
   const itineraryData = [
@@ -146,6 +147,45 @@ export default function PunakhaMain() {
     ],
   };
 
+
+
+
+ const includedData: IncludedExclusion[] = [
+   {
+      icon: User,
+      text: "All airport and hotel transfers, as well as ground transportation throughout the trip, are provided in a comfortable private vehicle."
+    },
+    {
+      icon: User,
+      text: "Stay in comfortable lodging throughout your Bhutan tour, carefully selected to ensure a relaxing and enjoyable experience."
+    },
+    {
+      icon: User,
+      text: "Sustainable Development Fee (SDF), all entrance fees to museums, monuments, and heritage sites are included, along with your Bhutanese Tourist Visa."
+    },
+    {
+      icon: User,
+      text: "Enjoy full-board meals throughout your journey, including breakfast, lunch, dinner, tea, and snacks."
+    },
+    {
+      icon: User,
+      text: "All ground transportation during the tour will be in a comfortable private vehicle, as outlined in the itinerary."
+    },
+    {
+      icon: User,
+      text: "Benefit from the expertise of a licensed, professional English-speaking Bhutanese guide who is friendly, knowledgeable, and dedicated to enhancing your travel experience."
+    },
+    {
+      icon: User,
+      text: "Mineral drinking water is provided during all tour activities."
+    },
+    {
+      icon: User,
+      text: "All applicable government taxes and official expenses are included in your package."
+    }
+  
+]; 
+
   return (
     <main className="w-full h-full">
       <Navbar />
@@ -157,7 +197,7 @@ export default function PunakhaMain() {
         maincontainer="w-full"
         heading="Hello this is the Festival of Bhutan"
         subheading="Experience the vibrant culture, traditions, and spiritual celebrations of Bhutan in the Paro Festival."
-        Itinerary="View Itinerary"
+        Itinerary="Book Us"
         headingstyle="font-mono"
       />
       <TourBand
@@ -169,6 +209,7 @@ export default function PunakhaMain() {
       </div>
     
       <section className="min-h-screen bg-gradient-to-b py-8 mt-10">
+        {/* <IncludedExclusionComponent textTitle={"What is Included"} data={includedData}/> */}
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             <div className="lg:col-span-2 space-y-8">
