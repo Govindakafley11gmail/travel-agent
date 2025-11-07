@@ -4,10 +4,11 @@ export const placestotraveldetails = [
     title: "Shortest Bhutan Sojourn ",
     days: 3,
     slug: "thimphu",
-
+      originalPrice:90,
     destinations: "paro",
     ratingnumber: 4,
     charge: 299,
+    
   },
   {
     img: "/The Mask Dance.jpg", // ✅ fixed

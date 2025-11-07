@@ -3,13 +3,9 @@ import AdventuresSection from "@/component/advanture";
 import Destinations from "@/component/destination";
 import Footer from "@/component/footer";
 import HomePage from "@/component/home";
-import { tours } from "@/component/how-it-works/data";
-import ToursSection from "@/component/how-it-works/how-it-works";
 import Navbar from "@/component/navbar/navbar";
 import WhyChooseUs from "@/component/why-us/why-us";
-import Image from "next/image";
 import TripsForFistTimer from "./pages/trips-for-first-timer";
-import { Are_You_Serious } from "next/font/google";
 import image1 from "@/public/image1.jpg";
 import TouristTalkAboutUs from "@/component/tourist-talk-aboutus";
 export default function Home() {
