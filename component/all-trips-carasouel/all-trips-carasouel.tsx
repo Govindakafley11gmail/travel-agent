@@ -1,20 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import Image from "next/image";
-import { Calendar, MapPin, Star, Heart, ArrowRight } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Heart } from "lucide-react";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
-  type CarouselApi,
 } from "@/components/ui/carousel";
-import { useRouter } from "next/navigation";
 
 interface SpecificDetailsCard {
   img: string;
@@ -24,7 +17,7 @@ interface SpecificDetailsCard {
   destinations?: string;
   ratingnumber?: number;
   charge?: number;
-  originalPrice?: number;
+  originalPrice?: number | null; // ✅ allow null too
   reviews?: number;
 }
 
@@ -33,132 +26,116 @@ interface TravelingtoPlacesProps {
 }
 
 const AllTripsComponent: React.FC<TravelingtoPlacesProps> = ({ data }) => {
-  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [api, setApi] = useState<CarouselApi | null>(null); // ✅ type fixed
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [slidesToScroll, setSlidesToScroll] = useState(4);
-  const router = useRouter();
 
-  // Dynamically update slidesToScroll based on screen width
-  useEffect(() => {
-    const handleResize = (): void => {
-      if (window.innerWidth < 768) {
-        setSlidesToScroll(1);
-      } else {
-        setSlidesToScroll(2);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const totalSlides = Math.ceil(data.length / slidesToScroll);
+  const totalSlides = data.length;
 
   // Track carousel index change
   useEffect(() => {
     if (!api) return;
 
-    const handleSelect = (): void => {
-      const selectedIndex = Math.floor(
-        api.selectedScrollSnap() / slidesToScroll
-      );
+    const handleSelect = () => {
+      const selectedIndex = api.selectedScrollSnap();
       setCurrentIndex(selectedIndex);
     };
 
     api.on("select", handleSelect);
     handleSelect();
 
-    return (): void => {
+    return () => {
       api.off("select", handleSelect);
     };
-  }, [api, slidesToScroll]);
+  }, [api]);
 
-  const handleDotClick = (index: number): void => {
+  const handleDotClick = (index: number) => {
     if (!api) return;
-    api.scrollTo(index * slidesToScroll);
+    api.scrollTo(index);
     setCurrentIndex(index);
   };
 
-  const handleClick = (slug: string): void => {
-    router.push(`/${slug}`);
+  const handleClick = (slug: string) => {
+    // Replace with your router navigation
+    console.log(`Navigate to: ${slug}`);
   };
 
   return (
-    <div className=" max-w-3xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto px-4">
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center",
-          slidesToScroll,
-          containScroll: "trimSnaps",
+          align: "start",
+          loop: false,
         }}
         className="w-full"
       >
-        <CarouselContent className="flex gap-4">
+        <CarouselContent className="-ml-4">
           {data.map((details, index) => (
-            <CarouselItem key={index} className="flex-none w-[320]">
-              <Card className=" h-[400px] rounded  overflow-hidden hover:shadow-8xl transition-shadow duration-300 flex flex-col p-5">
+            <CarouselItem
+              key={index}
+              className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
+            >
+              <Card className="h-full flex flex-col border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer mx-auto">
                 {/* Image Header */}
-                <CardHeader className="relative -mx-8  ">
-                  <Image
-                    src={details.img}
-                    alt={details.title || "place image"}
-                    width={600}
-                    height={200}
-                    className="object-content w-[400px] h-[200px] rounded"
-                  />
-                  <button className="absolute top-2.5 right-8 bg-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform duration-200">
-                    <Heart className="w-4 h-4 text-green-500 fill-green-500" />
+                <CardHeader className="relative p-0">
+                  <div className="relative  h-48 overflow-hidden flex items-center justify-center">
+                    <img
+                      src={details.img}
+                      alt={details.title || "place image"}
+                          className="h-full w-[90%] object-cover rounded" // ✅ narrower image
+
+                    />
+                  </div>
+                  <button
+                    className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:scale-110 transition-transform duration-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      console.log("Added to favorites");
+                    }}
+                  >
+                    <Heart className="w-5 h-5 text-gray-600" />
                   </button>
+
+                  {/* Pagination dots on image */}
                 </CardHeader>
 
                 {/* Content */}
-                <CardContent className="p-2  flex-grow flex flex-col justify-between overflow-hidden">
-                  <div className="-mt-3">
-                    <h2
-                      className="text-lg font-bold text-gray-900   cursor-pointer  font-sans"
-                      onClick={() => handleClick(details.slug)}
-                    >
-                      {details.title}
-                    </h2>
+                <CardContent
+                  className="p-3.5"
+                  onClick={() => handleClick(details.slug)}
+                >
+                  <h3 className="text-base font-semibold text-gray-900 mb-1.5">
+                    {details.title}
+                  </h3>
 
-                    {/* <div className="flex items-center gap-3 pb-1.5 mb-1.5 border-b border-gray-200 text-gray-600">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5" />
-                        <span className="text-sm font-medium">
-                          {details.days} days
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <MapPin className="w-3.5 h-3.5" />
-                        <span className="text-sm font-medium">
-                          {details.destinations}
-                        </span>
-                      </div>
-                    </div> */}
-                  </div>
-                </CardContent>
-
-                {/* Footer */}
-                <CardFooter className="p-2.5 pt-0">
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    <span className="text-xs text-gray-600">
+                      {details.days} days for
+                    </span>
                     {details.originalPrice && (
-                      <span className="text-sm text-gray-400 line-through mb-0.5">
-                        ${details.originalPrice}
+                      <span className="text-sm text-gray-400 line-through">
+                        ${details.originalPrice.toLocaleString()}
                       </span>
                     )}
-                    <span className="text-xl font-bold text-gray-900">
-                      ${details.charge}
+                    <span className="text-base font-semibold text-gray-900">
+                      ${details.charge?.toLocaleString()}
                     </span>
-
-                    {/* <button
-                      className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200"
-                      onClick={() => handleClick(details.slug)}
-                    >
-                      <ArrowRight className="w-4 h-4" />
-                    </button> */}
                   </div>
-                </CardFooter>
+
+                  {details.originalPrice && details.charge && (
+                    <div className="mt-1">
+                      <span className="inline-block bg-red-100 text-red-600 text-xs font-semibold px-2 py-0.5 rounded">
+                        -
+                        {Math.round(
+                          ((details.originalPrice - details.charge) /
+                            details.originalPrice) *
+                            100
+                        )}
+                        %
+                      </span>
+                    </div>
+                  )}
+                </CardContent>
               </Card>
             </CarouselItem>
           ))}
@@ -166,17 +143,18 @@ const AllTripsComponent: React.FC<TravelingtoPlacesProps> = ({ data }) => {
       </Carousel>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center items-center gap-3 mt-8 pb-5 w-full">
+      <div className="flex justify-center items-center gap-2 mt-6">
         {Array.from({ length: totalSlides }).map((_, i) => (
-          <div
+          <button
             key={i}
             onClick={() => handleDotClick(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+            className={`h-2 rounded-full transition-all duration-300 ${
               i === currentIndex
-                ? "bg-green-600 w-12"
-                : "bg-gray-300 w-6 hover:bg-green-400"
+                ? "bg-gray-800 w-8"
+                : "bg-gray-300 w-2 hover:bg-gray-400"
             }`}
-          ></div>
+            aria-label={`Go to slide ${i + 1}`}
+          ></button>
         ))}
       </div>
     </div>
