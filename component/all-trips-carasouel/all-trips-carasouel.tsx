@@ -75,15 +75,19 @@ const AllTripsComponent: React.FC<TravelingtoPlacesProps> = ({ data }) => {
               key={index}
               className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
             >
-              <Card className="h-full flex flex-col border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer mx-auto">
+              <Card
+                className="h-full flex flex-col border border-gray-200 rounded-lg 
+  hover:shadow-xl hover:border-green-500 hover:scale-[1.03] 
+  transition-all duration-300 ease-in-out cursor-pointer mx-auto"
+              >
+                {" "}
                 {/* Image Header */}
                 <CardHeader className="relative p-0">
                   <div className="relative  h-48 overflow-hidden flex items-center justify-center">
                     <img
                       src={details.img}
                       alt={details.title || "place image"}
-                          className="h-full w-[90%] object-cover rounded" // ✅ narrower image
-
+                      className="h-full w-[90%] object-cover rounded" // ✅ narrower image
                     />
                   </div>
                   <button
@@ -93,12 +97,11 @@ const AllTripsComponent: React.FC<TravelingtoPlacesProps> = ({ data }) => {
                       console.log("Added to favorites");
                     }}
                   >
-                    <Heart className="w-5 h-5 text-gray-600" />
+                    <Heart className="w-4 h-4 text-green-500 fill-green-500" />
                   </button>
 
                   {/* Pagination dots on image */}
                 </CardHeader>
-
                 {/* Content */}
                 <CardContent
                   className="p-3.5"
@@ -143,18 +146,17 @@ const AllTripsComponent: React.FC<TravelingtoPlacesProps> = ({ data }) => {
       </Carousel>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center items-center gap-2 mt-6">
+     <div className="flex justify-center items-center gap-3 mt-8 pb-5 w-full">
         {Array.from({ length: totalSlides }).map((_, i) => (
-          <button
+          <div
             key={i}
             onClick={() => handleDotClick(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
               i === currentIndex
-                ? "bg-gray-800 w-8"
-                : "bg-gray-300 w-2 hover:bg-gray-400"
+                ? "bg-green-600 w-12"
+                : "bg-gray-300 w-6 hover:bg-green-400"
             }`}
-            aria-label={`Go to slide ${i + 1}`}
-          ></button>
+          ></div>
         ))}
       </div>
     </div>
