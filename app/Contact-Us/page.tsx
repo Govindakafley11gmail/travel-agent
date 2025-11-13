@@ -6,13 +6,8 @@ import Footer from "@/component/footer";
 
 import StatsSection from "@/component/stats/statsSection";
 import TravelAgencyAbout from "@/component/travel-agency-about/travel-agency-about";
-import TourAbout, {
-  TourAboutData,
-  TourHighlight,
-} from "@/component/tour-highlights/tour-highlights";
-import { mockTourData } from "@/data/paro-places-data";
+
 import BiblograhyComponent from "@/component/biblography/biblography";
-import TripsForFistTimer from "../pages/trips-for-first-timer";
 import TeamSection from "@/component/teams-picture-card/team-picture-card";
 import WhyChooseUs from "@/component/why-us/why-us";
 import TravelContactUS from "@/component/contactus";
