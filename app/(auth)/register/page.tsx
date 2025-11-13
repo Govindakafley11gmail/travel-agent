@@ -86,7 +86,6 @@ export default function Register() {
 
   return (
     <div>
-        <Navbar/>
       <div className="h-full mb-10">
      
 

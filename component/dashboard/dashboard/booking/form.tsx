@@ -20,10 +20,11 @@ import {
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import apiClient from "@/component/api/apiClient";
-import { getApiEndpoint } from "@/component/api";
+
 import { useEffect } from "react";
 import { showToast } from "nextjs-toast-notify"; // ONLY THIS
+import { getApiEndpoint } from "@/app/api";
+import apiClient from "@/app/api/apiClient";
 
 // ──────────────────────────────────────────────────────────────
 // API RESPONSE TYPE

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import image1 from "@/public/image1.jpg";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +20,7 @@ export default function HeroVideoSection() {
     <section className="relative mt-10 w-full h-[50vh] flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <Image
-        src={image1}
+        src="/bhutan-thimphu-city.jpg"
         alt="Beautiful and romantic view"
         fill
         className="object-cover brightness-75"

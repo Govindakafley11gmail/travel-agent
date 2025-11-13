@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lato } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/component/navbar/navbar";
+import { CartProvider } from "@/component/shopping-ui/product/cartContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-// Define the subsets & weights you need
 const lato = Lato({
-  subsets: ['latin'],          // latin-ext if you need it
-  weight: ['300', '400', '700', '900'], // pick what you use
-  variable: '--font-lato',     // CSS variable name (optional but handy)
-  display: 'swap',             // fallback behavior
+  subsets: ['latin'],
+  weight: ['300', '400', '700', '900'],
+  variable: '--font-lato',
+  display: 'swap',
 });
- 
+
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -26,15 +28,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${lato.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${lato.variable} antialiased relative`}
       >
-        {children}
+        <CartProvider>
+          <Navbar />
+          {children}
+
+          {/* WhatsApp Floating Button */}
+         
+        </CartProvider>
+       
       </body>
     </html>
   );

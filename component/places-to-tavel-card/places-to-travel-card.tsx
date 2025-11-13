@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import {
   Card,
@@ -7,7 +8,15 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { Calendar, MapPin, Star, Heart, ArrowRight } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  Star,
+  Heart,
+  ArrowRight,
+  Flame,
+  Tag,
+} from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -17,15 +26,23 @@ import {
 import { useRouter } from "next/navigation";
 
 interface SpecificDetailsCard {
-  img: string;
+  id?: number;
+  img?: string;
   title?: string;
-  days?: number;
+  subtitle?: string;
+  durationDays?: number;
   slug: string;
   destinations?: string;
   ratingnumber?: number;
-  charge?: number;
-  originalPrice?: number;
   reviews?: number;
+  category?: string;
+  ages?: string;
+  discountPercent?: number;
+  finalPrice?: number;
+  originalPrice?: number;
+  isTrending?: boolean;
+  status?: string;
+  images?: string;
 }
 
 interface TravelingtoPlacesProps {
@@ -33,19 +50,17 @@ interface TravelingtoPlacesProps {
 }
 
 const PlacesToTravelOptions: React.FC<TravelingtoPlacesProps> = ({ data }) => {
+  console.log("is data", data)
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToScroll, setSlidesToScroll] = useState(4);
   const router = useRouter();
 
-  // Dynamically update slidesToScroll based on screen width
+  // Responsive slides
   useEffect(() => {
     const handleResize = (): void => {
-      if (window.innerWidth < 768) {
-        setSlidesToScroll(1);
-      } else {
-        setSlidesToScroll(4);
-      }
+      if (window.innerWidth < 768) setSlidesToScroll(1);
+      else setSlidesToScroll(4);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -54,14 +69,12 @@ const PlacesToTravelOptions: React.FC<TravelingtoPlacesProps> = ({ data }) => {
 
   const totalSlides = Math.ceil(data.length / slidesToScroll);
 
-  // Track carousel index change
+  // Carousel index tracking
   useEffect(() => {
     if (!api) return;
 
     const handleSelect = (): void => {
-      const selectedIndex = Math.floor(
-        api.selectedScrollSnap() / slidesToScroll
-      );
+      const selectedIndex = Math.floor(api.selectedScrollSnap() / slidesToScroll);
       setCurrentIndex(selectedIndex);
     };
 
@@ -96,77 +109,109 @@ const PlacesToTravelOptions: React.FC<TravelingtoPlacesProps> = ({ data }) => {
       >
         <CarouselContent className="flex gap-4">
           {data.map((details, index) => (
-            <CarouselItem key={index} className="flex-none w-[288px]">
-              <Card className="w-full h-[450px] bg-bgsubcolor overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col p-0">
-                {/* Image Header */}
-                <CardHeader className="relative p-0 m-0">
+            <CarouselItem key={index} className="flex-none w-[350px]">
+              <Card className="w-full h-[480px] bg-white overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col p-0 rounded-2xl">
+                {/* Image Section */}
+                <CardHeader className="relative p-0">
                   <Image
-                    src={details.img}
+                    src={details.images?.at(0) || "/default-image.jpg"}
                     alt={details.title || "place image"}
                     width={288}
                     height={200}
-                    className="object-content w-full h-[220px]"
+                    className="object-cover w-full h-[220px]"
                   />
-                  <button className="absolute top-2.5 right-2.5 bg-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform duration-200">
+
+                  {/* Favorite Icon */}
+                  <button className="absolute top-2 right-2 bg-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform duration-200">
                     <Heart className="w-4 h-4 text-green-500 fill-green-500" />
                   </button>
+
+                  {/* Trending Badge */}
+                  {details.isTrending && (
+                    <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md flex items-center gap-1 shadow">
+                      <Flame className="w-3 h-3" /> Trending
+                    </div>
+                  )}
+
+                  {/* Discount Tag */}
+                  {details.discountPercent !==0 && (
+                    <div className="absolute bottom-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-md flex items-center gap-1 shadow">
+                      <Tag className="w-3 h-3" /> {details.discountPercent}% OFF
+                    </div>
+                  )}
                 </CardHeader>
 
-                {/* Content */}
-                <CardContent className="p-2  flex-grow flex flex-col justify-between overflow-hidden">
-                  <div className="m">
+                {/* Content Section */}
+                <CardContent className="p-3 flex-grow flex flex-col justify-between overflow-hidden">
+                  <div>
+                    {/* Category */}
+                    <p className="text-xs uppercase font-semibold text-green-600 mb-1">
+                      {details.category || "Travel Package"}
+                    </p>
+
+                    {/* Title */}
                     <h2
-                      className="text-lg font-bold text-gray-900  line-clamp-2 cursor-pointer h-10 font-sans"
+                      className="text-lg font-bold text-gray-900 line-clamp-2 cursor-pointer h-12 font-mono"
                       onClick={() => handleClick(details.slug)}
                     >
                       {details.title}
                     </h2>
 
-                    <div className="flex items-center gap-3 pb-1.5 mb-1.5 border-b border-gray-200 text-gray-600">
+                    {/* Subtitle */}
+                    {details.subtitle && (
+                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                        {details.subtitle}
+                      </p>
+                    )}
+
+                    {/* Info Row */}
+                    <div className="flex items-center gap-3 pb-1 border-b border-gray-200 text-gray-600 mb-2">
                       <div className="flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5" />
                         <span className="text-sm font-medium">
-                          {details.days} days
+                          {details.durationDays || 0} days
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <MapPin className="w-3.5 h-3.5" />
                         <span className="text-sm font-medium">
-                          {details.destinations}
+                          {details.destinations || "Bhutan"}
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1 border-b border-gray-200">
-                      <span className="text-lg font-bold text-gray-900">
-                        {details.ratingnumber}
-                      </span>
-                      <div className="flex gap-0.5">
+                    {/* Rating & Age Group */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
+                            className={`w-3.5 h-3.5 ${
+                              i < (details.ratingnumber || 4)
+                                ? "fill-amber-400 text-amber-400"
+                                : "text-gray-300"
+                            }`}
                           />
                         ))}
                       </div>
-                      {details.reviews && (
-                        <span className="text-gray-500 text-xs ml-1">
-                          ({details.reviews} reviews)
+                      {details.ages && (
+                        <span className="text-xs text-gray-500 italic">
+                          Ages: {details.ages}
                         </span>
                       )}
                     </div>
                   </div>
                 </CardContent>
 
-                {/* Footer */}
-                <CardFooter className="p-2.5 pt-0">
+                {/* Footer Section */}
+                <CardFooter className="p-3 pt-0">
                   <div className="flex items-center justify-between w-full">
-                    <div className="flex items-end gap-1">
-                      <span className="text-xl font-bold text-gray-900">
-                        ${details.charge}
+                    <div className="flex flex-col">
+                      <span className="text-lg font-bold text-gray-900">
+                        ${details.finalPrice}
                       </span>
                       {details.originalPrice && (
-                        <span className="text-sm text-gray-400 line-through mb-0.5">
+                        <span className="text-sm text-gray-400 line-through">
                           ${details.originalPrice}
                         </span>
                       )}

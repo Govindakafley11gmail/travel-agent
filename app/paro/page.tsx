@@ -129,7 +129,7 @@ export default function CultureMain() {
 
   const PolicyPageData: PolicyPageData = {
     city: "Noriva",
-    country: "Moliva",
+    country: "Lumora Tours and Travel",
     highlights: [
       {
         title: "Thimphu City Exploration",
@@ -150,7 +150,6 @@ export default function CultureMain() {
 
   return (
     <main className="w-full h-full">
-      <Navbar />
       <Landing
         image="/Beautiful Dzong.jpg"
         alt="Paro Festival"

@@ -14,30 +14,44 @@ import {
 import { Star } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useState, useEffect, useCallback, useRef } from "react";
+import apiClient from "@/app/api/apiClient";
+import { apiBaseUrl, getApiEndpoint } from "@/app/api";
 
 export default function TouristTalkAboutUs() {
-  const testimonials = [
-    { name: "John Doe", location: "Venice, Italy", text: "Our trip to Moliva was amazing! Moliva Travel Agency organized everything perfectly, from the hotels to the sightseeing spots. I was very impressed and will definitely return!", date: "Jun 25 24", rating: 5 },
-    { name: "Emily Smith", location: "Chicago, USA", text: "We had an unforgettable vacation in Moliva thanks to the excellent service of Moliva Travel Agency. The itinerary was well-arranged, and the support team was very helpful. Best trip ever!", date: "Jun 28 24", rating: 5 },
-    { name: "Alex Mark", location: "Texas, USA", text: "Moliva is a perfect destination, and Moliva Travel Agency made our trip flawless. From booking to sightseeing activities, everything was wonderful. I am very satisfied!", date: "Jun 28 24", rating: 5 },
-    { name: "Sarah Lee", location: "Sydney, Australia", text: "The team at Moliva Travel Agency exceeded our expectations. Every detail was taken care of, and we had the most relaxing vacation. Highly recommend!", date: "Jul 01 24", rating: 5 },
-    { name: "Michael Brown", location: "Toronto, Canada", text: "From the moment we landed, everything was seamless. The guides were knowledgeable and friendly. Moliva is now our go-to travel agency!", date: "Jul 03 24", rating: 5 },
-    { name: "Lisa Wong", location: "Singapore", text: "Amazing experience! The personalized itinerary made our family trip unforgettable. Thank you, Moliva Travel Agency!", date: "Jul 05 24", rating: 5 },
-  ];
+
 
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [slidesPerView, setSlidesPerView] = useState(2);
   const [currentSnap, setCurrentSnap] = useState(0);
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
-
-  // Update slidesPerView based on viewport
+  const [review, setReviews] = useState();
+  const [testimonials, setTestimonials] = useState([
+ { name: "John Doe", email: "Venice, Italy", comment: "Our trip to Lumora Tours and Travel was amazing! Lumora Tours and Travel organized everything perfectly, from the hotels to the sightseeing spots. I was very impressed and will definitely return!", createdAt: "Jun 25 24", rating: 5 },
+    { name: "Emily Smith", email: "Chicago, USA", comment: "We had an unforgettable vacation in Lumora Tours and Travel thanks to the excellent service of Lumora Tours and Travel. The itinerary was well-arranged, and the support team was very helpful. Best trip ever!", createdAt: "Jun 28 24", rating: 5 },
+    { name: "Alex Mark", email: "Texas, USA", comment: "Lumora Tours and Travel is a perfect destination, and Lumora Tours and Travel made our trip flawless. From booking to sightseeing activities, everything was wonderful. I am very satisfied!", createdAt: "Jun 28 24", rating: 5 },
+    { name: "Sarah Lee", email: "Sydney, Australia", comment: "The team at Lumora Tours and Travel exceeded our expectations. Every detail was taken care of, and we had the most relaxing vacation. Highly recommend!", createdAt: "Jul 01 24", rating: 5 },
+    { name: "Michael Brown", email: "Toronto, Canada", comment: "From the moment we landed, everything was seamless. The guides were knowledgeable and friendly. Lumora Tours and Travel is now our go-to travel agency!", createdAt: "Jul 03 24", rating: 5 },
+    { name: "Lisa Wong", email: "Singapore", comment: "Amazing experience! The personalized itinerary made our family trip unforgettable. Thank you, Lumora Tours and Travel!", createdAt: "Jul 05 24", rating: 5 },
+  
+]);
+  // Update slidesPerView based on = viewport
   const updateSlidesPerView = useCallback(() => {
     const width = window.innerWidth;
     if (width < 768) setSlidesPerView(1);
     else if (width < 1024) setSlidesPerView(2);
     else setSlidesPerView(3);
   }, []);
+ useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await apiClient.get(getApiEndpoint.getUserReview()); // ✅ call backend API
+        setTestimonials(response.data.response); // Adjust this based on your response shape (e.g., response.data.data)
+      } catch (err: any) {
+      }
+    };
 
+    fetchReviews();
+  }, []);
   useEffect(() => {
     updateSlidesPerView();
     window.addEventListener("resize", updateSlidesPerView);
@@ -98,7 +112,7 @@ useEffect(() => {
           className="w-full"
         >
           <CarouselContent className="-ml-4">
-            {testimonials.map((t, i) => (
+            {testimonials?.map((t, i) => (
               <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
                 <Card className="p-6 h-full bg-white shadow-sm border rounded-2xl flex flex-col justify-between">
                   <div>
@@ -110,16 +124,16 @@ useEffect(() => {
                         </Avatar>
                         <div>
                           <p className="font-semibold text-gray-900">{t.name}</p>
-                          <p className="text-sm text-gray-500">{t.location}</p>
+                          <p className="text-sm text-gray-500">{t.email}</p>
                         </div>
                       </div>
                       <span className="text-4xl text-gray-200 select-none">”</span>
                     </div>
-                    <p className="text-gray-700 text-sm leading-relaxed mb-4">{t.text}</p>
+                    <p className="text-gray-700 text-sm leading-relaxed mb-4">{t.comment}</p>
                   </div>
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex">{[...Array(t.rating)].map((_, i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}</div>
-                    <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs font-medium">{t.date}</Badge>
+                    <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs font-medium">{t.createdAt}</Badge>
                   </div>
                 </Card>
               </CarouselItem>

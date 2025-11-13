@@ -1,14 +1,13 @@
 export const placestotraveldetails = [
-      {
+  {
     img: "/dochula_overview.jpg", // ✅ fixed
     title: "Shortest Bhutan Sojourn ",
     days: 3,
     slug: "thimphu",
-      originalPrice:90,
+    originalPrice: 90,
     destinations: "paro",
     ratingnumber: 4,
     charge: 299,
-    
   },
   {
     img: "/The Mask Dance.jpg", // ✅ fixed
@@ -51,7 +50,7 @@ export const placestotraveldetails = [
     img: "/hotel.jpg", // ✅ fixed
     title: "Experience Luxary Hotel and Home stay",
     days: 3,
-          slug:"luxury",
+    slug: "luxury",
 
     destinations: "Paro",
     ratingnumber: 4,

@@ -24,9 +24,10 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import CountUp from "react-countup";
-import apiClient from "@/component/api/apiClient";
-import { getApiEndpoint } from "@/component/api";
+
 import { BookingDrawer } from "./form";
+import { getApiEndpoint } from "@/app/api";
+import apiClient from "@/app/api/apiClient";
 
 export interface BookingType {
   id?: number;

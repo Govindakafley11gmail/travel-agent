@@ -147,7 +147,7 @@ export default function AboutUs() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
             >
-              <Button className="relative overflow-hidden bg-lime-600 hover:bg-lime-700 text-white px-8 py-6 text-base font-bold rounded-xl shadow-lg group" onClick={()=>router.push("/about")}>
+              <Button className="relative overflow-hidden bg-lime-600 hover:bg-lime-700 text-white px-8 py-6 text-base font-bold rounded-xl shadow-lg group" onClick={()=>router.push("/About-Us")}>
                 <span className="relative z-10 flex items-center">
                   READ MORE
                   <motion.div

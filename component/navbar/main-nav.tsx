@@ -5,14 +5,17 @@ import Link from "next/link";
 import { ChevronDown, ShoppingBag, Heart, User, Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useCart } from "../shopping-ui/product/cartContext";
 
 export default function MainNav() {
   const [open, setOpen] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const router = useRouter();
+  const { cartItems } = useCart();
 
-  const navItems = ["All Trips", "Culture", "Blogs", "About Us", "Contact"];
+  console.log("cart item", cartItems)
+  const navItems = ["All Trips", "Blogs", "About-Us", "E-Shop", "Contact-Us"];
 
   return (
     <nav
@@ -41,6 +44,7 @@ export default function MainNav() {
           {navItems.map((item) => (
             <div
               key={item}
+              onClick={() => router.push(`${item}`)}
               className="relative cursor-pointer group"
               onMouseEnter={() => setOpen(item)}
               onMouseLeave={() => setOpen(null)}
@@ -62,7 +66,11 @@ export default function MainNav() {
           <div className="relative hidden lg:block">
             <ShoppingBag className="text-gray-600" />
             <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full px-1">
-              3
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 rounded-full bg-red-500 px-2 text-xs text-white">
+                  {cartItems.length}
+                </span>
+              )}
             </span>
           </div>
           <div className="relative hidden lg:block">
@@ -88,7 +96,7 @@ export default function MainNav() {
             <X size={24} />
           ) : (
             <div className="w-10 h-10 bg-icongrey rounded-4xl flex items-center justify-center">
-          
+
               <Menu size={24} />
             </div>
           )}
@@ -108,9 +116,8 @@ export default function MainNav() {
                   {item}
                   <ChevronDown
                     size={16}
-                    className={`transition-transform ${
-                      open === item ? "rotate-180" : ""
-                    }`}
+                    className={`transition-transform ${open === item ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 

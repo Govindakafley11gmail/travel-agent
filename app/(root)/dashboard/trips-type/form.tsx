@@ -1,5 +1,11 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { motion } from "framer-motion";
+import { showToast } from "nextjs-toast-notify";
+
 import {
   Dialog,
   DialogContent,
@@ -7,6 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -18,24 +25,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { motion } from "framer-motion";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { showToast } from "nextjs-toast-notify"; // ONLY THIS
-import React from "react";
-import { getApiEndpoint } from "@/app/api";
-import apiClient from "@/app/api/apiClient";
 
-// ──────────────────────────────────────────────────────────────
-// API RESPONSE TYPE
-// ──────────────────────────────────────────────────────────────
+import apiClient from "@/app/api/apiClient";
+import { getApiEndpoint } from "@/app/api";
+
 interface ApiResponse {
   message: string;
 }
 
-// ──────────────────────────────────────────────────────────────
-// PROPS & FIELD TYPES
-// ──────────────────────────────────────────────────────────────
 interface TripDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -45,49 +42,38 @@ interface TripDrawerProps {
 interface Field {
   id: string;
   label: string;
-  type: "text" | "number" | "textarea" | "select";
+  type: "text" | "number" | "textarea" | "select" | "file";
   placeholder?: string;
   options?: string[];
   colSpan?: number;
 }
 
 export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps) {
+  const [images, setImages] = useState<File[]>([]);
+
   const fields: Field[] = [
     { id: "title", label: "Trip Title", type: "text", placeholder: "Enter trip title" },
+    { id: "slug", label: "Slug", type: "text", placeholder: "Enter slug" },
     { id: "subtitle", label: "Subtitle", type: "text", placeholder: "Enter subtitle" },
-    {
-      id: "description",
-      label: "Description",
-      type: "textarea",
-      placeholder: "Write a brief description",
-      colSpan: 3,
-    },
+    { id: "description", label: "Description", type: "textarea", placeholder: "Write a brief description", colSpan: 3 },
     { id: "originalPrice", label: "Original Price", type: "number", placeholder: "0" },
     { id: "discountPercent", label: "Discount (%)", type: "number", placeholder: "0" },
     { id: "finalPrice", label: "Final Price", type: "number", placeholder: "0" },
     { id: "durationDays", label: "Duration (days)", type: "number", placeholder: "0" },
     { id: "ages", label: "Ages", type: "text", placeholder: "e.g. 18-50" },
-    {
-      id: "status",
-      label: "Status",
-      type: "select",
-      options: ["Active", "Inactive", "Archived"],
-    },
-    {
-      id: "category",
-      label: "Category",
-      type: "select",
-      options: ["Adventure", "Leisure", "Cultural", "Nature", "Tour"],
-    },
+    { id: "status", label: "Status", type: "select", options: ["Active", "Inactive", "Archived"] },
+    { id: "category", label: "Category", type: "select", options: ["Adventure", "Leisure", "Cultural", "Nature", "Tour"] },
+    { id: "images", label: "Images", type: "file" },
   ];
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
+    slug: Yup.string().required("Slug is required"),
     description: Yup.string().required("Description is required"),
-    originalPrice: Yup.number().min(0, "Must be at least 0").required("Required"),
+    originalPrice: Yup.number().min(0).required("Required"),
     discountPercent: Yup.number().min(0).max(100).required("Required"),
-    finalPrice: Yup.number().min(0, "Must be at least 0").required("Required"),
-    durationDays: Yup.number().min(1, "At least 1 day required").required("Required"),
+    finalPrice: Yup.number().min(0).required("Required"),
+    durationDays: Yup.number().min(1).required("Required"),
     status: Yup.string().required("Status is required"),
     category: Yup.string().required("Category is required"),
   });
@@ -96,6 +82,7 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
     enableReinitialize: true,
     initialValues: {
       title: editingTrip?.title || "",
+      slug: editingTrip?.slug || "",
       subtitle: editingTrip?.subtitle || "",
       description: editingTrip?.description || "",
       originalPrice: editingTrip?.originalPrice || 0,
@@ -111,47 +98,43 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       setSubmitting(true);
       try {
+        const formData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value as any);
+        });
+        images.forEach((file) => formData.append("images", file));
+
         let res;
-        if (editingTrip) {
+        if (editingTrip?.id) {
           res = await apiClient.put<ApiResponse>(
             getApiEndpoint.updateTrip(editingTrip.id),
-            values
+            formData,
+            { headers: { "Content-Type": "multipart/form-data" } }
           );
-          showToast.success(res.data.message || "Trip updated successfully!", {
-            duration: 4000,
-            position: "top-right",
-            progress: true,
-          });
+          showToast.success(res.data.message || "Trip updated successfully!");
         } else {
-          res = await apiClient.post<ApiResponse>(getApiEndpoint.createTrip(), values);
-          showToast.success(res.data.message || "Trip created successfully!", {
-            duration: 4000,
-            position: "top-right",
-            progress: true,
-          });
+          res = await apiClient.post<ApiResponse>(
+            getApiEndpoint.createTrip(),
+            formData,
+            { headers: { "Content-Type": "multipart/form-data" } }
+          );
+          showToast.success(res.data.message || "Trip created successfully!");
         }
+
         resetForm();
+        setImages([]);
         onOpenChange(false);
       } catch (err: any) {
         const errorMsg =
-          err?.response?.data?.message ||
-          err?.message ||
-          "Failed to save trip. Please try again.";
-
-        showToast.error(errorMsg, {
-          duration: 5000,
-          position: "top-right",
-          progress: true,
-        });
+          err?.response?.data?.message || err?.message || "Failed to save trip.";
+        showToast.error(errorMsg);
       } finally {
         setSubmitting(false);
       }
     },
   });
 
-  // ──────────────────────────────────────────────────────────────
   // Auto-calc final price
-  // ──────────────────────────────────────────────────────────────
   const calcFinalPrice = () => {
     const price = Number(formik.values.originalPrice) || 0;
     const discount = Number(formik.values.discountPercent) || 0;
@@ -159,8 +142,7 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
     formik.setFieldValue("finalPrice", Number(discounted.toFixed(2)));
   };
 
-  // Run on mount & when price/discount change
-  React.useEffect(() => {
+  useEffect(() => {
     calcFinalPrice();
   }, [formik.values.originalPrice, formik.values.discountPercent]);
 
@@ -201,11 +183,7 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
               <Label htmlFor={field.id}>{field.label}</Label>
 
               {field.type === "select" ? (
-                <div
-                  className={`rounded-md w-full ${
-                    hasError(field.id) ? "border border-red-500" : "border border-gray-300"
-                  }`}
-                >
+                <div className={`rounded-md w-full ${hasError(field.id) ? "border-red-500" : "border-gray-300"}`}>
                   <Select
                     value={formik.values[field.id as keyof typeof formik.values] as string}
                     onValueChange={(v) => formik.setFieldValue(field.id, v)}
@@ -216,9 +194,7 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
                     </SelectTrigger>
                     <SelectContent>
                       {field.options?.map((opt) => (
-                        <SelectItem key={opt} value={opt}>
-                          {opt}
-                        </SelectItem>
+                        <SelectItem key={opt} value={opt}>{opt}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -231,11 +207,16 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   disabled={formik.isSubmitting}
-                  className={`w-full border rounded-md px-3 py-2 resize-none h-24 ${
-                    hasError(field.id)
-                      ? "border-red-500 focus-visible:ring-red-500"
-                      : "border-gray-300"
-                  }`}
+                  className={`w-full border rounded-md px-3 py-2 resize-none h-24 ${hasError(field.id) ? "border-red-500 focus-visible:ring-red-500" : "border-gray-300"}`}
+                />
+              ) : field.type === "file" ? (
+                <input
+                  id={field.id}
+                  type="file"
+                  multiple
+                  onChange={(e) => setImages(Array.from(e.target.files || []))}
+                  disabled={formik.isSubmitting}
+                  className="w-full border border-gray-300 rounded-md p-1"
                 />
               ) : (
                 <Input
@@ -245,28 +226,21 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
                   value={formik.values[field.id as keyof typeof formik.values] as any}
                   onChange={(e) => {
                     formik.handleChange(e);
-                    if (["originalPrice", "discountPercent"].includes(field.id))
-                      calcFinalPrice();
+                    if (["originalPrice", "discountPercent"].includes(field.id)) calcFinalPrice();
                   }}
                   onBlur={formik.handleBlur}
                   disabled={formik.isSubmitting}
-                  className={`w-full ${
-                    hasError(field.id)
-                      ? "border-red-500 focus-visible:ring-red-500"
-                      : ""
-                  }`}
+                  className={`w-full ${hasError(field.id) ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                 />
               )}
 
               {hasError(field.id) && (
-                <p className="text-red-500 text-sm">
-                  {formik.errors[field.id as keyof typeof formik.errors] as string}
-                </p>
+                <p className="text-red-500 text-sm">{formik.errors[field.id as keyof typeof formik.errors] as string}</p>
               )}
             </div>
           ))}
 
-          {/* Trending toggle */}
+          {/* Trending switch */}
           <div className="col-span-1 sm:col-span-2 md:col-span-3 flex items-center justify-between mt-2">
             <Label htmlFor="isTrending">Trending Trip</Label>
             <Switch
@@ -279,19 +253,10 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
 
           {/* Buttons */}
           <div className="col-span-1 sm:col-span-2 md:col-span-3 flex justify-end gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-              disabled={formik.isSubmitting}
-            >
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={formik.isSubmitting}>
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={formik.isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
+            <Button type="submit" disabled={formik.isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white">
               {formik.isSubmitting ? (
                 <span className="flex items-center gap-2">
                   <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
@@ -300,11 +265,7 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
                   </svg>
                   Saving...
                 </span>
-              ) : editingTrip ? (
-                "Update"
-              ) : (
-                "Save"
-              )}
+              ) : editingTrip?.id ? "Update" : "Save"}
             </Button>
           </div>
         </motion.form>

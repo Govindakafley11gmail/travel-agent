@@ -31,29 +31,14 @@ export default function ToursSection() {
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-16">
+        <p className="uppercase text-green-600 font-medium tracking-wider text-sm mb-2">
+            Great Experience
+          </p>
+          <h2 className="text-3xl font-mono font-bold text-gray-900 mb-4">
+            Why choose us?
+          </h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="bg-green-500 text-white rounded p-8 flex flex-col justify-between"
-        >
-          <div>
-            <p className="uppercase text-base font-semibold font-mono">
-              Flexible Tours
-            </p>
-            <h2 className="text-3xl font-bold mt-2 mb-4 font-mono">
-              Explore your way
-            </h2>
-            <p className="text-base font-sans">
-              Explore Moliva your way with incredible trips and captivating
-              experiences.
-            </p>
-          </div>
-          <a href="#" className="mt-4  text-white font-medium text-sm">
-            You need <strong className="underline">advice</strong>?
-          </a>
-        </motion.div>
+       
 
         {tours.map((tour, idx) => (
           <motion.div

@@ -7,34 +7,29 @@ import Navbar from "@/component/navbar/navbar";
 import WhyChooseUs from "@/component/why-us/why-us";
 import TripsForFistTimer from "./pages/trips-for-first-timer";
 import image1 from "@/public/image1.jpg";
+import { Are_You_Serious } from "next/font/google";
+
 import TouristTalkAboutUs from "@/component/tourist-talk-aboutus";
+import AdventureTypes from "@/component/advanture";
+import ToursSection from "@/component/how-it-works/how-it-works";
 export default function Home() {
   return (
     <main className="overflow-hidden">
-      <Navbar />
       <HomePage />
       <AboutUs />
       
-      {/* <ToursSection /> */}
+      <ToursSection />
       <TripsForFistTimer />
-      <WhyChooseUs/>
       <Destinations
         title={"Lumora Tours and Travel video"}
         subtitle={"Beautiful & Romantic"}
         backgroundImage={image1}
         video={true}
       />
-      <AdventuresSection />
-      <Destinations
-        title="Start Exploring"
-        subtitle="Are you ready for adventures to"
-        bookUs={true}
-        contactUs={true}
-        backgroundImage={image1}
-        video={false}
-      />
+      {/* <AdventuresSection /> */}
       <TouristTalkAboutUs />
       <Footer />
+      
     </main>
   );
 }

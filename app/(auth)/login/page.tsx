@@ -25,6 +25,11 @@ import router from "next/router";
 import { LockKeyhole } from "lucide-react";
 import Footer from "@/component/footer";
 import { useRouter } from "next/navigation";
+import apiClient from "@/app/api/apiClient";
+import { getApiEndpoint } from "@/app/api";
+import { showToast } from "nextjs-toast-notify";
+import Cookies from "js-cookie";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export interface SignInResponseAttributes {
   status: number;
@@ -41,26 +46,78 @@ export interface SignInAttributes {
 }
 
 export default function Login() {
-    const router = useRouter();
-
-  //   const { mutateAsync: userSign, data } = useMutation({
-  //     mutationFn: userSignIn,
-  //     mutationKey: ["User Login"],
-  //   });
-
-  //   function OnSuccess() {
-  //     router.push("/");
-  //   }
+  const router = useRouter();
   const handleSubmit = async (
     values: SignInAttributes,
     { resetForm }: FormikHelpers<SignInAttributes>
   ) => {
-    console.log(values);
-    resetForm();
+    try {
+      // Make API call
+      const response = await apiClient.post(
+        getApiEndpoint.login(),
+        values
+      );
+      console.log(response)
+
+      // Success toast
+      showToast.success(
+        response.data.message || "Login successfully!",
+        {
+          duration: 4000,
+          position: "top-right",
+          progress: true,
+        }
+      );
+      const token = Cookies.get("accessToken");
+      console.log(token)
+      if (!token) {
+        router.push("/"); // no token → redirect
+        return;
+      }
+
+      try {
+        const decoded = jwtDecode<JwtPayload & { role?: string }>(token);
+        const userRole = decoded?.role ?? null;
+
+        if (!userRole) {
+          router.push("/"); // invalid role → redirect
+          return;
+        }
+
+        if (userRole.toLowerCase() === "client") {
+          router.push("/register"); // client → register
+          return;
+        }
+        if(userRole.toLowerCase() === "admin" || userRole.toLowerCase() === "user"|| userRole.toLowerCase() === "manager" || userRole.toLowerCase() === "accounts" ){
+            router.push("/dashboard"); // client → register
+          return;
+        }
+
+        // valid admin/Manager/User → allow access
+      } catch (err) {
+        console.error("Invalid token:", err);
+        router.push("/"); // invalid token → redirect
+      }
+      // Log values (optional)
+
+      // Reset form
+      resetForm();
+    } catch (error: any) {
+      // Handle errors
+
+      showToast.error(
+        error?.response?.data?.message || error?.message || "Failed to Login",
+        {
+          duration: 5000,
+          position: "top-right",
+          progress: true,
+        }
+      );
+    }
   };
+
   return (
     <div>
-      <Navbar />
       <div className="h-full">
         <div className="h-full flex justify-center mt-10">
           <Card className="rounded-sm w-[360px] h-full">
@@ -76,7 +133,7 @@ export default function Login() {
                 onSubmit={handleSubmit}
                 initialValues={initialValues}
                 validationSchema={validationSignSchema}
-                //   onSubmit={onSubmit}
+              //   onSubmit={onSubmit}
               >
                 {() => (
                   <Form className="flex flex-col gap-4">
@@ -126,34 +183,34 @@ export default function Login() {
                       className="mt-4 w-full h-[50px] rounded-lg text-lg bg-green-600 hover:bg-green-700  border shadow-md hover:shadow-lg transition"
                       type="submit"
                     >
-                        <LockKeyhole/> 
+                      <LockKeyhole />
                       <TextCompoment text="Login" className="text-white font-serif" />
                     </Button>
                     <BorderHorizontal borderStyle="w-full border-b border-gray-300 mt-2 mr-2" />
 
-                    
+
                   </Form>
-                  
+
                 )}
               </Formik>
               <div className="mt-5">
-                      <span className="text-gray-600">
-                        Don&apos;t have an account?{" "}
-                      </span>
-                      <button
-                        onClick={() => router.push("/register")}
-                        className="text-green-600 hover:text-green-500 font-serif"
-                      >
-                        Sign up
-                      </button>
-                    </div>
+                <span className="text-gray-600">
+                  Don&apos;t have an account?{" "}
+                </span>
+                <button
+                  onClick={() => router.push("/register")}
+                  className="text-green-600 hover:text-green-500 font-serif"
+                >
+                  Sign up
+                </button>
+              </div>
             </CardContent>
           </Card>
         </div>
       </div>
-       <div className="mt-10">
-          <Footer/>
-       </div>
+      <div className="mt-10">
+        <Footer />
+      </div>
     </div>
   );
 }

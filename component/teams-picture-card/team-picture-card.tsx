@@ -9,12 +9,20 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface TeamMember {
   img: string;
   name: string;
   email?: string;
   role: string;
+  description: string
 }
 
 interface TeamSectionProps {
@@ -25,6 +33,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({ data }) => {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToScroll, setSlidesToScroll] = useState(4);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null); // ✅ For dialog
 
   // 🧩 Responsive slides count
   useEffect(() => {
@@ -50,7 +59,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({ data }) => {
   }, [slidesToScroll, api]);
 
   // 🧩 Calculate total slide pages
-const totalSlides = Math.max(3, Math.ceil(data.length / slidesToScroll));
+  const totalSlides = Math.max(3, Math.ceil(data.length / slidesToScroll));
 
   // 🧩 Track index
   useEffect(() => {
@@ -116,9 +125,14 @@ const totalSlides = Math.max(3, Math.ceil(data.length / slidesToScroll));
                   </div>
 
                   <CardContent className="p-3 text-center -pb-9">
-                    <h3 className="text-lg md:text-xl font-semibold text-gray-900">
+                    {/* ✅ Clickable Name */}
+                    <h3
+                      onClick={() => setSelectedMember(member)}
+                      className="text-lg md:text-xl font-semibold text-gray-900 cursor-pointer hover:text-green-600 transition-colors"
+                    >
                       {member.name}
                     </h3>
+
                     {member.email && (
                       <p className="text-sm text-gray-500">{member.email}</p>
                     )}
@@ -145,6 +159,38 @@ const totalSlides = Math.max(3, Math.ceil(data.length / slidesToScroll));
           ))}
         </div>
       </div>
+
+      {/* ✅ Dialog Popup */}
+      <Dialog open={!!selectedMember} onOpenChange={() => setSelectedMember(null)}>
+        <DialogContent className="sm:max-w-[425px]">
+          {selectedMember && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{selectedMember.name}</DialogTitle>
+                <DialogDescription>{selectedMember.role}</DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col items-center mt-4">
+                <div className="relative w-40 h-40 rounded-full overflow-hidden mb-4">
+                  <Image
+                    src={selectedMember.img}
+                    alt={selectedMember.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                {selectedMember.email && (
+                  <p className="text-sm text-gray-600 mb-2">
+                    📧 {selectedMember.email}
+                  </p>
+                )}
+                <p className="text-sm text-gray-700 text-center">
+                 {selectedMember.description}
+                </p>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

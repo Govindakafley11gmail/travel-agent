@@ -2,16 +2,18 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { jwtDecode, JwtPayload } from "jwt-decode";
 import Cookies from "js-cookie";
 
 import Sidebar from "@/component/dashboard/sidebar";
-
 import BookingCard from "./booking";
 import ContactCard from "./contact";
 import Navbar from "./navbar";
 import ReviewCard from "./review";
 import TripsCard from "./trips-type";
+import DashboardContent from "./DashboardContent";
+import ProfileCard from "./ProfileCard";
+import UserCard from "./UserCard";
+import ProductCard from "@/component/dashboard/dashboard/products";
 
 import {
   LayoutDashboard,
@@ -22,9 +24,7 @@ import {
   Mail,
   User,
 } from "lucide-react";
-import DashboardContent from "./DashboardContent";
-import ProfileCard from "./ProfileCard";
-import UserCard from "./UserCard";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export default function DashboardPage() {
   const [activeItem, setActiveItem] = useState("Dashboard");
@@ -32,13 +32,12 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter();
 
-  // Decode JWT and extract role
+  // Decode JWT and check role
   useEffect(() => {
     const token = Cookies.get("accessToken");
 
-    // No token → redirect to main dashboard
     if (!token) {
-      router.push("/dashboard");
+      router.push("/"); // no token → redirect
       return;
     }
 
@@ -47,28 +46,26 @@ export default function DashboardPage() {
       const userRole = decoded?.role ?? null;
 
       if (!userRole) {
-        router.push("/dashboard");
+        router.push("/"); // invalid role → redirect
         return;
       }
 
+      if (userRole.toLowerCase() === "client") {
+        router.push("/register"); // client → register
+        return;
+      }
+
+      // valid admin/Manager/User → allow access
       setRole(userRole);
     } catch (err) {
       console.error("Invalid token:", err);
-      router.push("/dashboard");
+      router.push("/"); // invalid token → redirect
     }
   }, [router]);
 
-  // Redirect if role is invalid
-  useEffect(() => {
-    if (role && !["admin", "Manager", "User", "client"].includes(role)) {
-      router.push("/dashboard");
-    }
-  }, [role, router]);
-
   // Sidebar menu based on role
   const menuItems = useMemo(() => {
-    // Full access (Admin, Manager, User, client)
-    if (["admin", "Manager", "User", "client"].includes(role || "")) {
+    if (role && ["Admin", "Manager", "User"].includes(role)) {
       return [
         { name: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
         { name: "Users", icon: <Users className="w-5 h-5" /> },
@@ -77,25 +74,16 @@ export default function DashboardPage() {
         { name: "Reviews", icon: <Star className="w-5 h-5" /> },
         { name: "Contact", icon: <Mail className="w-5 h-5" /> },
         { name: "Profile", icon: <User className="w-5 h-5" /> },
+        { name: "Product", icon: <User className="w-5 h-5" /> },
       ];
     }
 
-    // Default (no role or invalid)
-    return [
-        { name: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
-        { name: "Users", icon: <Users className="w-5 h-5" /> },
-      { name: "Bookings", icon: <BookOpen className="w-5 h-5" /> },
-      { name: "Trips", icon: <Map className="w-5 h-5" /> },
-      { name: "Reviews", icon: <Star className="w-5 h-5" /> },
-      { name: "Contact", icon: <Mail className="w-5 h-5" /> },
-    ];
+    return []; // clients or invalid roles get no menu
   }, [role]);
 
-  // Page content rendering
+  // Render main content based on active sidebar item
   const renderContent = () => {
-    const key = activeItem.toLowerCase();
-
-    switch (key) {
+    switch (activeItem.toLowerCase()) {
       case "dashboard":
         return <DashboardContent />;
       case "users":
@@ -110,23 +98,20 @@ export default function DashboardPage() {
         return <ContactCard />;
       case "profile":
         return <ProfileCard />;
+      case "product":
+        return <ProductCard />;
       default:
         return <DashboardContent />;
     }
   };
 
-  // Wait until role is known before rendering
-  // if (role === null) {
-  //   return (
-  //     <div className="flex h-screen items-center justify-center text-gray-600 dark:text-gray-300">
-  //       Loading...
-  //     </div>
-  //   );
-  // }
+  // Show loading until role is determined
+  if (role === null) {
+    // router.push("/")
+  }
 
   return (
     <div className="flex h-screen flex-col md:flex-row bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
-      {/* Sidebar */}
       <Sidebar
         activeItem={activeItem}
         setActiveItem={setActiveItem}
@@ -136,7 +121,6 @@ export default function DashboardPage() {
         onItemClick={() => setSidebarOpen(false)}
       />
 
-      {/* Main Section */}
       <div className="flex flex-1 flex-col">
         <Navbar
           activeItem={activeItem}

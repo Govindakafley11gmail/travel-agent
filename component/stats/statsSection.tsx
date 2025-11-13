@@ -8,7 +8,7 @@ const StatsSection: React.FC = () => {
     <div className="w-full bg-white py-8 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 items-center gap-8 md:gap-4">
-          <StatItem value="+250" title="Attractive tours" subtitle="around Moliva" />
+          <StatItem value="+250" title="Attractive tours" subtitle="around Lumora Tours and Travel" />
           <StatItem value="+1.1M" title="Clients from" subtitle="around the world" />
 
           {/* Rating Stat */}

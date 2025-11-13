@@ -6,7 +6,6 @@ import TopBar from "./topbar";
 
 export default function HeaderWrapper() {
   const [isScrolled, setIsScrolled] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {

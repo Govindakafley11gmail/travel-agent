@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil, Check, X } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
-import apiClient from "@/component/api/apiClient";
 import { showToast } from "nextjs-toast-notify";
-import { getApiEndpoint } from "@/component/api";
+import { getApiEndpoint } from "@/app/api";
+import apiClient from "@/app/api/apiClient";
+
 
 // ---------------------------------------------------------------
 // Types

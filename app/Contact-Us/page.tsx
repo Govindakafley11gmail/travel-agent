@@ -15,6 +15,7 @@ import BiblograhyComponent from "@/component/biblography/biblography";
 import TripsForFistTimer from "../pages/trips-for-first-timer";
 import TeamSection from "@/component/teams-picture-card/team-picture-card";
 import WhyChooseUs from "@/component/why-us/why-us";
+import TravelContactUS from "@/component/contactus";
 
 export default function AboutMain() {
   const bioData = [
@@ -76,25 +77,21 @@ export default function AboutMain() {
 
   return (
     <main className="w-full h-full">
-      <Navbar />
       <Landing
-        image="/aboutus.jpg"
+        image="/flight.jpg"
         alt="Paro Festival"
         imagestyle="h-[500px] md:h-[600px] lg:h-[500px]"
         subContainer="w-full relative"
         maincontainer="w-full"
-        heading="GET TO KNOW US "
-        subheading="About Us"
+        heading="Are you ready for a contact/enquiry ?"
+        subheading="Contact Us"
         headingstyle="font-mono"
       />
-      <StatsSection />
+      {/* <StatsSection /> */}
 
-      <TravelAgencyAbout />
+      <TravelContactUS />
 
-      <div className=" bg-[#EAEDF0] pt-3 pb-10">
-        <BiblograhyComponent />
-      </div>
-        <TeamSection data={teamData}  />
+      
       <div>
         <WhyChooseUs/>
         <Footer />

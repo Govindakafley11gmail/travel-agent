@@ -8,16 +8,16 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* About */}
         <div>
-          <h3 className="text-lg font-bold mb-4">Moliva Travel Agency</h3>
+          <h3 className="text-lg font-bold mb-4">Lumora Tours and Travel</h3>
           <p className="text-gray-400 text-sm">
-            Moliva Travel Agency offers unique and memorable tours, providing rich experiences in the beautiful country of Moliva. <span className="text-green-500 font-semibold cursor-pointer">[+]</span>
+            Lumora Tours and Travel offers unique and memorable tours, providing rich experiences in the beautiful country of Lumora Tours and Travel. <span className="text-green-500 font-semibold cursor-pointer">[+]</span>
           </p>
         </div>
 
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-bold mb-4">Contact Info</h3>
-          <p className="text-gray-400 text-sm">No 234, Placer Loquen Marsei Niriva, Moliva.</p>
+          <p className="text-gray-400 text-sm">No 234, Placer Thimphu, Lumora Tours and Travel.</p>
           <p className="text-gray-400 text-sm mt-2">+33 321-654-987 (Ext: 123)</p>
           <p className="text-gray-400 text-sm mt-2">Booking@example.com</p>
           <p className="text-gray-400 text-sm mt-2">www.example.com</p>
@@ -27,10 +27,10 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-bold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-gray-400 text-sm">
-            <li><Link href="#" className="hover:text-white">Moliva Travel</Link></li>
+            <li><Link href="#" className="hover:text-white">Lumora Tours and Travel Travel</Link></li>
             <li><Link href="#" className="hover:text-white">About us</Link></li>
             <li><Link href="#" className="hover:text-white">Destinations</Link></li>
-            <li><Link href="#" className="hover:text-white">Moliva Tours</Link></li>
+            <li><Link href="#" className="hover:text-white">Lumora Tours and Travel Tours</Link></li>
             <li><Link href="#" className="hover:text-white">Travel insight</Link></li>
             <li><Link href="#" className="hover:text-white">Contact us</Link></li>
             <li><Link href="#" className="hover:text-white">Get the app</Link></li>
@@ -57,11 +57,29 @@ export default function Footer() {
 
       {/* Bottom */}
       <div className="mt-10 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-        <p>© 2024 Moliva Travel Agency. All rights reserved.</p>
+        <p>© 2024 Lumora Tours and Travel. All rights reserved.</p>
         <div className="flex space-x-4 mt-2 md:mt-0">
           <Link href="#" className="hover:text-white">Privacy Policy</Link>
           <Link href="#" className="hover:text-white">Terms of Use</Link>
         </div>
+      </div>
+      <div>
+        <a
+          href="https://wa.me/0097577853865" // replace with your number
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-50 animate-pulse-pop"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            className="w-7 h-7"
+          >
+            <path d="M20.52 3.48A11.86 11.86 0 0012 .02C5.37.02.02 5.37.02 12c0 2.12.56 4.17 1.63 5.95L0 24l6.22-1.63A11.91 11.91 0 0012 24c6.63 0 11.98-5.35 11.98-12a11.86 11.86 0 00-3.46-8.52zm-8.52 18c-1.83 0-3.61-.5-5.17-1.45l-.37-.23-3.7 1 1-3.62-.25-.37A9.94 9.94 0 012 12c0-5.52 4.48-10 10-10 2.66 0 5.17 1.03 7.06 2.94a9.88 9.88 0 012.94 7.06c0 5.52-4.48 10-10 10zm5.19-7.56c-.28-.14-1.65-.81-1.9-.9s-.43-.14-.61.14-.7.9-.86 1.09-.32.21-.6.07a7.13 7.13 0 01-2.11-1.3 7.45 7.45 0 01-1.39-1.73c-.15-.27 0-.41.11-.55.11-.11.28-.29.42-.43.14-.14.19-.24.28-.4.09-.14.05-.26-.02-.4-.07-.14-.61-1.46-.84-2.01-.22-.53-.45-.46-.61-.46-.16 0-.35 0-.54 0s-.4.05-.61.05-.4.07-.61.27a2.45 2.45 0 00-.89.88c-.29.48-1.13 1.1-1.13 2.68s1.16 3.12 1.32 3.34c.14.21 2.28 3.48 5.52 4.88.77.33 1.37.53 1.84.68.77.23 1.48.2 2.04.12.62-.09 1.9-.78 2.17-1.53.27-.76.27-1.41.19-1.54-.09-.14-.33-.23-.61-.37z" />
+          </svg>
+        </a>
+
       </div>
     </footer>
   )

@@ -12,124 +12,112 @@ import PolicyPage, {
 } from "@/component/policy-page/policy-page";
 import TourBand from "@/component/tour-band/tour- band";
 import TourAbout from "@/component/tour-highlights/tour-highlights";
-import { tourInfo, mockTourData, 
-  
- } from "@/data/paro-places-data";
+import {
+  tourInfo, mockTourData,
+
+} from "@/data/paro-places-data";
 import { Check, MapPin, X } from "lucide-react";
 import TripsForFistTimer from "../pages/trips-for-first-timer";
 import Footer from "@/component/footer";
 
 export default function CultureMain() {
-  const itineraryData = [
-    {
-      dayNumber: "Day 1",
-      title: "Welcome Cocktail & Thai Dinner",
-      bulletPoints: [
-        "Arrive into <strong>Phuket Airport</strong> where a private <strong>Flash Pack transfer</strong> will be waiting to take you to the laid-back beach town of <strong>Khao Lak</strong>",
-        "Arrive at your <strong>palm-fringed beachside hotel</strong> and settle in with a <strong>welcome cocktail and three-course Thai dinner</strong> as you get to know your fellow Flashpackers",
-      ],
-      leftImages: [
-        { src: "/Bhutanese village.jpg", alt: "Group toasting" },
-        { src: "/environment_B.jpg", alt: "Pool relaxation" },
-      ],
-      videoThumbnail: "/Beautiful Dzong.jpg",
-      videoUrl: "https://www.youtube.com/embed/6lt2JfJdGSY", // Google Thailand promo video
-    },
-    {
-      dayNumber: "Day 2",
-      title: "Beach Adventure & Local Market",
-      bulletPoints: [
-        "Morning hike along the <strong>coastal cliffs</strong> with breathtaking views.",
-        "Evening visit to the <strong>local market</strong> to try street food delicacies.",
-      ],
-      leftImages: [
-        { src: "/beach_adventure.jpg", alt: "Beach adventure" },
-        { src: "/market_visit.jpg", alt: "Market visit" },
-      ],
-      videoThumbnail: "/beach_video_thumbnail.jpg",
-      videoUrl:
-        "[https://www.youtube.com/embed/5qap5aO4i9A](https://www.youtube.com/embed/5qap5aO4i9A)", // Lo-fi chill music as placeholder
-    },
-    {
-      dayNumber: "Day 3",
-      title: "Island Hopping & Snorkeling",
-      bulletPoints: [
-        "Full day <strong>island hopping tour</strong> visiting Phi Phi islands and Maya Bay.",
-        "Snorkel in crystal-clear waters and spot vibrant marine life.",
-      ],
-      leftImages: [
-        { src: "/island_hopping.jpg", alt: "Island tour" },
-        { src: "/snorkeling.jpg", alt: "Snorkeling fun" },
-      ],
-      videoThumbnail: "/island_video_thumbnail.jpg",
-      videoUrl:
-        "[https://www.youtube.com/embed/1roy4o4tqQM](https://www.youtube.com/embed/1roy4o4tqQM)", // Thailand islands travel video
-    },
-    {
-      dayNumber: "Day 4",
-      title: "Cooking Class & Cultural Walk",
-      bulletPoints: [
-        "Learn traditional Thai recipes in a <strong>hands-on cooking class</strong>.",
-        "Explore <strong>local villages</strong> on a guided cultural walk.",
-      ],
-      leftImages: [
-        { src: "/cooking_class.jpg", alt: "Cooking class" },
-        { src: "/cultural_walk.jpg", alt: "Cultural walk" },
-      ],
-      videoThumbnail: "/cooking_video_thumbnail.jpg",
-      videoUrl:
-        "[https://www.youtube.com/embed/3T3Svf5dnQo](https://www.youtube.com/embed/3T3Svf5dnQo)", // Thai cooking class video
-    },
-    {
-      dayNumber: "Day 5",
-      title: "Jungle Trek & Waterfall Swim",
-      bulletPoints: [
-        "Morning <strong>jungle trek</strong> through Khao Sok National Park.",
-        "Swim in pristine waterfalls and enjoy a picnic lunch surrounded by nature.",
-      ],
-      leftImages: [
-        { src: "/jungle_trek.jpg", alt: "Jungle trek" },
-        { src: "/waterfall_swim.jpg", alt: "Waterfall swim" },
-      ],
-      videoThumbnail: "/jungle_video_thumbnail.jpg",
-      videoUrl:
-        "[https://www.youtube.com/embed/7QUtEmBT_-w](https://www.youtube.com/embed/7QUtEmBT_-w)", // Travel nature video
-    },
-    {
-      dayNumber: "Day 6",
-      title: "Elephant Sanctuary & Sunset Cruise",
-      bulletPoints: [
-        "Visit an ethical <strong>elephant sanctuary</strong> and learn about conservation efforts.",
-        "Evening <strong>sunset cruise</strong> along the Andaman Sea with cocktails.",
-      ],
-      leftImages: [
-        { src: "/elephant_sanctuary.jpg", alt: "Elephant sanctuary" },
-        { src: "/sunset_cruise.jpg", alt: "Sunset cruise" },
-      ],
-      videoThumbnail: "/elephant_video_thumbnail.jpg",
-      videoUrl:
-        "[https://www.youtube.com/embed/kJQP7kiw5Fk](https://www.youtube.com/embed/kJQP7kiw5Fk)", // Thailand travel video
-    },
-    {
-      dayNumber: "Day 7",
-      title: "Farewell Brunch & Departure",
-      bulletPoints: [
-        "Enjoy a <strong>farewell brunch</strong> with your new friends.",
-        "Private transfers to <strong>Phuket Airport</strong> for your departure.",
-      ],
-      leftImages: [
-        { src: "/farewell_brunch.jpg", alt: "Farewell brunch" },
-        { src: "/airport_transfer.jpg", alt: "Airport transfer" },
-      ],
-      videoThumbnail: "/farewell_video_thumbnail.jpg",
-      videoUrl:
-        "[https://www.youtube.com/embed/ScMzIvxBSi4](https://www.youtube.com/embed/ScMzIvxBSi4)", // Travel montage video
-    },
-  ];
+ const itinerary = [
+  {
+    dayNumber: "Day 1",
+    title: " Arrival in Paro",
+    subtitle: "Arrival and Acclimatization",
+    leftImages: [
+      { src: "/paro_valley.jpg", alt: "Paro Valley" },
+      { src: "/thimphudzong.jpg", alt: "Paro International Airport" },
+    ],
+    rightImage: "/paroresort.jpg",
+    videoUrl: "https://www.youtube.com/embed/MbszG6P6U0I",
+    content: `
+      <strong>Arrival at Paro International Airport</strong><br/>
+      Land in the scenic Paro Valley, greeted by the crisp Himalayan air and stunning mountain vistas. Paro International Airport, perched at an altitude of about 2,235 meters above sea level (masl), offers one of the most breathtaking landings in the world, embracing travelers with a spectacular introduction to your Bhutanese adventure.<br/><br/>
+
+      <strong>Routine Immigration and Customs</strong><br/>
+      Complete standard entry formalities with ease at the airport. Once outside, your guide will be waiting to warmly welcome you and accompany you as you step into the serene and culturally rich kingdom of Bhutan.<br/><br/>
+
+      <strong>Travel to Hotel</strong><br/>
+      Journey from Paro to Thimphu, enjoying picturesque landscapes, terraced fields, and traditional villages along the way. Upon arrival in Thimphu, check in to your hotel and refresh yourself before enjoying a welcome tea and lunch.<br/><br/>
+
+      <strong>Lunch at Local Restaurant & Sightseeing</strong><br/>
+      Savor your first taste of Bhutanese cuisine with a carefully curated selection of local dishes, featuring both vegetarian and non-vegetarian delights. In the afternoon, set out on a guided tour of Thimphu, exploring iconic landmarks such as the Buddha Dordenma Statue, Tashichho Dzong, and the bustling Thimphu Market—a wonderful introduction to the kingdom’s vibrant culture, spiritual heritage, and everyday life.<br/><br/>
+
+      <strong>Evening in Thimphu with Dinner and Overnight Stay</strong><br/>
+      <strong>Evening at Leisure:</strong> Unwind at your own pace and soak in the charm of Paro. Take a leisurely stroll along the town’s main street, where quaint cafes, local shops, and vibrant stalls offer an array of handicrafts and traditional Bhutanese treasures.<br/>
+      <strong>Dinner:</strong> End your day with a sumptuous dinner at your hotel, offering a selection of Bhutanese, Indian, and international dishes to delight your palate.<br/>
+      <strong>Overnight Stay:</strong> Retire for the night and recharge, as tomorrow promises an unforgettable adventure to one of Bhutan’s most iconic and breathtaking landmarks, the Tiger’s Nest Monastery.
+    `,
+  },
+  {
+    dayNumber:"Day 2",
+    title: "Hike to Tiger’s Nest Monastery (Approx. 4 km hike, 3120 masl, 2 hours one way walk) and Leisure Afternoon",
+    subtitle: "Spiritual Hike and Cultural Exploration",
+    leftImages: [
+      { src: "/tigers-nest-path.jpg", alt: "Tiger's Nest Trail" },
+      { src: "/hotel-exterior-bang-in.jpg", alt: "Cafeteria midway to Tiger's Nest" },
+    ],
+    rightImage: "/food.jpg",
+    videoUrl: "https://www.youtube.com/embed/Yd_7FzjDzHc",
+    content: `
+      <strong>Morning:</strong><br/>
+      <strong>Early Breakfast at Hotel:</strong> Begin your day with a hearty breakfast to fuel up for the trek ahead.<br/>
+      <strong>Travel to Tiger’s Nest Trailhead:</strong> Set off with your guide to the base of the trail. The drive is about 1 hour 30 minutes, bringing you comfortably to the starting point of the hike.<br/>
+      <strong>Trek to Tiger’s Nest Monastery:</strong> Embark on the approximately 4 km hike to the monastery. The climb takes around 2 hours to ascend, depending on your pace. The trail is well-marked, with some steep sections, offering stunning views along the way.<br/>
+      <strong>Midway Break at Cafeteria:</strong> About halfway up, pause at a small cafeteria. Refresh with snacks and beverages while enjoying breathtaking views of the monastery seemingly clinging to the cliff opposite.<br/>
+      <strong>Arrival and Exploration:</strong> Reach the monastery and spend time exploring this sacred site. Your guide will share fascinating stories and legends about Guru Rinpoche and his introduction of Buddhism to Bhutan.<br/><br/>
+
+      <strong>Lunch:</strong><br/>
+      <strong>Return to Cafeteria:</strong> After your visit, descend back to the cafeteria for a relaxing lunch, taking in panoramic views of the Paro Valley below.<br/><br/>
+
+      <strong>Afternoon Sightseeing in Paro:</strong><br/>
+      <strong>Drive Back to Paro:</strong> After the hike, your guide will drive you back to town and visit the following on the way back:<br/>
+      <strong>Explore Kyichu Lhakhang:</strong> Visit one of Bhutan’s oldest temples, dating back to the 7th century. Enjoy the serene atmosphere and reflect on the deep-rooted spiritual heritage of Bhutanese Buddhism.<br/>
+      <strong>Visit Paro Dzong (Rinpung Dzong):</strong> Explore this impressive fortress, which functions as both a religious and administrative center. Admire its architecture and learn about its historical significance.<br/><br/>
+
+      <strong>Evening:</strong><br/>
+      <strong>Dinner in Paro:</strong> Unwind with a delicious dinner at your hotel or a local restaurant, sampling traditional Bhutanese flavors.<br/>
+      <strong>Prepare for Departure:</strong> If this is your final night, make sure your belongings are packed and ready for the journey ahead.<br/><br/>
+
+      <strong>Overnight in Paro:</strong><br/>
+      <strong>Rest and Recharge:</strong> After a day of physical activity and spiritual enrichment, enjoy a restful night’s sleep in preparation for your departure.
+    `,
+  },
+  {
+    dayNumber: "Day 3: ",
+    title:"Travel to Paro International Airport and Departure",
+    subtitle: "Farewell to Bhutan",
+    leftImages: [
+      { src: "/airport.jpg", alt: "Paro Airport Morning" },
+      { src: "/bhutannesdish.jpg", alt: "Paro Valley View" },
+    ],
+    rightImage: "/plane.jpg",
+    videoUrl: "https://www.youtube.com/embed/MbszG6P6U0I",
+    content: `
+      <strong>Breakfast at the Hotel:</strong> Start your day with a final breakfast in Bhutan, savoring the flavors one last time while enjoying the serene ambiance and taking in the tranquil views of the lush Paro Valley from your hotel.<br/><br/>
+
+      <strong>Travel to Airport:</strong><br/>
+      <strong>Check-Out:</strong> Complete your hotel check-out, ensuring all your belongings and travel documents are ready for departure.<br/>
+      <strong>Airport Transfer:</strong> Your guide and driver will accompany you to Paro International Airport, assisting with luggage and guiding you to the departure area, ensuring a smooth and stress-free conclusion to your Bhutan adventure.<br/><br/>
+
+      <strong>Departure from Bhutan:</strong><br/>
+      Begin your final day with a check-in at Paro International Airport, completing airport formalities with ease. As you await your flight, take a quiet moment to reflect on the enchanting experiences, vibrant culture, and serene landscapes that have made your Bhutan journey unforgettable.<br/>
+      When boarding is announced, proceed to your gate and settle in for departure. As your plane ascends over the majestic Himalayas, savor one last panoramic view of Bhutan’s pristine valleys and cliffside monasteries—a breathtaking farewell to the Land of the Thunder Dragon.<br/><br/>
+
+      <strong>Until Next Time:</strong><br/>
+      As you bid farewell to Bhutan, carry with you the serenity of its valleys, the warmth of its people, and the timeless beauty of its mountains and monasteries. Though your journey may end for now, the memories and experiences you’ve gathered will linger, calling you back to the Land of the Thunder Dragon.<br/><br/>
+    `,
+  },
+  
+];
+
+
 
   const PolicyPageData: PolicyPageData = {
-    city: "Noriva",
-    country: "Moliva",
+    city: "Thimphu",
+    country: "Bhutan",
     highlights: [
       {
         title: "Thimphu City Exploration",
@@ -150,15 +138,14 @@ export default function CultureMain() {
 
   return (
     <main className="w-full h-full">
-      <Navbar />
       <Landing
-        image="/Beautiful Dzong.jpg"
+        image="/Paro-Taktsang.jpg"
         alt="Paro Festival"
         imagestyle="h-[500px] md:h-[600px] lg:h-[500px]"
         subContainer="w-full relative"
         maincontainer="w-full"
-        heading="Hello this is the Festival of Bhutan"
-        subheading="Experience the vibrant culture, traditions, and spiritual celebrations of Bhutan in the Paro Festival."
+        heading="Embark on a soul-stirring journey"
+        subheading="Land in the scenic Paro Valley, greeted by the crisp Himalayan air and stunning mountain vistas."
         Itinerary="Book Us"
         headingstyle="font-mono"
       />
@@ -169,13 +156,16 @@ export default function CultureMain() {
       <div className=" bg-[#EAEDF0] pt-3 pb-10">
         <TourAbout data={mockTourData} />
       </div>
-      
+
 
       <section className="min-h-screen bg-gradient-to-b py-8 mt-10">
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             <div className="lg:col-span-2 space-y-8">
-              {itineraryData.map((day, idx) => (
+              <div>
+                <span className="font-bold text-3xl font-mono">Your itinerary</span>
+              </div>
+              {itinerary.map((day, idx) => (
                 <ItineraryDay key={idx} {...day} />
               ))}
             </div>
@@ -198,9 +188,7 @@ export default function CultureMain() {
           </div>
         </div>
       </section>
-      <div className=" bg-[#EAEDF0] pt-3 pb-10">
-        <PolicyPage data={PolicyPageData} />
-      </div>
+      
       <div>
         <HeroVideoSection
           title="Start Exploring"

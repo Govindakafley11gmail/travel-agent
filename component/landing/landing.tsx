@@ -64,7 +64,7 @@ const Landing: React.FC<LandingAttributes> = ({
         >
           {heading && (
             <h1
-              className={`${headingstyle} text-3xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg`}
+              className={`${headingstyle} text-2xl md:text-4xl font-bold text-white mb-3 drop-shadow-lg`}
             >
               {heading}
             </h1>
