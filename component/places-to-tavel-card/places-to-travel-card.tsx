@@ -50,7 +50,6 @@ interface TravelingtoPlacesProps {
 }
 
 const PlacesToTravelOptions: React.FC<TravelingtoPlacesProps> = ({ data }) => {
-  console.log("is data", data)
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesToScroll, setSlidesToScroll] = useState(4);
@@ -110,7 +109,7 @@ const PlacesToTravelOptions: React.FC<TravelingtoPlacesProps> = ({ data }) => {
         <CarouselContent className="flex gap-4">
           {data.map((details, index) => (
             <CarouselItem key={index} className="flex-none w-[350px]">
-              <Card className="w-full h-[480px] bg-white overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col p-0 rounded-2xl">
+              <Card   onClick={() => handleClick(details.slug)} className="w-full h-[480px] bg-white overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col p-0 rounded-2xl">
                 {/* Image Section */}
                 <CardHeader className="relative p-0">
                   <Image
@@ -151,8 +150,8 @@ const PlacesToTravelOptions: React.FC<TravelingtoPlacesProps> = ({ data }) => {
 
                     {/* Title */}
                     <h2
-                      className="text-lg font-bold text-gray-900 line-clamp-2 cursor-pointer h-12 font-mono"
-                      onClick={() => handleClick(details.slug)}
+                      className="text-base font-bold text-gray-900 line-clamp-2 cursor-pointer"
+                    
                     >
                       {details.title}
                     </h2>
@@ -218,7 +217,6 @@ const PlacesToTravelOptions: React.FC<TravelingtoPlacesProps> = ({ data }) => {
                     </div>
                     <button
                       className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 shadow-md hover:scale-110 transition-all duration-200"
-                      onClick={() => handleClick(details.slug)}
                     >
                       <ArrowRight className="w-4 h-4" />
                     </button>

@@ -9,32 +9,43 @@ import { useCart } from "../shopping-ui/product/cartContext";
 
 export default function MainNav() {
   const [open, setOpen] = useState<string | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // ← Controls mobile menu
   const [drawerOpen, setDrawerOpen] = useState(false);
   const router = useRouter();
   const { cartItems } = useCart();
 
-  console.log("cart item", cartItems)
-  const navItems = ["All Trips", "Blogs", "About-Us", "E-Shop", "Contact-Us"];
+  const navItems = ["All-Trips", "Blogs", "About-Us", "E-Shop", "Contact-Us", "Review-Us"];
+
+  // ← NEW: Close mobile menu when navigating
+  const handleNavClick = (path: string) => {
+    router.push(`/${path}`);
+    setMenuOpen(false); // ← This line closes the mobile menu
+  };
 
   return (
-    <nav
-      className={`w-full bg-white shadow-md transition-transform duration-700 ease-in-out z-50
-    `}
-    >
+    <nav className={`w-full bg-white shadow-md transition-transform duration-700 ease-in-out z-50`}>
       <div className="container mx-auto flex justify-between items-center py-6 md:py-1">
         {/* Logo + Text */}
-        <div className="flex items-center whitespace-nowrap  px-20 md:px-60 lg:px-0">
+        <div className="flex items-center whitespace-nowrap px-20 md:px-60 lg:px-0">
           <Image
-            src="/lumora_logo.jpeg"
+            src="/lumora_logo.png"
             alt="Lumora Logo"
             width={150}
             height={150}
             className="w-16 sm:w-20 md:w-20 lg:w-28 h-auto"
+            style={{ color: "transparent", animation: "spin 5s linear infinite" }}
           />
           <a href="/">
-            <h1 className="text-base font-sans sm:text-base md:text-base lg:text-xl text-gray-800 ml-[-10px] leading-none  font-bold">
-              Lumora Tours and Travel
+            <h1 className="text-base font-sans sm:text-base md:text-base lg:text-xl text-gray-800 ml-[-10px] leading-none font-bold">
+              {/* Lumora Tours and Travel */}
+              <Image
+                src="/lumora_logo-1.png"
+                alt="Lumora Logo"
+                width={300}
+                height={150}
+                className="w-16 sm:w-34 md:w-34 lg:w-34 h-auto"
+              // style={{ color: "transparent", animation: "spin 5s linear infinite" }}
+              />
             </h1>
           </a>
         </div>
@@ -44,44 +55,40 @@ export default function MainNav() {
           {navItems.map((item) => (
             <div
               key={item}
-              onClick={() => router.push(`${item}`)}
+              onClick={() => router.push(`/${item}`)}
               className="relative cursor-pointer group"
               onMouseEnter={() => setOpen(item)}
               onMouseLeave={() => setOpen(null)}
             >
               <span
                 className="relative flex items-center font-sans gap-1 font-medium text-gray-700 
-  after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 
-  after:bg-green-500 after:transition-all after:duration-700 hover:after:w-full"
+                  after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 
+                  after:bg-green-500 after:transition-all after:duration-700 hover:after:w-full"
               >
                 {item}
               </span>
-
             </div>
           ))}
         </div>
 
         {/* Icons */}
         <div className="flex lg:flex items-center gap-7 justify-around mr-20">
-          <div className="relative hidden lg:block">
-            <ShoppingBag className="text-gray-600" />
-            <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full px-1">
-              {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 rounded-full bg-red-500 px-2 text-xs text-white">
-                  {cartItems.length}
-                </span>
-              )}
-            </span>
+          <div
+            className="hidden md:block relative bg-gradient-to-r from-green-500 to-green-700 
+              rounded-full p-2 text-white cursor-pointer hover:from-green-600 hover:to-green-800 transition"
+            onClick={() => router.push("/add-to-card")}
+          >
+            <ShoppingBag className="text-gray-200" />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
+                {cartItems.length}
+              </span>
+            )}
           </div>
-          <div className="relative hidden lg:block">
-            <Heart className="text-gray-600" />
-            <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full px-1">
-              5
-            </span>
-          </div>
+
           <div
             className="bg-gradient-to-r from-green-500 to-green-700 rounded-full p-2 text-white cursor-pointer hover:from-green-600 hover:to-green-800 transition"
-            onClick={() => router.push("login")}
+            onClick={() => router.push("/login")}
           >
             <User size={24} />
           </div>
@@ -96,7 +103,6 @@ export default function MainNav() {
             <X size={24} />
           ) : (
             <div className="w-10 h-10 bg-icongrey rounded-4xl flex items-center justify-center">
-
               <Menu size={24} />
             </div>
           )}
@@ -108,29 +114,20 @@ export default function MainNav() {
         <div className="md:block lg:hidden bg-white border-t shadow-md">
           <div className="flex flex-col gap-2 p-4">
             {navItems.map((item) => (
-              <div key={item} className="relative">
+              <div key={item} className="relative cursor-pointer">
                 <button
-                  onClick={() => setOpen(open === item ? null : item)}
-                  className="w-full flex justify-between items-center text-gray-700 font-medium py-2"
+                  onClick={() => handleNavClick(item)}
+                  className="
+              w-full text-left text-gray-700 font-medium py-2
+              relative
+              after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0
+              after:bg-green-500 after:transition-all after:duration-500
+              hover:after:w-full
+              hover:text-green-600 transition-colors
+            "
                 >
                   {item}
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform ${open === item ? "rotate-180" : ""
-                      }`}
-                  />
                 </button>
-
-                {/* {open === item && (
-                  <div className="pl-4 text-sm text-gray-600 space-y-1">
-                    <Link href="#" className="block hover:text-green-600">
-                      Option 1
-                    </Link>
-                    <Link href="#" className="block hover:text-green-600">
-                      Option 2
-                    </Link>
-                  </div>
-                )} */}
               </div>
             ))}
           </div>

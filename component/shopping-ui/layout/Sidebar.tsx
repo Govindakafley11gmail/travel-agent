@@ -1,78 +1,97 @@
-// app/SidebarLayout.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import {
-  Flame, HandHeart, Gift, Package, Sparkles, Flower2, ShoppingBag, Menu, X,
+  Flame, HandHeart, Gift, Package, Sparkles, Flower2, ShoppingBag,
+  Menu, X, ChevronLeft, ChevronRight,
 } from "lucide-react";
 
 import PopularProducts from "../product/PopularProducts";
 import Highlights from "../ui/highlight";
 import HeroBanner from "./HeroBanner";
+import MadeInBhutan from "../product/MadeInBhutan";
+import CraftsandDress from "../product/CraftsandDress";
+import LumoraMagazine from "../product/LumoraMagazine";
+import LumoraChoice from "../product/LumoraChoice";
+import OGOP from "../product/OGOP";
+import Snacks from "../product/Snacks";
+import TripCard from "../product/PopularProducts";
 
 const categories = [
-  { name: "Candles", icon: Flame },
-  { name: "Handmade", icon: HandHeart },
-  { name: "Gift Sets", icon: Gift },
-  { name: "Plastic Gifts", icon: Package },
-  { name: "Handy Cream", icon: Sparkles },
-  { name: "Cosmetics", icon: Flower2 },
-  { name: "Silk Accessories", icon: ShoppingBag },
+  { name: "Lumora Merch", icon: Flame },
+  { name: "Made in Bhutan", icon: HandHeart },
+  { name: "OGOP", icon: Gift },
+  { name: "Crafts and Dress", icon: Package },
+  { name: "Snacks", icon: Sparkles },
+  { name: "Lumora Magazine", icon: Flower2 },
+  { name: "Lumora Choice", icon: ShoppingBag },
 ];
 
 export default function SidebarLayout() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("Gift Sets");
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("Lumora Merch");
+  const [isMobile, setIsMobile] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
+  // Detect screen size & scroll
   useEffect(() => {
-    const handleResize = () => {
-      setIsOpen(window.innerWidth >= 768);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    const handleScroll = () => setScrolled(window.scrollY > 0);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleCategoryClick = (name: string) => {
     setSelectedCategory(name);
-    if (window.innerWidth < 768) setIsOpen(false);
+    if (isMobile) setIsOpen(false);
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen relative bg-gray-50 overflow-y-auto">
       {/* Sidebar */}
-      <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-2xl transition-transform duration-300 md:relative md:translate-x-0 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+      <div
+        className={`z-40 h-full w-64 transition-all duration-300 ease-in-out
+          ${isMobile ? "fixed left-0 md:relative" : "sticky top-0"}
+          ${isMobile ? (isOpen ? "translate-x-0" : "-translate-x-full") : "translate-x-0"}
+        `}
+        style={isMobile ? { top: scrolled ? 90 : 128 } : undefined}
       >
-        <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between bg-pink-600 p-5 text-white">
-            <div className="flex items-center gap-3">
-              <Menu className="h-6 w-6" />
-              <h2 className="text-xl font-bold">Categories</h2>
-            </div>
-            <button onClick={() => setIsOpen(false)} className="md:hidden">
-              <X className="h-6 w-6" />
-            </button>
+        <div
+          className={`
+    ml-0  flex w-full h-full flex-col px-2 md:px-0 
+    shadow-xl md:shadow-xl lg:shadow-none rounded-xl md:bg-gray-50 bg-white
+  `}
+        >
+          <div className="flex items-center justify-between p-5 text-black">
+            <h2 className="text-xl font-bold">Categories</h2>
           </div>
 
-          <nav className="flex-1 space-y-2 overflow-y-auto p-4">
+          <nav className="flex-1 space-y-2 overflow-y-auto px-4 py-2">
             {categories.map((cat) => {
               const Icon = cat.icon;
               return (
                 <button
                   key={cat.name}
                   onClick={() => handleCategoryClick(cat.name)}
-                  className={`flex w-full items-center gap-4 rounded-xl px-5 py-4 text-left transition-all ${
-                    selectedCategory === cat.name
-                      ? "bg-pink-100 text-pink-700 font-bold shadow-md"
-                      : "hover:bg-gray-100"
-                  }`}
+                  className={`flex w-full items-center justify-between gap-4 rounded-xl px-5 py-4 text-left transition-all ${selectedCategory === cat.name
+                    ? "border border-green-500 whitespace-nowrap font-bold shadow-md"
+                    : "hover:bg-gray-100"
+                    }`}
                 >
-                  <Icon className="h-5 w-5" />
-                  <span>{cat.name}</span>
+                  <div className="flex items-center gap-4">
+                    <Icon className="h-5 w-5" />
+                    <span>{cat.name}</span>
+                  </div>
+                  <ChevronRight className="h-5 w-5" />
                 </button>
+
               );
             })}
           </nav>
@@ -82,42 +101,35 @@ export default function SidebarLayout() {
             <p className="mb-2">Top 100 Offers</p>
             <p>New Arrivals</p>
           </div>
+
+          {/* Arrow handle only on mobile */}
+          {isMobile && (
+            <button
+              className="absolute top-1/2 -right-5 -translate-y-1/2 w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center shadow-lg hover:bg-green-700 transition"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+            </button>
+          )}
         </div>
-      </aside>
+      </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col">
-        {/* Mobile Menu Button */}
-        {!isOpen && (
-          <button
-            onClick={() => setIsOpen(true)}
-            className="fixed left-4 top-4 z-50 rounded-full bg-pink-600 p-4 text-white shadow-2xl md:hidden"
-          >
-            <Menu className="h-7 w-7" />
-          </button>
-        )}
-
-        {/* Scrollable Content */}
+      <div className="flex flex-1 flex-col ml-2  md:ml-10">
         <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
-          <div className="mx-auto max-w-7xl p-6 pt-20 md:pt-8">
+          <div className="mx-auto max-w-9xl  md:p-6 md:pt-20 pt-2">
             {/* Search Bar */}
-            <div className="mb-10">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full rounded-2xl border border-gray-300 px-6 py-4 text-lg focus:outline-none focus:ring-4 focus:ring-pink-200 transition-shadow"
-              />
-            </div>
+           
 
             {/* Dynamic Content */}
-            <div className="space-y-16">
-              {selectedCategory === "Gift Sets" && <PopularProducts />}
-              {selectedCategory === "Candles" && <HeroBanner />}
-              {selectedCategory === "Handmade" && <Highlights />}
-              {selectedCategory === "Plastic Gifts" && <PopularProducts />}
-              {selectedCategory === "Handy Cream" && <PopularProducts />}
-              {selectedCategory === "Cosmetics" && <PopularProducts />}
-              {selectedCategory === "Silk Accessories" && <PopularProducts />}
+            <div className="space-y-16 ">
+              {selectedCategory === "Lumora Merch" && <TripCard/>}
+              {selectedCategory === "Made in Bhutan" && <MadeInBhutan />}
+              {selectedCategory === "OGOP" && <OGOP />}
+              {selectedCategory === "Crafts and Dress" && <CraftsandDress />}
+              {selectedCategory === "Snacks" && <Snacks />}
+              {selectedCategory === "Lumora Magazine" && <LumoraMagazine />}
+              {selectedCategory === "Lumora Choice" && <LumoraChoice />}
             </div>
           </div>
         </main>

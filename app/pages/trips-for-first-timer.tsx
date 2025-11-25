@@ -22,8 +22,7 @@ export default function TripsForFistTimer() {
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const response = await apiClient.get(getApiEndpoint.getTrips());
-        console.log("hello",response.data.data)
+        const response = await apiClient.get(getApiEndpoint.getTrips(true));
         setPlaces(response.data.data); // assuming API returns { data: [...] }
       } catch (error) {
         console.error("Failed to fetch places:", error);
@@ -42,10 +41,10 @@ export default function TripsForFistTimer() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 lg:gap-8">
             {/* Left: Title */}
             <div className="flex flex-col gap-1">
-              <p className="uppercase tracking-wide text-gray-600 font-semibold font-mono">
+              <p className="uppercase tracking-wide text-gray-600 font-base font-sans">
                 Trips for First-Timers
               </p>
-              <h2 className="text-2xl font-bold text-gray-900 mt-2 font-mono">
+              <h2 className="text-base font-bold text-gray-900 mt-2 font-mono">
                 New to Lumora Tour and Travel?
               </h2>
             </div>
@@ -53,7 +52,7 @@ export default function TripsForFistTimer() {
             {/* Right: Stats */}
             <div className="flex flex-row sm:flex-row items-center gap-2 text-center sm:text-left">
               <h1 className="font-mono text-xl md:text-2xl font-bold">+10k</h1>
-              <p className="font-mono text-sm md:text-xl whitespace-nowrap">
+              <p className="font-sans text-sm md:text-base whitespace-nowrap">
                 Tourists have chosen these tours
               </p>
             </div>

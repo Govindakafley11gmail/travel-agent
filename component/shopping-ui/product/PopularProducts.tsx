@@ -1,197 +1,249 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
+import { Star, Calendar, MapPin, ArrowRight, Mountain, Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useState, useEffect } from "react";
-import { useCart } from "./cartContext";
 import { getApiEndpoint } from "@/app/api";
 import apiClient from "@/app/api/apiClient";
+import { LumoraTravelBanner } from ".";
+import { useCart } from "./cartContext";
+const customDestinations = [
+  {
+    id: 1,
+    title: "Paro Valley, Bhutan",
+    subtitle: "Land of Thunder Dragon",
+    description: "Explore ancient monasteries, trek to Tiger's Nest, and immerse in pristine Himalayan culture.",
+    discount: "20% OFF",
+    image: "🏔️",
+    color: "from-orange-600 via-red-700 to-pink-800"
+  },
+  {
+    id: 2,
+    title: "Thimphu, Bhutan",
+    subtitle: "Capital of Happiness",
+    description: "Experience unique blend of tradition and modernity in the world's only carbon-negative capital city.",
+    discount: "25% OFF",
+    image: "🏛️",
+    color: "from-blue-600 via-indigo-700 to-purple-800"
+  },
+  {
+    id: 3,
+    title: "Punakha Valley, Bhutan",
+    subtitle: "Valley of Bliss",
+    description: "Discover stunning dzongs, serene rivers, and lush subtropical valleys in Bhutan's ancient capital.",
+    discount: "30% OFF",
+    image: "🌸",
+    color: "from-emerald-600 via-teal-700 to-cyan-800"
+  }
+];
 
+// Define your custom deals
+const customDeals = [
+  {
+    title: "Himalayan Explorer",
+    subtitle: "Paro & Thimphu Tour",
+    days: "5 Days / 4 Nights",
+    price: "$899",
+    originalPrice: "$1,199",
+    icon: Mountain,
+    color: "bg-orange-50"
+  },
+  {
+    title: "Cultural Journey",
+    subtitle: "Complete Bhutan Package",
+    days: "8 Days / 7 Nights",
+    price: "$1,499",
+    originalPrice: "$1,999",
+    icon: Plane,
+    color: "bg-blue-50"
+  }
+];
 interface Product {
   id: number;
   product_name: string;
-  final_price: number;
+  category: string;
+  description: string;
+  original_price: string;
+  discount_percent: string;
+  final_price: string;
   images: string[];
-  category: "popular" | "sale" | "best" | "new";
-  rating?: number;
+  createdAt: string;
 }
 
-export default function PopularProducts() {
-  const [activeTab, setActiveTab] = useState("all");
-  const [isLoading, setIsLoading] = useState(true);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+const DEFAULT_IMAGE = "/placeholder-trip.jpg";
 
-  const { cartItems, addToCart } = useCart();
+// Single Product Card Component
+function ProductCard({ product }: { product: Product }) {
+  // Parse prices safely
+  const displayPrice = parseFloat(product.final_price) || 0;
+  const originalPrice = parseFloat(product.original_price) || null;
+  const discountPercent = parseFloat(product.discount_percent) || null;
+    const {addToCart} = useCart(); // <-- access the cart context
+
+  // Get first image from array
+  const imageSrc = product.images && product.images.length > 0 
+    ? product.images[0] 
+    : DEFAULT_IMAGE;
+
+  // Mock data for demo (since your API doesn't have these fields)
+  const location = "Bhutan"; // You can add this to your API
+  const rating = 4; // You can add this to your API
+
+  return (
+    <div className="relative max-w-sm rounded-2xl overflow-hidden bg-white shadow-lg dark:bg-gray-900">
+      {/* Image */}
+      <div className="relative">
+        <Image
+          src={imageSrc}
+          alt={product.product_name || "Product image"}
+          width={400}
+          height={300}
+          className="w-full h-64 object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = DEFAULT_IMAGE;
+          }}
+        />
+
+        {/* Discount badge */}
+        {discountPercent && discountPercent > 0 && (
+          <span className="absolute left-3 bottom-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+            {discountPercent}% OFF
+          </span>
+        )}
+
+        {/* Favorite icon */}
+        <button 
+          className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors"
+          aria-label="Add to favorites"
+        >
+          <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 
+                     4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
+                     14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 
+                     6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Content */}
+      <div className="p-4 space-y-2">
+        <p className="text-xs font-medium text-green-500 uppercase">{product.category}</p>
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{product.product_name}</h3>
+
+        {/* Duration & Location */}
+        <div className="flex items-center gap-4 text-gray-500 dark:text-gray-400 text-sm mt-1">
+          <div className="flex items-center gap-1">
+            <Calendar className="w-4 h-4" /> 
+            <span className="line-clamp-1">{product.description}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <MapPin className="w-4 h-4" /> 
+            <span>{location}</span>
+          </div>
+        </div>
+
+        {/* Star rating */}
+      
+
+        {/* Price */}
+        <div className="flex items-center justify-between mt-2">
+          <div>
+            <p className="text-lg font-bold text-gray-900 dark:text-white">
+              ${displayPrice.toFixed(2)}
+            </p>
+            {discountPercent && originalPrice && originalPrice > displayPrice && (
+              <p className="text-sm text-gray-400 line-through">
+                ${originalPrice.toFixed(2)}
+              </p>
+            )}
+          </div>
+
+          <Button className="bg-green-500 hover:bg-green-600 rounded-full p-3"onClick={() => addToCart({
+                       ...product,
+                       quantity: 1,
+                       stock_quantity: 10,
+                     })}>
+           Add To Card
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main Component - Displays all products
+export default function PopularProducts() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-          const response = await apiClient.get(getApiEndpoint.getproduct());
-         setProducts(response.data.data);
-     
-      } catch (error) {
+        setLoading(true);
+        setError(null);
+        const response = await apiClient.get(getApiEndpoint.getproduct("lumora-merch"));
+        
+        // Ensure we have an array
+        const productsData = Array.isArray(response.data.data) 
+          ? response.data.data 
+          : [response.data.data];
+        
+        setProducts(productsData);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Failed to load products");
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     }
+
     fetchProducts();
   }, []);
- 
 
-  const handleAddToCart = (product: Product) => {
-    addToCart(product);
-    setSelectedProduct(null); // close modal
-  };
-
-  const filteredProducts = products.filter((product) => {
-    if (activeTab === "all") return true;
-    if (activeTab === "popular") return product.category === "popular";
-    if (activeTab === "on-sale") return product.category === "sale";
-    if (activeTab === "best-rated") return product.category === "best";
-    return true;
-  });
-
-  return (
-    <section className="container mx-auto px-4 py-16">
-      {/* Navbar with Cart Count */}
-      <div className="space-y-12">
-        {/* Header Tabs */}
-        <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
-          <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Popular <span className="text-pink-500">Products</span>
-          </h2>
-
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full sm:w-auto">
-            <TabsList className="grid w-full grid-cols-2 bg-transparent p-0 sm:grid-cols-4 sm:w-auto">
-              <TabsTrigger value="all" className="border-b-2 border-transparent pb-3 text-sm font-medium data-[state=active]:border-pink-500 data-[state=active]:text-pink-500">
-                All Products
-              </TabsTrigger>
-              <TabsTrigger value="popular" className="border-b-2 border-transparent pb-3 text-sm font-medium text-gray-600 data-[state=active]:border-pink-500 data-[state=active]:text-pink-500">
-                Popular
-              </TabsTrigger>
-              <TabsTrigger value="on-sale" className="border-b-2 border-transparent pb-3 text-sm font-medium text-gray-600 data-[state=active]:border-pink-500 data-[state=active]:text-pink-500">
-                On Sale
-              </TabsTrigger>
-              <TabsTrigger value="best-rated" className="border-b-2 border-transparent pb-3 text-sm font-medium text-gray-600 data-[state=active]:border-pink-500 data-[state=active]:text-pink-500">
-                Best Rated
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-
-        {/* Product Grid */}
-        {isLoading ? (
-          <ProductGridSkeleton />
-        ) : filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                setSelectedProduct={setSelectedProduct}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="py-20 text-center">
-            <p className="text-lg text-gray-500 dark:text-gray-400">
-              No products found in this category.
-            </p>
-          </div>
-        )}
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <p className="text-center text-gray-500">Loading products...</p>
       </div>
+    );
+  }
 
-      {/* Popup Modal */}
-      {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="rounded-xl bg-white p-6 max-w-sm w-full relative">
-            <button
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-900"
-              onClick={() => setSelectedProduct(null)}
-            >
-              ✕
-            </button>
-            <h3 className="text-xl font-bold">{selectedProduct.product_name}</h3>
-            <Image
-              src={selectedProduct.images[0]}
-              alt={selectedProduct.product_name}
-              width={300}
-              height={300}
-              className="my-4 rounded"
-            />
-            <p className="text-lg font-semibold text-gray-900">${selectedProduct.final_price}</p>
-            <Button className="mt-4 w-full" onClick={() => handleAddToCart(selectedProduct)}>
-              Confirm Add to Cart
-            </Button>
-          </div>
-        </div>
-      )}
-    </section>
-  );
-}
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <p className="text-center text-red-500">{error}</p>
+      </div>
+    );
+  }
 
-// Product Card Component
-function ProductCard({
-  product,
-  setSelectedProduct,
-}: {
-  product: Product;
-  setSelectedProduct: (product: Product) => void;
-}) {
-  const isOnSale = product.category === "sale";
-  const isNew = product.category === "new";
+  if (!products || products.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <p className="text-center text-gray-500">No products found.</p>
+      </div>
+    );
+  }
 
   return (
-    <Card className="group relative overflow-hidden rounded-2xl border-0 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl dark:bg-gray-900">
-      {isOnSale && <span className="absolute left-3 top-3 z-10 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">SALE</span>}
-      {isNew && <span className="absolute left-3 top-3 z-10 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white">NEW</span>}
-
-      <CardContent className="p-0">
-        <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-800">
-          <Image
-            src={product.images[0]}
-            alt={product.product_name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-black/0 transition-all group-hover:bg-black/10" />
-        </div>
-
-        <div className="space-y-2 p-4 text-center">
-          <h3 className="line-clamp-2 text-sm font-medium text-gray-700 dark:text-gray-300">{product.product_name}</h3>
-          <div className="flex items-center justify-center gap-2">
-            {isOnSale && <span className="text-sm text-gray-500 line-through dark:text-gray-500">${product.final_price + 20}</span>}
-            <p className="text-lg font-bold text-gray-900 dark:text-white">${product.final_price}</p>
-          </div>
-          <Button className="w-full mt-2" onClick={() => setSelectedProduct(product)}>
-            Add to Cart
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-// Skeleton Loader
-function ProductGridSkeleton() {
-  return (
-    <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {[...Array(10)].map((_, i) => (
-        <Card key={i} className="overflow-hidden rounded-2xl">
-          <CardContent className="p-0">
-            <Skeleton className="aspect-square w-full rounded-none" />
-            <div className="space-y-3 p-4">
-              <Skeleton className="h-4 w-4/5 mx-auto" />
-              <Skeleton className="h-6 w-16 mx-auto" />
-              <Skeleton className="h-8 w-full mx-auto mt-2" />
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+    <div className="container mx-auto px-4 py-0">
+<LumoraTravelBanner 
+  destinations={customDestinations}
+  quickDeals={customDeals}
+  companyName="Lumora Tour & Travel"
+  tagline="Discover your next adventure with exclusive deals"
+  autoSlideInterval={5000}
+/>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        Popular Products
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   );
 }

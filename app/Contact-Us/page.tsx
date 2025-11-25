@@ -16,6 +16,7 @@ import TripsForFistTimer from "../pages/trips-for-first-timer";
 import TeamSection from "@/component/teams-picture-card/team-picture-card";
 import WhyChooseUs from "@/component/why-us/why-us";
 import TravelContactUS from "@/component/contactus";
+import ToursSection from "@/component/how-it-works/how-it-works";
 
 export default function AboutMain() {
   const bioData = [
@@ -93,7 +94,7 @@ export default function AboutMain() {
 
       
       <div>
-        <WhyChooseUs/>
+      <ToursSection />
         <Footer />
       </div>
     </main>

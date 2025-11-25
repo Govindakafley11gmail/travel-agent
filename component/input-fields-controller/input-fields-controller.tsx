@@ -26,6 +26,7 @@ export interface FormikControllerProps {
   inputWidthIconStyle?: string;
   checkstyle?: string;
   checkmainstyle?: string;
+  labelStyle?: string;
   id?: string;
   setFieldValue?: (key: string, value: unknown | unknown[]) => void;
 }
@@ -37,6 +38,7 @@ function FormikController({
   fieldstyle,
   inputWidthIconStyle,
   fieldConfig,
+  labelStyle,
 }: FormikControllerProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -44,7 +46,7 @@ function FormikController({
     case "input":
       return (
         <div className={className}>
-          <label htmlFor={name}>{label}</label>
+          <label htmlFor={name} className={labelStyle}>{label}</label>
           <Field
             id={name}
             name={name}
@@ -53,7 +55,11 @@ function FormikController({
             className={fieldstyle}
             autoComplete="off"
           />
-          <ErrorMessage name={name} className="text-red-400" />
+            <ErrorMessage
+            name={name}
+            component="div"
+            className="text-sm text-red-600 mt-2"
+          />
         </div>
       );
 
@@ -67,7 +73,7 @@ function FormikController({
 
       return (
         <div className={className}>
-          <label htmlFor={name}>{label}</label>
+          <label htmlFor={name}  className={labelStyle}>{label}</label>
           <div className="relative mt-1">
             <Icon
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"

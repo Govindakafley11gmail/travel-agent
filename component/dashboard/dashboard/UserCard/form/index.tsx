@@ -20,9 +20,10 @@ import {
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import apiClient from "@/component/api/apiClient";
-import { getApiEndpoint } from "@/component/api";
+
 import { showToast } from "nextjs-toast-notify"; // ONLY THIS
+import { getApiEndpoint } from "@/app/api";
+import apiClient from "@/app/api/apiClient";
 
 interface UserFormDrawerProps {
   open: boolean;
@@ -94,7 +95,6 @@ export function UserFormDrawer({ open, onOpenChange, editingUser }: UserFormDraw
         resetForm();
         onOpenChange(false);
       } catch (err: any) {
-        console.log(err.response.data.error)
         const errorMessage =
           err?.response?.data?.error
           err || 

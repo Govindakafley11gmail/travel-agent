@@ -52,28 +52,7 @@ export default function AboutUs() {
               />
               <div className="absolute inset-0 bg-gradient-to-t " />
 
-              {/* Floating Badge */}
-              <motion.div
-                className="absolute top-6 right-6"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <Card className="bg-white/90 backdrop-blur-lg p-4 shadow-lg rounded-xl border border-gray-200">
-                  <div className="text-center">
-                    <p className="text-xs font-semibold text-gray-600 mb-1">2024</p>
-                    <p className="text-sm font-bold text-gray-900 mb-2">
-                      Travelers'
-                      <br /> Choice
-                    </p>
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-12 h-12 bg-lime-500 rounded-full flex items-center justify-center shadow-md">
-                        <Award className="h-6 w-6 text-white" />
-                      </div>
-                    </div>
-                    <Badge className="bg-teal-700 text-white text-xs px-3 py-1">Tripadvisor</Badge>
-                  </div>
-                </Card>
-              </motion.div>
+          
             </motion.div>
           </motion.div>
 
@@ -86,7 +65,7 @@ export default function AboutUs() {
             {/* Header */}
             <div>
               <motion.p
-                className="text-lime-600 font-bold tracking-widest uppercase text-3xl mb-3 font-mono"
+                className="text-lime-600 font-bold uppercase text-sm mb-3 font-sans"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
@@ -94,7 +73,7 @@ export default function AboutUs() {
                 About Us
               </motion.p>
               <motion.h4
-                className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight  font-lato"
+                className="text-xl md:text-xl font-extrabold text-gray-900 leading-tight  font-lato"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}

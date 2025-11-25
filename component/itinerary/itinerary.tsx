@@ -18,19 +18,19 @@ export default function ItineraryDay({
   rightImage,
 }: DayProps) {
   return (
-    <div className="space-y-6 md:space-y-8 px-4 md:px-8">
+    <div className="space-y-0 md:space-y-1 px-4 md:px-8">
       {/* Header */}
-      <header className="space-y-2 font-sans text-lime-500">
-        <p className="text-sm font-medium">{dayNumber}</p>
+      <header className="font-medium text-green-600">
+        <p className="text-xl font-medium">{dayNumber}</p>
         <h1 className="text-xl md:text-xl font-mono text-gray-900">{title}</h1>
       </header>
 
       {/* Bullet Points */}
       {Array.isArray(content) ? (
-        <ul className="space-y-3 md:space-y-4 text-gray-700 pl-4 md:pl-8">
+        <ul className="space-y-0 md:space-y-0 text-gray-700 pl-4 md:pl-8">
           {content.map((point, idx) => (
             <li key={idx} className="relative pl-6">
-              <span className="absolute left-0 top-2 w-2 h-2 bg-lime-500 rounded-full"></span>
+              <span className="absolute left-0  w-2  bg-lime-500 rounded-full"></span>
               <span
                 dangerouslySetInnerHTML={{ __html: point }}
                 className="font-sans text-base"

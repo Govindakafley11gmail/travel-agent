@@ -57,7 +57,6 @@ export default function Login() {
         getApiEndpoint.login(),
         values
       );
-      console.log(response)
 
       // Success toast
       showToast.success(
@@ -69,7 +68,6 @@ export default function Login() {
         }
       );
       const token = Cookies.get("accessToken");
-      console.log(token)
       if (!token) {
         router.push("/"); // no token → redirect
         return;
@@ -88,7 +86,7 @@ export default function Login() {
           router.push("/register"); // client → register
           return;
         }
-        if(userRole.toLowerCase() === "admin" || userRole.toLowerCase() === "user"|| userRole.toLowerCase() === "manager" || userRole.toLowerCase() === "accounts" ){
+        if(userRole.toLowerCase() === "admin" || userRole.toLowerCase() === "user" || userRole.toLowerCase() === "manager" || userRole.toLowerCase() === "accounts" ){
             router.push("/dashboard"); // client → register
           return;
         }
@@ -106,7 +104,7 @@ export default function Login() {
       // Handle errors
 
       showToast.error(
-        error?.response?.data?.message || error?.message || "Failed to Login",
+        error?.response?.data?.error || error?.error || "Failed to Login",
         {
           duration: 5000,
           position: "top-right",
@@ -118,8 +116,8 @@ export default function Login() {
 
   return (
     <div>
-      <div className="h-full">
-        <div className="h-full flex justify-center mt-10">
+      <div className="h-full mb-40">
+        <div className="h-full flex justify-center mt-20">
           <Card className="rounded-sm w-[360px] h-full">
             <CardHeader>
               <CardTitle className="font-bold text-xl font-sans">
@@ -208,9 +206,8 @@ export default function Login() {
           </Card>
         </div>
       </div>
-      <div className="mt-10">
-        <Footer />
-      </div>
+                <Footer />
+
     </div>
   );
 }

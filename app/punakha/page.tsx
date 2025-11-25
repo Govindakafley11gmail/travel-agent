@@ -20,6 +20,7 @@ import {
 import { Check, MapPin, X } from "lucide-react";
 import TripsForFistTimer from "../pages/trips-for-first-timer";
 import Footer from "@/component/footer";
+import PaymentCard from "@/component/payments";
 
 export default function CultureMain() {
  const itinerary = [
@@ -267,6 +268,8 @@ export default function CultureMain() {
           video={false}
         />
       </div>
+         <div>     <PaymentCard /></div>
+      
       <div>
         <TripsForFistTimer />
       </div>

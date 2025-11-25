@@ -24,7 +24,6 @@ export default function ContactUsForm() {
         initialValues={{ name: "", email: "", subject: "", message: "" }}
         validationSchema={ContactSchema}
         onSubmit={(values, { resetForm }) => {
-          console.log("Form Submitted:", values);
             const res =  apiClient.post<Response>(getApiEndpoint.createContact(), values);
                   showToast.success("We Will Get back to You!", {
                     duration: 4000,
@@ -64,7 +63,7 @@ export default function ContactUsForm() {
               <ErrorMessage name="message" component="div" className="text-red-500 text-sm mt-1" />
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-green-600 hover:bg-green-700  border shadow-md hover:shadow-lg transition ">
               Send Message
             </Button>
           </Form>

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
+import { CloudCog, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import {
@@ -21,6 +21,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { BookingForm } from "../booking-alert/booking-alert";
+import { useRouter } from "next/navigation";
+
 
 interface HeroVideoSectionProps {
   title: string;
@@ -41,6 +43,8 @@ export default function HeroVideoSection({
   videoUrl = "https://www.youtube.com/embed/Scxs7L0vhZ4?autoplay=1",
   backgroundImage,
 }: HeroVideoSectionProps) {
+    const router = useRouter();
+  
   const [openVideo, setOpenVideo] = useState(false);
   const [openBooking, setOpenBooking] = useState(false);
 
@@ -128,53 +132,15 @@ export default function HeroVideoSection({
                   <DialogTitle>Booking Form</DialogTitle>
                 </VisuallyHidden>
 
-                <Card className="border-none shadow-none">
-                  <CardHeader>
-                    <h2 className="text-2xl font-semibold text-center">
-                      Book Your Event
-                    </h2>
-                    <p className="text-sm text-muted-foreground text-center">
-                      Fill out your booking details below.
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="name">Full Name</Label>
-                      <Input id="name" placeholder="John Doe" />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="you@example.com"
-                      />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="date">Date</Label>
-                      <Input id="date" type="date" />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="time">Time</Label>
-                      <Input id="time" type="time" />
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-end">
-                    <Button
-                      className="w-full bg-green-600 hover:bg-green-700"
-                      onClick={() => setOpenBooking(false)}
-                    >
-                      Confirm Booking
-                    </Button>
-                  </CardFooter>
-                </Card>
+                <BookingForm onClose={() => setOpenBooking(false)} />
+
               </DialogContent>
             </Dialog>
           )}
 
           {/* Contact Us */}
           {contactUs && (
-            <Button className="bg-white text-green-600 hover:bg-gray-100">
+            <Button className="bg-white text-green-600 hover:bg-gray-100" onClick={()=>( router.push("/Contact-Us"))} >
               Contact Us
             </Button>
           )}

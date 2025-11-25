@@ -76,6 +76,7 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
     durationDays: Yup.number().min(1).required("Required"),
     status: Yup.string().required("Status is required"),
     category: Yup.string().required("Category is required"),
+    isFirsttime: Yup.boolean().required("isFirst time is required"),
   });
 
   const formik = useFormik({
@@ -92,6 +93,7 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
       ages: editingTrip?.ages || "",
       status: editingTrip?.status || "Active",
       isTrending: editingTrip?.isTrending ?? false,
+      isFirsttime: editingTrip?.isFirsttime ?? false,
       category: editingTrip?.category || "Adventure",
     },
     validationSchema,
@@ -249,6 +251,13 @@ export function TripsDrawer({ open, onOpenChange, editingTrip }: TripDrawerProps
               onCheckedChange={(c) => formik.setFieldValue("isTrending", c)}
               disabled={formik.isSubmitting}
             />
+              <Label htmlFor="isFirsttime">First Time Trip</Label>
+              <Switch
+                id="isFirsttime"
+                checked={formik.values.isFirsttime}
+                onCheckedChange={(c) => formik.setFieldValue("isFirsttime", c)}
+                disabled={formik.isSubmitting}
+              />
           </div>
 
           {/* Buttons */}

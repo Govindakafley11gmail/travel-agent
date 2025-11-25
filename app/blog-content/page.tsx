@@ -1,170 +1,234 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import apiClient from "@/app/api/apiClient";
+import { getApiEndpoint } from "@/app/api";
 import Image from "next/image";
+import { Calendar } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
 
-export default function BlogPage() {
+interface BlogItem {
+  id: number;
+  blog_id: number;
+  title: string;
+  link: string;
+  content: string;
+  images: string[];
+  subcontents?: string[];
+  createdAt: string;
+}
+
+interface CategoryResponse {
+  id: number;
+  category: string;
+  items: BlogItem[];
+}
+
+export default function BlogsPage() {
+  const [blogs, setBlogs] = useState<BlogItem[]>([]);
+  const [subcontent, setSubcontent] = useState<CategoryResponse[]>([]);
+  const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const idNumber = Number(id);
+  const router = useRouter();
+
+  const rotateData = (data: CategoryResponse[]) => {
+    return data.flatMap((cat) =>
+      cat.items.map((item) => ({
+        ...item,
+        category: cat.category,
+      }))
+    );
+  };
+
+  const fetchBlogs = async (id: number) => {
+    try {
+      const res = await apiClient.get(getApiEndpoint.getBlogById(idNumber));
+      const response = await apiClient.get(getApiEndpoint.getBlogs("Content"));
+      setSubcontent(response.data.data);
+      const rotated = rotateData(res.data.data);
+      setBlogs(rotated);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (idNumber) {
+      fetchBlogs(Number(idNumber));
+    }
+  }, [idNumber]);
+
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
-      {/* Main Blog Content */}
-      <div className="md:col-span-2">
-        <h1 className="text-3xl font-semibold leading-snug mb-4">
-          How to create an Art that shows the beauty in everyone’s ideas of flaws.
-        </h1>
+    <div className="px-6 py-10 justify-center gap-x-20 mx-auto flex flex-col lg:flex-row xl:flex-row">
+      {/* Main Content */}
+      <div className="flex-1 max-w-7xl">
+        <h1 className="text-3xl font-bold mb-6">Blogs</h1>
 
-        <p className="text-gray-600 mb-6">
-          Fusce faucibus ante vitae justo efficitur elementum. Donec ipsum faucibus arcu
-          elementum, luctus justo ac, purus semper. Donec ipsum faucibus arcu elementum,
-          luctus justo ac, purus semper. Donec ipsum faucibus arcu elementum...
-        </p>
+        <div className="grid grid-cols-1 gap-6">
+          {blogs.map((blog) => (
+            <div key={blog.id}>
+              <h2 className="text-xl font-semibold mt-4">{blog.title}</h2>
 
-        <blockquote className="border-l-4 border-blue-500 pl-4 italic my-6 text-gray-700">
-          For dull and lifeless skin, mix apple juice with honey. Apply a thin layer to your
-          face, and leave it for 5 minutes.
-          <br />
-          <span className="not-italic text-gray-500">— Kelvin Edison</span>
-        </blockquote>
+              {/* Images */}
+              <div className="mt-4">
+                {blog.images.length === 1 && (
+                  <Image
+                    src={blog.images[0]}
+                    height={200}
+                    width={400}
+                    alt="Blog Image"
+                    className="rounded-lg w-full object-cover"
+                  />
+                )}
+                {blog.images.length === 2 && (
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    {blog.images.map((image, i) => (
+                      <Image
+                        key={i}
+                        src={image}
+                        height={200}
+                        width={400}
+                        alt={`Blog Image ${i + 1}`}
+                        className="rounded-lg w-full sm:w-1/2 object-cover"
+                      />
+                    ))}
+                  </div>
+                )}
+                {blog.images.length >= 3 && (
+  <div className="grid grid-cols-2 grid-rows-2 gap-3 h-64 sm:h-80 md:h-96 lg:h-[28rem]">
+    
+    {/* LEFT — Big Image */}
+    <div className="row-span-2 rounded-xl overflow-hidden relative group shadow-lg hover:shadow-2xl transition-all duration-300">
+      <Image
+        src={blog.images[0]}
+        alt="Blog Image 1"
+        fill
+        className="object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    </div>
 
-        <p className="text-gray-600 mb-6">
-          Lorem ipsum dolor sit amet consectetur adipiscing elit. Praesent consequat
-          condimentum augue, at varius lorem facilisis eget. Pellentesque habitant morbi
-          tristique senectus et netus et malesuada fames ac turpis egestas.
-        </p>
+    {/* TOP-RIGHT */}
+    <div className="rounded-xl overflow-hidden relative group shadow-lg hover:shadow-2xl transition-all duration-300">
+      <Image
+        src={blog.images[1]}
+        alt="Blog Image 2"
+        fill
+        className="object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    </div>
 
-        <div className="my-6 flex flex-col sm:flex-row gap-4">
-          <Image
-            src="/images/blog1.jpg"
-            alt="Sample Image"
-            width={250}
-            height={150}
-            className="rounded-lg object-cover"
-          />
-          <p className="text-gray-600 text-sm leading-relaxed">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Pellentesque tempor,
-            metus vel elementum ullamcorper, lectus lacus ultricies lorem, ac viverra justo
-            magna nec magna. Quisque blandit felis nec leo cursus, nec fringilla justo
-            commodo.
-          </p>
+    {/* BOTTOM-RIGHT */}
+    <div className="rounded-xl overflow-hidden relative group shadow-lg hover:shadow-2xl transition-all duration-300">
+      <Image
+        src={blog.images[2]}
+        alt="Blog Image 3"
+        fill
+        className="object-cover group-hover:scale-105 transition-transform duration-500"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      {/* Optional: Show "+X more" badge if there are more than 3 images */}
+      {blog.images.length > 3 && (
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="text-white text-2xl font-semibold">
+            +{blog.images.length - 3} more
+          </span>
         </div>
+      )}
+    </div>
+    
+  </div>
+)}
 
-        <h2 className="text-xl font-semibold mt-8 mb-4">
-          Fusce faucibus ante vitae justo efficitur
-        </h2>
-        <ol className="list-decimal list-inside text-gray-600 space-y-2 mb-8">
-          <li>Quisque sagittis lacus eu lorem sodales</li>
-          <li>Donec ipsum faucibus arcu elementum</li>
-          <li>Sed at porttitor diam</li>
-        </ol>
+              </div>
 
-        <h2 className="text-xl font-semibold mt-8 mb-4">
-          Quisque sagittis lacus eu lorem sodales
-        </h2>
-        <p className="text-gray-600 mb-6">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium, turpis at
-          condimentum facilisis, justo purus maximus eros, nec porttitor lacus nisl sit amet
-          mauris. Fusce faucibus arcu elementum luctus justo ac purus semper.
-        </p>
+              {/* Content */}
+              <p className="mt-2">{blog.content}</p>
 
-        {/* Tags and Social Share */}
-        <div className="border-t border-gray-200 pt-6 flex flex-wrap gap-3 justify-between items-center text-sm">
-          <div className="flex gap-2">
-            <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">Fashion</span>
-            <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full">Beauty</span>
-          </div>
-          <div className="flex gap-4 text-gray-500">
-            <span>Share:</span>
-            <a href="#" className="hover:text-blue-500">Facebook</a>
-            <a href="#" className="hover:text-blue-500">Twitter</a>
-            <a href="#" className="hover:text-blue-500">LinkedIn</a>
-          </div>
-        </div>
+              {/* Subcontents */}
+              {blog.subcontents && (
+                <div className="mt-3">
+                  {blog.subcontents.map((sub, idx) => (
+                    <p key={idx} className="text-sm">
+                      {idx + 1}. {sub}
+                    </p>
+                  ))}
+                </div>
+              )}
 
-        {/* Navigation */}
-        <div className="flex justify-between mt-10 text-blue-500 text-sm font-medium">
-          <a href="#">← Previous Post</a>
-          <a href="#">Next Post →</a>
+              {/* Link */}
+              {blog.link && (
+                <a
+                  href={blog.link}
+                  className="text-blue-600 underline mt-2 inline-block"
+                >
+                  {blog.link}
+                </a>
+              )}
+
+              {/* Date */}
+              <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
+                <Calendar className="w-4 h-4" />
+                <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Sidebar */}
-      <div className="md:col-span-1 space-y-10">
-        {/* About Author */}
-        <div className="p-6 border rounded-lg text-center">
-          <Image
-            src="/images/author.jpg"
-            alt="Author"
-            width={80}
-            height={80}
-            className="mx-auto rounded-full mb-3"
-          />
-          <h3 className="font-semibold text-lg">Isabella</h3>
-          <p className="text-gray-500 text-sm">
-            I am a Fashion designer, Makeup artist, and Blog writer.
-          </p>
-        </div>
+      {/* Sidebar Subcontent */}
+      <div className="w-full lg:w-80 flex flex-col gap-4 mt-30">
+        {subcontent.map((category, index) => (
+          <Card
+            key={index}
+            className="shadow-xl rounded-xl overflow-hidden border border-gray-200 cursor-pointer p-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`/blog-content?id=${category.id}`);
+              fetchBlogs(category.id);
+            }}
+          >
+            <Image
+              src={category.items[0].images[0]}
+              height={200}
+              width={400}
+              alt={`title`}
+              className="rounded-t-xl w-full object-cover"
+            />
+            <CardContent className="p-3">
+              <h3 className="font-semibold cursor-pointer hover:text-lime-600 hover:underline">
+                {category.items[0].title}
+              </h3>
+              <p className="text-sm">
+                {category.items[0].content.length > 200
+                  ? `${category.items[0].content.slice(0, 200)}...`
+                  : category.items[0].content}
 
-        {/* Categories */}
-        <div>
-          <h3 className="font-semibold mb-4">Categories</h3>
-          <ul className="space-y-2 text-gray-600">
-            <li className="hover:text-blue-500 cursor-pointer">Beauty</li>
-            <li className="hover:text-blue-500 cursor-pointer">Fashion and Style</li>
-            <li className="hover:text-blue-500 cursor-pointer">Food and Wellness</li>
-            <li className="hover:text-blue-500 cursor-pointer">Lifestyle</li>
-          </ul>
-        </div>
-
-        {/* Recent Posts */}
-        <div>
-          <h3 className="font-semibold mb-4">Recent Posts</h3>
-          <div className="space-y-4">
-            {[
-              {
-                title: "4 Ways to feel Great during the Cold Weather",
-                date: "June 18, 2020",
-                img: "/images/post1.jpg",
-              },
-              {
-                title: "How to Make the Best Homemade Shopkan Veg Bread",
-                date: "June 15, 2020",
-                img: "/images/post2.jpg",
-              },
-              {
-                title: "How to get Beautiful coloring Highlights this week",
-                date: "June 12, 2020",
-                img: "/images/post3.jpg",
-              },
-            ].map((post, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <Image
-                  src={post.img}
-                  alt={post.title}
-                  width={50}
-                  height={50}
-                  className="rounded-md object-cover"
-                />
-                <div>
-                  <h4 className="text-sm font-medium leading-tight hover:text-blue-500 cursor-pointer">
-                    {post.title}
-                  </h4>
-                  <p className="text-xs text-gray-500">{post.date}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Twitter Feed */}
-        <div>
-          <h3 className="font-semibold mb-4">Twitter feed</h3>
-          <p className="text-sm text-gray-600 mb-2">
-            Creating an Art that shows the beauty in everyone’s ideas of flaws.
-            <span className="text-blue-500"> #Beauty #Art #Creativity</span>
-          </p>
-          <p className="text-sm text-gray-600">
-            See our lifestyle and beauty posts now.{" "}
-            <span className="text-blue-500">#Lifestyle #Beauty</span>
-          </p>
-        </div>
+                {category.items[0].content.length > 200 && (
+                  <span
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(`/blog-content?id=${category.id}`);
+                      fetchBlogs(category.id);
+                    }}
+                    className="text-green-600 font-medium cursor-pointer ml-2 hover:underline"
+                  >
+                    Read more
+                  </span>
+                )}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );

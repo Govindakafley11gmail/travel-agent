@@ -25,8 +25,18 @@ import {
 } from "lucide-react";
 import { UserFormDrawer } from "./form";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { getApiEndpoint } from "@/app/api";
 import apiClient from "@/app/api/apiClient";
+import { usePermissions } from "../permission";
+
 
 interface UserType {
   id: number;
@@ -43,51 +53,49 @@ export default function UserCard() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<UserType | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Delete confirmation
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+
   const pageSize = 10;
 
-  // Detect dark mode on mount + listen for changes
+  // Use the shared permissions hook
+  const { hasPermission, isLoading: permissionsLoading } = usePermissions();
+
+  // Dark mode detection
   useEffect(() => {
     const checkDarkMode = () => {
       setIsDarkMode(document.documentElement.classList.contains("dark"));
     };
-
-    checkDarkMode(); // Initial check
-
-    // Listen for class changes (theme toggle)
+    checkDarkMode();
     const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
   }, []);
 
+  // Fetch users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await apiClient.get<UserType[]>(getApiEndpoint.getUsers());
-        const initialUsers = response?.data;
-        if (Array.isArray(initialUsers)) {
-          setUsers(initialUsers);
-        } else if (initialUsers && Array.isArray((initialUsers as any).data)) {
-          setUsers((initialUsers as any).data);
-        } else {
-          setUsers([]);
-        }
+        const response = await apiClient.get(getApiEndpoint.getUsers());
+        let data = response?.data;
+
+      
+
+        setUsers(data.data || []);
       } catch (error) {
         console.error("Error fetching users:", error);
+        setUsers([]);
       }
     };
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase()) ||
-      user.role.toLowerCase().includes(search.toLowerCase()) ||
-      user.status.toLowerCase().includes(search.toLowerCase())
+  const filteredUsers = users.filter((user) =>
+    [user.name, user.email, user.role, user.status].some((field) =>
+      field.toLowerCase().includes(search.toLowerCase())
+    )
   );
 
   const totalPages = Math.ceil(filteredUsers.length / pageSize);
@@ -96,9 +104,18 @@ export default function UserCard() {
     currentPage * pageSize
   );
 
-  const handleDelete = (id: number) => {
-    apiClient.delete(getApiEndpoint.deleteUser(id));
-    setUsers(users.filter((user) => user.id !== id));
+  const confirmDelete = async () => {
+    if (!selectedUserId) return;
+
+    try {
+      await apiClient.delete(getApiEndpoint.deleteUser(selectedUserId));
+      setUsers((prev) => prev.filter((u) => u.id !== selectedUserId));
+    } catch (error) {
+      console.error("Delete error:", error);
+    } finally {
+      setOpenDeleteDialog(false);
+      setSelectedUserId(null);
+    }
   };
 
   const handleEdit = (user: UserType) => {
@@ -106,35 +123,42 @@ export default function UserCard() {
     setIsDrawerOpen(true);
   };
 
+  const openCreateDrawer = () => {
+    setEditingUser(null);
+    setIsDrawerOpen(true);
+  };
+
+  // Show loading while permissions load
+  if (permissionsLoading) {
+    return (
+      <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+        Loading permissions...
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-auto">
-      {/* GRAYSCALE IN DARK MODE */}
-      <div
-        className={`transition-filter duration-300 ${
-          isDarkMode ? "filter grayscale" : ""
-        }`}
-      >
+      <div className={`transition-filter duration-300 ${isDarkMode ? "filter grayscale" : ""}`}>
         {/* Header */}
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <Input
-            placeholder="Search users..."
+            placeholder="Search users by name, email, role or status..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
               setCurrentPage(1);
             }}
-            className="max-w-sm dark:bg-gray-800 dark:text-white dark:border-gray-700"
+            className="max-w-md flex-1 dark:bg-gray-800 dark:text-white dark:border-gray-700"
           />
-          <Button
-            onClick={() => {
-              setEditingUser(null);
-              setIsDrawerOpen(true);
-            }}
-            className="dark:bg-gray-700 dark:hover:bg-gray-600"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add User
-          </Button>
+
+          {/* Create Button - Only if permitted */}
+          {hasPermission("user:create") && (
+            <Button onClick={openCreateDrawer} className="dark:bg-gray-700 dark:hover:bg-gray-600">
+              <Plus className="mr-2 h-4 w-4" />
+              Add User
+            </Button>
+          )}
         </div>
 
         {/* Table */}
@@ -172,45 +196,56 @@ export default function UserCard() {
                   className="border-b dark:border-gray-700"
                 >
                   <TableCell className="dark:text-gray-200">{user.id}</TableCell>
-                  <TableCell className="dark:text-gray-200">{user.name}</TableCell>
+                  <TableCell className="dark:text-gray-200 font-medium">{user.name}</TableCell>
                   <TableCell className="dark:text-gray-200">{user.email}</TableCell>
-                  <TableCell className="dark:text-gray-200">{user.role}</TableCell>
-
-                  {/* Status */}
-                  <TableCell className="flex items-center gap-2 dark:text-gray-200">
-                    <motion.span
-                      className={`w-3 h-3 rounded-full ${
-                        user.status === "Active"
-                          ? "bg-green-500"
-                          : user.status === "Inactive"
-                          ? "bg-red-500"
-                          : "bg-yellow-500"
-                      }`}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: [1, 1.4, 1] }}
-                      transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                    />
-                    <span>{user.status}</span>
+                  <TableCell className="dark:text-gray-200">
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      {user.role}
+                    </span>
+                  </TableCell>
+                  <TableCell className="dark:text-gray-200">
+                    <div className="flex items-center gap-2">
+                      <motion.div
+                        className={`w-3 h-3 rounded-full ${
+                          user.status === "Active"
+                            ? "bg-green-500"
+                            : user.status === "Inactive"
+                              ? "bg-red-500"
+                              : "bg-yellow-500"
+                        }`}
+                        animate={{ scale: [1, 1.3, 1] }}
+                        transition={{ repeat: Infinity, duration: 1.5 }}
+                      />
+                      <span>{user.status}</span>
+                    </div>
                   </TableCell>
 
-                  {/* Actions */}
+                  {/* Actions - Permission-based */}
                   <TableCell className="flex gap-2 justify-end">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleEdit(user)}
-                      className="dark:border-gray-600 dark:text-gray-300"
-                    >
-                      <Edit size={16} />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDelete(user.id)}
-                      className="dark:bg-red-900 dark:hover:bg-red-800"
-                    >
-                      <Trash2 size={16} />
-                    </Button>
+                    {hasPermission("user:update") && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEdit(user)}
+                        className="dark:border-gray-600 dark:text-gray-300"
+                      >
+                        <Edit size={16} />
+                      </Button>
+                    )}
+
+                    {hasPermission("user:delete") && (
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => {
+                          setSelectedUserId(user.id);
+                          setOpenDeleteDialog(true);
+                        }}
+                        className="dark:bg-red-900 dark:hover:bg-red-800"
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    )}
                   </TableCell>
                 </motion.tr>
               ))}
@@ -219,7 +254,7 @@ export default function UserCard() {
         </Table>
 
         {/* Pagination */}
-        <div className="flex justify-end items-center gap-2 mt-4">
+        <div className="flex justify-end items-center gap-2 mt-6">
           <Button
             size="sm"
             variant="outline"
@@ -229,7 +264,9 @@ export default function UserCard() {
           >
             <ChevronLeft size={16} />
           </Button>
-          <span className="dark:text-gray-400">Page {currentPage} of {totalPages}</span>
+          <span className="dark:text-gray-400">
+            Page {currentPage} of {totalPages || 1}
+          </span>
           <Button
             size="sm"
             variant="outline"
@@ -242,12 +279,32 @@ export default function UserCard() {
         </div>
       </div>
 
-      {/* Drawer */}
+      {/* User Form Drawer */}
       <UserFormDrawer
         open={isDrawerOpen}
         onOpenChange={setIsDrawerOpen}
         editingUser={editingUser}
       />
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
+        <DialogContent className="dark:bg-gray-800">
+          <DialogHeader>
+            <DialogTitle>Delete User</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this user? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4">
+            <Button variant="outline" onClick={() => setOpenDeleteDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete}>
+              Yes, Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

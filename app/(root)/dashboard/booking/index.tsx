@@ -28,6 +28,7 @@ import CountUp from "react-countup";
 import { BookingDrawer } from "./form";
 import apiClient from "@/app/api/apiClient";
 import { getApiEndpoint } from "@/app/api";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export interface BookingType {
   id?: number;
@@ -44,6 +45,8 @@ export interface BookingType {
   status: string;
   paymentStatus: string;
   specialRequest?: string;
+  mobileNo: string;
+  travelType: string;
 }
 
 export default function BookingCard() {
@@ -54,6 +57,9 @@ export default function BookingCard() {
   const [editingBooking, setEditingBooking] = useState<BookingType | undefined>(undefined);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const pageSize = 10;
+
+  // 🔥 Add state for delete confirmation
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
 
   // Detect dark mode toggle
   useEffect(() => {
@@ -135,11 +141,7 @@ export default function BookingCard() {
   return (
     <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-auto">
       {/* GRAYSCALE IN DARK MODE */}
-      <div
-        className={`transition-filter duration-300 ${
-          isDarkMode ? "filter grayscale" : ""
-        }`}
-      >
+      <div className={`transition-filter duration-300 ${isDarkMode ? "filter grayscale" : ""}`}>
         {/* Top Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {stats.map((stat, idx) => (
@@ -191,10 +193,12 @@ export default function BookingCard() {
               <TableHead className="dark:text-gray-300">ID</TableHead>
               <TableHead className="dark:text-gray-300">Name</TableHead>
               <TableHead className="dark:text-gray-300">Email</TableHead>
+              <TableHead className="dark:text-gray-300">Mobile NO</TableHead>
               <TableHead className="dark:text-gray-300">Country</TableHead>
               <TableHead className="dark:text-gray-300">Booking Date</TableHead>
               <TableHead className="dark:text-gray-300">Travel Dates</TableHead>
               <TableHead className="dark:text-gray-300">Travelers</TableHead>
+              <TableHead className="dark:text-gray-300">Travel Types</TableHead>
               <TableHead className="dark:text-gray-300">Total Amount</TableHead>
               <TableHead className="dark:text-gray-300">Status</TableHead>
               <TableHead className="dark:text-gray-300">Payment</TableHead>
@@ -208,6 +212,7 @@ export default function BookingCard() {
                   <TableCell className="dark:text-gray-200">{b.id}</TableCell>
                   <TableCell className="dark:text-gray-200">{b.name}</TableCell>
                   <TableCell className="dark:text-gray-200">{b.email}</TableCell>
+                  <TableCell className="dark:text-gray-200">{b.mobileNo}</TableCell>
                   <TableCell className="dark:text-gray-200">{b.country}</TableCell>
                   <TableCell className="dark:text-gray-200">{b.bookingDate}</TableCell>
                   <TableCell className="dark:text-gray-200">
@@ -216,6 +221,7 @@ export default function BookingCard() {
                   <TableCell className="dark:text-gray-200">
                     Adults: {b.adultNum}, Children: {b.childNum}
                   </TableCell>
+                  <TableCell className="dark:text-gray-200">{b.travelType}</TableCell>
                   <TableCell className="dark:text-gray-200">{b.totalAmount}</TableCell>
                   <TableCell className="dark:text-gray-200">{b.status}</TableCell>
                   <TableCell className="dark:text-gray-200">{b.paymentStatus}</TableCell>
@@ -231,10 +237,11 @@ export default function BookingCard() {
                     >
                       <Edit size={16} />
                     </Button>
+                    {/* 🔥 Delete with confirmation */}
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={() => handleDelete(b.id)}
+                      onClick={() => setConfirmDeleteId(b.id!)}
                       className="dark:bg-red-900 dark:hover:bg-red-800"
                     >
                       <Trash2 size={16} />
@@ -278,6 +285,42 @@ export default function BookingCard() {
         onOpenChange={setIsDrawerOpen}
         editingBooking={editingBooking}
       />
+
+      {/* 🔥 Delete Confirmation Dialog */}
+      <Dialog
+        open={confirmDeleteId !== null}
+        onOpenChange={() => setConfirmDeleteId(null)}
+      >
+        <DialogContent className="dark:bg-gray-800">
+          <DialogHeader>
+            <DialogTitle className="dark:text-white">Are you sure?</DialogTitle>
+            <DialogDescription className="dark:text-gray-300">
+              This action cannot be undone. The booking will be permanently deleted.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-3 mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setConfirmDeleteId(null)}
+              className="dark:border-gray-600 dark:text-gray-300"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                if (confirmDeleteId) {
+                  await handleDelete(confirmDeleteId);
+                  setConfirmDeleteId(null);
+                }
+              }}
+              className="dark:bg-red-900 dark:hover:bg-red-800"
+            >
+              Yes, Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

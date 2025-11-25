@@ -19,6 +19,8 @@ import {
   RegisterFormFields,
 } from "@/data/formik-fields/register-fields";
 import { validationSignUpSchema } from "@/data/Validations/register-validation";
+import { useQuery } from '@tanstack/react-query';
+
 // import FormikController from "@/custom-components/formik/formik-controller";
 // import BorderHorizontal from "@/custom-components/or-divider/or-divider";
 // import TextCompoment from "@/custom-components/text/custom-text";
@@ -32,6 +34,7 @@ import { validationSignUpSchema } from "@/data/Validations/register-validation";
 
 import { Formik, Form, FormikHelpers } from "formik";
 import { LockKeyhole, User, UserCheck } from "lucide-react";
+import { Quattrocento_Sans } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -57,31 +60,15 @@ export default function Register() {
 
   //   function OnSuccess() {
   //     router.push("login");
-  //   }
+  //   }{}
+
+ 
 
   const onSubmit = async (
     values: RegisterFormValuesAttributes,
     { resetForm }: FormikHelpers<RegisterFormValuesAttributes>
   ) => {
-    console.log("Hello world");
     resetForm();
-
-    // try {
-    //   await signUpMutate(values);
-
-    //   // ✅ Success: Clear error and reset form
-    //   setServerError(null);
-    //    resetForm()
-    //   // Optional: Show success message or redirect
-    //   // setTimeout(() => {
-    //   //   router.push("/login");
-    //   // }, 1500);
-    // } catch (err) {
-    //   // ✅ Error: Set error message (don't reset form on error)
-    //   const message =
-    //     err instanceof Error ? err.message : "Something went wrong";
-    //   setServerError(message);
-    // }
   };
 
   return (

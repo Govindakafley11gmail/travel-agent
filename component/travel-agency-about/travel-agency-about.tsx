@@ -19,19 +19,19 @@ export default function TravelAgencyAbout() {
     {
       icon: Phone,
       text: "+975 17 94 98 27",
-      href: "tel:+97517949827",
+      href: "#",
       color: "#34D399", // green for phone (optional)
     },
     {
       icon: Mail,
       text: "Mail",
-      href: "mailto:ceo@bhutanbestinbound.com",
+  href: "https://mail.google.com/mail/?view=cm&fs=1&to=ceo@bhutanbestinbound.com",
       color: "#D44638", // Gmail red
     },
     {
       icon: Facebook,
       text: "Facebook",
-      href: "https://facebook.com/bhutanbestinbound",
+      href: "https://www.facebook.com/profile.php?id=61580366382758",
       color: "#1877F2", // Facebook blue
     },
     {
@@ -43,7 +43,7 @@ export default function TravelAgencyAbout() {
     {
       icon: Linkedin,
       text: "Linkedin",
-      href: "https://linkedin.com/company/bhutanbestinbound",
+      href: "https://bt.linkedin.com/in/lumora-tours-and-travels-b0b535380",
       color: "#0A66C2", // LinkedIn blue
     },
     {
@@ -91,50 +91,19 @@ export default function TravelAgencyAbout() {
                 alt="Traveler hiking"
                 className="w-full h-[700px] sm:h-[600px] object-cover"
               />
-
-              {/* Floating Badge */}
-              <motion.div
-                className="absolute top-6 right-6"
-                animate={{ y: [0, -8, 0] }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <Card className="bg-white/90 backdrop-blur-lg p-4 shadow-lg rounded-xl border border-gray-200">
-                  <div className="text-center">
-                    <p className="text-xs font-semibold text-gray-600 mb-1">
-                      2024
-                    </p>
-                    <p className="text-sm font-bold text-gray-900 mb-2">
-                      Travelers'
-                      <br /> Choice
-                    </p>
-                    <div className="flex items-center justify-center mb-2">
-                      <div className="w-12 h-12 bg-lime-500 rounded-full flex items-center justify-center shadow-md">
-                        <Award className="h-6 w-6 text-white" />
-                      </div>
-                    </div>
-                    <Badge className="bg-teal-700 text-white text-xs px-3 py-1">
-                      Tripadvisor
-                    </Badge>
-                  </div>
-                </Card>
-              </motion.div>
             </div>
           </motion.div>
         </div>
 
         {/* RIGHT CONTENT (on desktop), ABOVE ON MOBILE */}
         <div className="order-1 md:order-2 max-w-xl  md:mr-20 text-left md:text-left">
-          <p className="text-lime-500  tracking-widest uppercase text-sm not-visited: mb-3 font-sans">
-            Lumora Tours and Travel
+          <p className="text-green-600  uppercase text-2xl not-visited: mb-3 font-sans">
+           About  Lumora Tours and Travels
           </p>
           <p className="text-black font-bold font-lato  tracking-widest  text-xl not-visited: mb-3">
-            We are the tour service provider in Bhutan
+           We are Leading Bhutan’s Next Era of Sustainable Travel
           </p>
-          <p className="text-gray-700 text-sm leading-relaxed">
+          <p className="text-gray-700 text-base leading-relaxed">
             Lumora Tours and Travel is a Bhutanese travel agency dedicated to
             providing sustainable and mindful travel experiences. With a focus
             on authentic cultural immersion, pristine natural landscapes, and

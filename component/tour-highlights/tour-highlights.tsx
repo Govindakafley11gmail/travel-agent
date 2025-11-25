@@ -16,7 +16,8 @@ export interface TourAboutData {
   highlights: TourHighlight[];
   description: string; // plain text with \n for line-breaks
   duration: string;    // e.g., "7 Days, 6 Nights"
-  price: string;       // e.g., "USD 2200-2500"
+  price: string;    
+  Season: string;   // e.g., "USD 2200-2500"
 }
 
 interface TourAboutProps {
@@ -24,7 +25,7 @@ interface TourAboutProps {
 }
 
 const TourAbout: React.FC<TourAboutProps> = ({ data }) => {
-  const { highlights, description, duration, price } = data;
+  const { highlights, description, duration, price, Season } = data;
 
   // Split description into paragraphs based on double newlines
   const paragraphs = description.split(/\n\s*\n/).filter((p) => p.trim());
@@ -43,8 +44,14 @@ const TourAbout: React.FC<TourAboutProps> = ({ data }) => {
         {/* ---------- Duration & Description ---------- */}
         <section>
           <h1 className="text-lg font-semibold mb-3">
-            {duration} - {price}
+            {duration} - {price} <br />
+            {Season && (
+              <div>
+                Best seasons to visit: {Season}
+              </div>
+            )}
           </h1>
+
           <h3 className="text-lg font-semibold mb-3">Description</h3>
           <div className="space-y-4 text-sm md:text-base leading-relaxed font-sans">
             {paragraphs.map((para, idx) => (

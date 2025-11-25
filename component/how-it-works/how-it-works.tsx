@@ -34,7 +34,7 @@ export default function ToursSection() {
         <p className="uppercase text-green-600 font-medium tracking-wider text-sm mb-2">
             Great Experience
           </p>
-          <h2 className="text-3xl font-mono font-bold text-gray-900 mb-4">
+          <h2 className="text-base font-mono font-bold text-gray-900 mb-4">
             Why choose us?
           </h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -54,7 +54,7 @@ export default function ToursSection() {
             <div className="flex items-center justify-center w-12 h-12 bg-green-500 text-white rounded-full mb-4">
               <tour.icon />
             </div>
-            <h3 className="text-lg font-semibold font-mono mb-2">
+            <h3 className="text-base font-semibold font-mono mb-2">
               {tour.title}
             </h3>
             <p className="text-sm text-gray-600 mb-4 font-sans">
@@ -62,7 +62,7 @@ export default function ToursSection() {
             </p>
             <a
               href={tour.linkHref}
-              className="text-green-500 font-medium text-sm hover:text-black"
+              className="text-green-500 font-medium text-sm "
             >
               {tour.linkText} →
             </a>

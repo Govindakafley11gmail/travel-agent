@@ -2,49 +2,37 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Calendar, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { getApiEndpoint } from "@/app/api";
+import { Calendar } from "lucide-react";
 import apiClient from "@/app/api/apiClient";
-import { useRouter } from "next/navigation"; // App Router
+import { getApiEndpoint } from "@/app/api";
+import { useRouter } from "next/navigation";
 
-interface BlogPost {
+interface BlogItem {
   id: number;
+  blog_id: number;
   title: string;
-  author: string;
-  date: string;
-  readTime: string;
-  image: string;
-  authorImg: string;
+  link: string;
+  content: string;
+  images: string[];
+  subcontents?: string[];
+  createdAt: string;
 }
-
+interface CategoryResponse {
+  id: number;
+  category: string;
+  items: BlogItem[];
+}
 const BlogSection = () => {
-  const [posts, setPosts] = React.useState<BlogPost[]>([]);
+  const [subcontent, setSubcontent] = React.useState<CategoryResponse[]>([]);
   const [loading, setLoading] = React.useState(true);
   const router = useRouter();
 
   React.useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await apiClient.get(getApiEndpoint.getBlogs("content"));
-        const data = response.data.data; // adjust based on your API
-
-        const mappedPosts: BlogPost[] = data.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          author: item.author || "Admin",
-          date: item.published_at
-            ? new Date(item.published_at).getFullYear().toString() // extract year
-            : "Unknown",
-          readTime: "1 min", // optional, can calculate dynamically
-          image:
-            item.images && item.images.length > 0
-              ? item.images[0]
-              : "/default-image.jpg",
-          authorImg: item.authorImg || "/default-image.jpg",
-        }));
-
-        setPosts(mappedPosts);
+        const response = await apiClient.get(getApiEndpoint.getBlogs("Content"));
+        const categoryData = response.data.data;
+        setSubcontent(categoryData);
       } catch (error) {
         console.error("Failed to fetch blog posts:", error);
       } finally {
@@ -56,75 +44,93 @@ const BlogSection = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-20">Loading blogs...</div>;
+    return (
+      <div className="text-center py-20 text-gray-600">Loading blogs...</div>
+    );
+  }
+
+  if (subcontent.length === 0) {
+    return (
+      <div className="text-center py-20 text-gray-500">No blog posts found.</div>
+    );
   }
 
   return (
-    <section className="w-full bg-gray-50 py-20 px-6 md:px-16">
+    <section className="w-full bg-gray-50 px-6 md:px-16 py-12">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-sans text-gray-900">
+        <div className="mb-10">
+          <h2 className="text-2xl md:text-3xl font-mono text-green-600 font-semibold">
             Content
           </h2>
-          <Button
-            variant="outline"
-            className="rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm px-4 py-2"
-          >
-            View more
-          </Button>
         </div>
 
-        {/* Blog Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
+        {/* 3 COLUMN GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {subcontent.map((post, index) => (
+
             <div
-              key={post.id}
-              className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+              key={index}
+              onClick={() => router.push(`/blog-content?id=${post.id}`)}
+              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100"
             >
               {/* Image */}
-              <div className="relative w-full h-56">
+              <div className="relative w-full h-64">
                 <Image
-                  src={post.image}
-                  alt={post.title}
+                  src={post.items[0].images[0]}
+                  alt={"hello"}
                   fill
                   className="object-cover"
-                  unoptimized // allows external URLs if needed
+                  unoptimized
+                  onError={(e) => {
+                    const target = e.currentTarget as any;
+                    target.src = "/placeholder-blog.jpg";
+                  }}
                 />
               </div>
 
               {/* Content */}
-              <div className="p-5">
-                {/* Title with navigation */}
-                <h3
-                  className="text-lg font-sans text-gray-900 mb-4 leading-snug cursor-pointer"
-                  onClick={() =>
-                    router.push(`/blog-content?id=${post.id}`)
-                  }
-                >
-                  {post.title}
-                </h3>
+              <div className="bg-white rounded-lg shadow min-h-[240px] flex flex-col">
+                <div className="p-2">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-green-600 transition">
+                    {post.items[0].title}
+                  </h3>
 
-                {/* Author Info */}
-                <div className="flex items-center gap-3">
-                  
-                  <div className="text-sm text-gray-700">
-                    <p className="font-medium">{post.author}</p>
-                    <div className="flex items-center text-gray-500 gap-3 text-xs mt-1">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={12} />
-                        {post.date}
+                  <p className="text-sm">
+                    {post.items[0].content.length > 200
+                      ? `${post.items[0].content.slice(0, 200)}...`
+                      : post.items[0].content}
+
+                    {post.items[0].content.length > 200 && (
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/blog-content?id=${post.id}`);
+                        }}
+                        className="text-green-600 font-medium cursor-pointer ml-2 hover:underline"
+                      >
+                        Read more
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={12} /> {post.readTime}
-                      </span>
-                    </div>
-                  </div>
+                    )}
+                  </p>
+                </div>
+
+                {/* Meta */}
+                <div className="p-3 flex items-center text-xs text-gray-500 gap-4 mt-auto">
+                  <span className="flex items-center gap-1">
+                    <Calendar size={14} />
+                    {new Date(post.items[0].createdAt).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

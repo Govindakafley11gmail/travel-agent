@@ -48,6 +48,8 @@ const Landing: React.FC<LandingAttributes> = ({
             src={image}
             alt={alt}
             fill
+            // height={780}
+            // width={780}
             sizes="100vw"
             className="object-cover brightness-90"
             quality={90}
@@ -98,7 +100,7 @@ const Landing: React.FC<LandingAttributes> = ({
                 </VisuallyHidden>
 
                 {/* Reusable BookingForm component */}
-                <BookingForm onSubmit={() => setOpenBooking(false)} />
+                <BookingForm onClose={() => setOpenBooking(false)} />
               </DialogContent>
             </Dialog>
           )}

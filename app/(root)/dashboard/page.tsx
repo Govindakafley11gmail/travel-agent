@@ -13,7 +13,6 @@ import TripsCard from "./trips-type";
 import DashboardContent from "./DashboardContent";
 import ProfileCard from "./ProfileCard";
 import UserCard from "./UserCard";
-import ProductCard from "@/component/dashboard/dashboard/products";
 
 import {
   LayoutDashboard,
@@ -25,6 +24,10 @@ import {
   User,
 } from "lucide-react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import BlogCard from "./blog";
+import  ProductCard  from "@/component/dashboard/dashboard/products";
+import OrderCard from "@/component/dashboard/dashboard/order";
+
 
 export default function DashboardPage() {
   const [activeItem, setActiveItem] = useState("Dashboard");
@@ -73,8 +76,10 @@ export default function DashboardPage() {
         { name: "Trips", icon: <Map className="w-5 h-5" /> },
         { name: "Reviews", icon: <Star className="w-5 h-5" /> },
         { name: "Contact", icon: <Mail className="w-5 h-5" /> },
-        { name: "Profile", icon: <User className="w-5 h-5" /> },
         { name: "Product", icon: <User className="w-5 h-5" /> },
+        { name: "Orders", icon: <User className="w-5 h-5" /> },
+        { name: "Blog", icon: <User className="w-5 h-5" /> },
+
       ];
     }
 
@@ -96,10 +101,13 @@ export default function DashboardPage() {
         return <ReviewCard />;
       case "contact":
         return <ContactCard />;
-      case "profile":
-        return <ProfileCard />;
+    
       case "product":
         return <ProductCard />;
+         case "orders":
+        return <OrderCard />;
+         case "blog":
+        return <BlogCard />;
       default:
         return <DashboardContent />;
     }

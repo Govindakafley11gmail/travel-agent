@@ -12,14 +12,43 @@ import {
 } from "@/components/ui/carousel";
 import { getApiEndpoint } from "@/app/api";
 import apiClient from "@/app/api/apiClient";
-import { BookingType } from "../dashboard/dashboard/booking";
+import { CalendarDays } from "lucide-react";
 
 interface Slide {
     category: string;
     title: string;
     description: string;
+    subContent?: string;
     image: string;
 }
+export interface BlogItem {
+  id: number;
+  blog_id: number;
+  title: string;
+  link: string;
+  content: string;
+  images: string[];
+  subcontents?: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CategoryData {
+  id: number;
+  category: string;
+  is_published: boolean;
+  published_at: string;
+  createdAt: string;
+  updatedAt: string;
+  items: BlogItem[];
+}
+
+export interface BlogResponseData {
+  success: boolean;
+  message: string;
+  data: CategoryData[];
+}
+
 
 const ArtCarousel = () => {
     const [api, setApi] = React.useState<CarouselApi>();
@@ -27,26 +56,30 @@ const ArtCarousel = () => {
     const [slides, setSlides] = React.useState<Slide[]>([]);
     const [loading, setLoading] = React.useState(true);
 
-    // Fetch slides from your API
+    // Fetch slides
     React.useEffect(() => {
         const fetchSlides = async () => {
             try {
-                // Call the API
-                const response = await apiClient.get(getApiEndpoint.getBlogs("main"));
+                const response = await apiClient.get<BlogResponseData>(
+                    getApiEndpoint.getBlogs("Main")
+                );
 
-                // Assuming your API response is { data: [...] }
-                const data = response.data.data;
-                console.log(data)
-                // Map API data to Slide[]
-                const mappedSlides: Slide[] = data.map((item: any) => ({
-                    category: item.category || "Content",
-                    title: item.title,
-                    description: item.content,
-                    image: item.images && item.images.length > 0 ? item.images[0] : "/Beutiful Dzong.jpg", // first image or fallback
-                }));
-                console.log(mappedSlides)
 
-                // Update component state
+                const categories: CategoryData[] = response.data.data;
+
+                const mappedSlides: Slide[] = categories.flatMap((cat) =>
+                    cat.items.map((item: BlogItem) => ({
+                        category: cat.category,
+                        title: item.title,
+                        description: item.content,
+                        subContent: item.subcontents?.join(" "),
+                        image:
+                            item.images?.length > 0
+                                ? item.images[0]
+                                : "/Beutiful Dzong.jpg",
+                    }))
+                );
+
                 setSlides(mappedSlides);
             } catch (err) {
                 console.error("Failed to fetch slides:", err);
@@ -58,8 +91,7 @@ const ArtCarousel = () => {
         fetchSlides();
     }, []);
 
-
-    // Carousel select listener
+    // Carousel scroll listener
     React.useEffect(() => {
         if (!api) return;
         setCurrent(api.selectedScrollSnap());
@@ -77,25 +109,38 @@ const ArtCarousel = () => {
                     {slides.map((slide, index) => (
                         <CarouselItem key={index}>
                             <div className="flex flex-col md:flex-row items-center justify-between gap-10">
+                                
                                 {/* Text Section */}
                                 <div className="md:w-1/2 space-y-6">
-                                    <span className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full font-medium">
+                                    <span className="px-3 py-1 bg-green-600 text-white text-sm rounded-xl">
                                         {slide.category}
                                     </span>
-                                    <h2 className="text-4xl md:text-5xl font-semibold text-gray-900 leading-snug">
+
+                                    <h2 className="text-4xl md:text-5xl font-semibold text-gray-900">
                                         {slide.title}
                                     </h2>
-                                    <p className="text-gray-600 leading-relaxed">{slide.description}</p>
+
+                                    {slide.description && (
+                                        <p className="text-gray-600">
+                                            {slide.description}
+                                        </p>
+                                    )}
+
+                                    {slide.subContent && (
+                                        <p className="text-gray-600 my-2">
+                                            {slide.subContent}
+                                        </p>
+                                    )}
                                 </div>
 
-                                {/* Image Section */}
+                                {/* Image */}
                                 <div className="relative w-full md:w-1/2 h-[400px]">
                                     <Image
                                         src={slide.image}
                                         alt={slide.title}
                                         fill
-                                        unoptimized // disables Next.js image optimization
-                                        className="object-cover rounded-2xl shadow-lg"
+                                        unoptimized
+                                        className="object-cover rounded-sm shadow-lg"
                                     />
                                 </div>
                             </div>
@@ -103,20 +148,23 @@ const ArtCarousel = () => {
                     ))}
                 </CarouselContent>
 
-                {/* Navigation Buttons */}
-                <div className="hidden md:flex justify-between mt-10">
+                {/* Navigation */}
+                {/* <div className="hidden md:flex justify-between mt-10">
                     <CarouselPrevious />
                     <CarouselNext />
-                </div>
+                </div> */}
 
-                {/* Dots Indicator */}
+                {/* Dots */}
                 <div className="flex justify-center gap-2 mt-6">
                     {slides.map((_, i) => (
                         <button
                             key={i}
                             onClick={() => api?.scrollTo(i)}
-                            className={`h-2.5 w-2.5 rounded-full transition-all ${current === i ? "bg-purple-600 w-4" : "bg-gray-300"
-                                }`}
+                            className={`h-2.5 w-2.5 rounded-full transition-all ${
+                                current === i
+                                    ? "bg-green-600 w-4"
+                                    : "bg-gray-300 w-4 hover:bg-green-400"
+                            }`}
                         />
                     ))}
                 </div>

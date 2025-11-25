@@ -1,6 +1,8 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image";
+
 
 export default function Footer() {
   return (
@@ -17,10 +19,10 @@ export default function Footer() {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-bold mb-4">Contact Info</h3>
-          <p className="text-gray-400 text-sm">No 234, Placer Thimphu, Lumora Tours and Travel.</p>
-          <p className="text-gray-400 text-sm mt-2">+33 321-654-987 (Ext: 123)</p>
-          <p className="text-gray-400 text-sm mt-2">Booking@example.com</p>
-          <p className="text-gray-400 text-sm mt-2">www.example.com</p>
+          <p className="text-gray-400 text-sm">Lumora Tours and Travel.</p>
+          <p className="text-gray-400 text-sm mt-2">Taba,Thimphu,Bhutan</p>
+          <p className="text-gray-400 text-sm mt-2">+975-77893346</p>
+          <p className="text-gray-400 text-sm mt-2">info@lumorabhutan.com</p>
         </div>
 
         {/* Quick Links */}
@@ -28,29 +30,96 @@ export default function Footer() {
           <h3 className="text-lg font-bold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-gray-400 text-sm">
             <li><Link href="#" className="hover:text-white">Lumora Tours and Travel Travel</Link></li>
-            <li><Link href="#" className="hover:text-white">About us</Link></li>
-            <li><Link href="#" className="hover:text-white">Destinations</Link></li>
-            <li><Link href="#" className="hover:text-white">Lumora Tours and Travel Tours</Link></li>
-            <li><Link href="#" className="hover:text-white">Travel insight</Link></li>
-            <li><Link href="#" className="hover:text-white">Contact us</Link></li>
-            <li><Link href="#" className="hover:text-white">Get the app</Link></li>
+            <li><Link href="All-Trips" className="hover:text-white">All-Trips</Link></li>
+            <li><Link href="Blogs" className="hover:text-white">Blogs</Link></li>
+            <li><Link href="About-Us" className="hover:text-white">About-Us</Link></li>
+            <li><Link href="E-Shop" className="hover:text-white">E-Shop</Link></li>
+            <li><Link href="Contact-Us" className="hover:text-white">Contact us</Link></li>
+            <li><Link href="Review-Us" className="hover:text-white">Review-Us</Link></li>
           </ul>
         </div>
 
         {/* Language & Currency */}
         <div>
-          <h3 className="text-lg font-bold mb-4">Preferences</h3>
-          <div className="flex flex-col space-y-2">
-            <select className="bg-gray-800 text-gray-200 px-3 py-2 rounded border border-gray-700 focus:outline-none">
-              <option>English</option>
-              <option>French</option>
-              <option>Spanish</option>
-            </select>
-            <select className="bg-gray-800 text-gray-200 px-3 py-2 rounded border border-gray-700 focus:outline-none">
-              <option>USD (US Dollar)</option>
-              <option>EUR (Euro)</option>
-              <option>GBP (Pound)</option>
-            </select>
+          <h3 className="text-lg font-bold mb-4">Our Policies</h3>
+          <ul className="space-y-2 text-gray-400 text-sm">
+            <li><Link href="#" className="hover:text-white">FAQs</Link></li>
+            <li><Link href="#" className="hover:text-white">Terms and Conditions</Link></li>
+            <li><Link href="#" className="hover:text-white">Travel Policy</Link></li>
+            <li><Link href="#" className="hover:text-white">Legal Documents</Link></li>
+
+          </ul>
+        </div>
+
+        {/* social media */}
+
+      </div>
+      <div className="w-full flex flex-col items-center mt-10 gap-12">
+
+        {/* SOCIAL MEDIA ICONS */}
+        <div className="flex flex-col items-center gap-4">
+          <h2 className="text-xl font-bold tracking-wide">SOCIAL MEDIA</h2>
+
+          <div className="flex gap-6 text-gray-700">
+            {[
+              { src: "/instagram.png", link: "https://www.instagram.com/yourprofile" },
+              { src: "/facebook.png", link: "https://www.facebook.com/yourprofile" },
+              { src: "/linkedin.png", link: "https://www.linkedin.com/in/yourprofile" },
+              { src: "/twitter.png", link: "https://twitter.com/yourprofile" },
+              { src: "/tik-tok.png", link: "https://www.tiktok.com/@yourprofile" },
+              { src: "/pinterest.png", link: "https://www.pinterest.com/yourprofile" }
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="
+          p-2 rounded-full cursor-pointer mt-5
+          transition-all duration-300 
+          hover:scale-110 hover:text-black hover:bg-gray-200
+        "
+              >
+                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                  <Image
+                    src={item.src}
+                    width={40}
+                    height={40}
+                    alt="Social Icon"
+                    className="object-contain"
+                  />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+
+
+        {/* ASSOCIATED WITH SECTION */}
+        <div className=" text-white  py-2 rounded-lg md:justify-center flex flex-col md:items-center gap-4">
+          <p className="text-xl font-bold tracking-wide whitespace-nowrap text-center">
+            We are associated with:
+          </p>
+
+          <div className="flex items-center justify-center gap-4">
+            {[
+              "/bhutan-believ.png",
+              "/drukair.png",
+              "/bhutan-airlines.png",
+              "/bhutan-logo.png"
+
+            ].map((src, i) => (
+              <div
+                key={i}
+                className="w-14 h-14 rounded-full overflow-hidden bg-white flex items-center justify-center 
+                         transition-all duration-300 hover:scale-110 hover:shadow-lg"
+              >
+                <Image
+                  src={src}
+                  width={60}
+                  height={60}
+                  alt="Associated Logo"
+                  className="object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

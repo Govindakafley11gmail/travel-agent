@@ -13,45 +13,53 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 import ContactUsForm from "./form";
 
 export default function TravelContactUS() {
     const ContactUsData = [
         {
-            icon: Phone,
-            text: "+975 17 94 98 27",
-            href: "tel:+97517949827",
+            // icon: Phone,
+            text: "+975 77 89 33 46",
+            href: "tel:+975 77 89 33 46",
             color: "#34D399", // green for phone (optional)
+            src:"/telephone.png"
         },
         {
-            icon: Mail,
+            // icon: Mail,
             text: "Mail",
-            href: "mailto:ceo@bhutanbestinbound.com",
+            href: "info@lumorabhutan.com",
             color: "#D44638", // Gmail red
+            src:"/gmail.png"
         },
         {
-            icon: Facebook,
+            // icon: Facebook,
             text: "Facebook",
-            href: "https://facebook.com/bhutanbestinbound",
+            href: "https://www.facebook.com/profile.php?id=61580366382758",
             color: "#1877F2", // Facebook blue
+            src: "/facebook.png",
         },
         {
-            icon: Instagram,
+            // icon: Instagram,
             text: "Instagram",
             href: "https://instagram.com/bhutanbestinbound",
             color: "#E4405F", // Instagram pinkish
+            src: "/instagram.png",
         },
         {
-            icon: Linkedin,
+            // icon: Linkedin,
             text: "Linkedin",
             href: "https://linkedin.com/company/bhutanbestinbound",
             color: "#0A66C2", // LinkedIn blue
+            src: "/linkedin.png"
         },
         {
-            icon: MapPin,
+            // icon: MapPin,
             text: "Place",
             href: "https://maps.google.com/?q=Thimphu+Bhutan",
             color: "#EA4335", // Google Maps red
+            src:"/location.png"
         },
     ];
 
@@ -90,7 +98,7 @@ export default function TravelContactUS() {
                             <img
                                 src="/contactus.jpg"
                                 alt="Traveler hiking"
-                                className="w-full h-[700px] sm:h-[600px] object-cover"
+                                className="w-full h-[700px] sm:h-[600px] object-fill"
                             />
 
                             {/* Floating Badge */}
@@ -103,7 +111,7 @@ export default function TravelContactUS() {
                                     ease: "easeInOut",
                                 }}
                             >
-                                
+
                             </motion.div>
                         </div>
                     </motion.div>
@@ -111,10 +119,10 @@ export default function TravelContactUS() {
 
                 {/* RIGHT CONTENT (on desktop), ABOVE ON MOBILE */}
                 <div className="order-1 md:order-2 max-w-xl  md:mr-20 text-left md:text-left">
-                    <p className="text-lime-500  tracking-widest uppercase text-sm not-visited: mb-3 font-sans">
+                    <p className="text-green-500 font-medium  tracking-widest uppercase text-2xl not-visited: mb-3 font-sans">
                         Lumora Tours and Travel
                     </p>
-                    <p className="text-black font-bold font-lato  tracking-widest  text-xl not-visited: mb-3">
+                    <p className="text-black  font-lato  tracking-widest  text-xl not-visited: mb-3">
                         We are the tour service provider in Bhutan
                     </p>
                     <p className="text-gray-700 text-lg">
@@ -126,20 +134,20 @@ export default function TravelContactUS() {
                         experts ensures seamless travel, from accommodations and guided
                         tours to unique adventures that celebrate the spirit of Bhutan.
                     </p>
-                  
+
                     <div className="my-4">
                         <ContactUsForm />
 
                     </div>
-                      <motion.div
+                    <motion.div
                         variants={container}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5 mt-10 justify-center items-center "
+                        className="grid grid-cols-2 md:grid-cols-2 gap-x-10 gap-y-5 mt-10 justify-center items-center md:ml-16 "
                     >
                         {ContactUsData.map((reason, index) => {
-                            const Icon = reason.icon;
+                            // const Icon = reason.icon;
                             return (
                                 <motion.a
                                     key={index}
@@ -149,10 +157,21 @@ export default function TravelContactUS() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    <Icon
-                                        className="w-7 h-7 flex-shrink-0"
-                                        style={{ color: reason.color }}
-                                    />
+                                    {/* {Icon && (
+                                        <Icon
+                                            className="w-7 h-7 flex-shrink-0"
+                                            style={{ color: reason.color }}
+                                        />
+                                    )} */}
+                                    {reason.src && (
+                                        <Image
+                                            src={reason.src}
+                                            width={40}
+                                            height={40}
+                                            alt="Social Icon"
+                                            className="object-contain"
+                                        />
+                                    )}
                                     <p className="text-gray-600 font-serif text-base leading-snug">
                                         {reason.text}
                                     </p>
@@ -162,7 +181,7 @@ export default function TravelContactUS() {
 
                     </motion.div>
                 </div>
-                
+
             </div>
         </section>
     );

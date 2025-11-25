@@ -15,6 +15,7 @@ import BiblograhyComponent from "@/component/biblography/biblography";
 import TripsForFistTimer from "../pages/trips-for-first-timer";
 import TeamSection from "@/component/teams-picture-card/team-picture-card";
 import WhyChooseUs from "@/component/why-us/why-us";
+import ToursSection from "@/component/how-it-works/how-it-works";
 
 export default function AboutMain() {
   const bioData = [
@@ -65,7 +66,7 @@ Her meticulous planning, dedication, and eco-conscious approach make her an inva
   return (
     <main className="w-full h-full">
       <Landing
-        image="/aboutus.jpg"
+        image="/Bhutanese village.jpg"
         alt="Paro Festival"
         imagestyle="h-[500px] md:h-[600px] lg:h-[500px]"
         subContainer="w-full relative"
@@ -83,7 +84,8 @@ Her meticulous planning, dedication, and eco-conscious approach make her an inva
       </div>
         <TeamSection data={teamData}  />
       <div>
-        <WhyChooseUs/>
+              <ToursSection />
+        
         <Footer />
       </div>
     </main>

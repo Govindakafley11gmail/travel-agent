@@ -16,6 +16,7 @@ import { tourInfo, mockTourData, photoSets } from "@/data/paro-places-data";
 import { Check, MapPin, X } from "lucide-react";
 import TripsForFistTimer from "../pages/trips-for-first-timer";
 import Footer from "@/component/footer";
+import PaymentCard from "@/component/payments";
 
 export default function CultureMain() {
  const itinerary = [
@@ -180,7 +181,7 @@ export default function CultureMain() {
         maincontainer="w-full"
         heading="Hello this is the Festival of Bhutan"
         subheading="Experience the vibrant culture, traditions, and spiritual celebrations of Bhutan in the Paro Festival."
-        Itinerary="View Itinerary"
+        Itinerary="Book Us"
         headingstyle="font-mono"
       />
       <TourBand
@@ -230,6 +231,8 @@ export default function CultureMain() {
           video={false}
         />
       </div>
+         <div>     <PaymentCard /></div>
+      
       <div>
         <TripsForFistTimer />
       </div>

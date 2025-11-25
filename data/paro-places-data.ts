@@ -52,11 +52,251 @@ export const defaultItems = [
       "Venture into lush tropical forests teeming with diverse wildlife. Spot exotic birds, rare species, and immerse yourself in the rich biodiversity of the region.",
   },
 ];
+export const HoneymoonData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "7 Days, 6 Nights",       // ✅ dynamic duration
+  price: "(USD 1900-2050)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Destinations",
+      description:
+        "• Thimphu • Punakha • Phobjikha",
+    },
+    {
+      title: "Optional Extension",
+      description:
+        "Haa Valley or Gasa Hot Spring (Hot Stone Bath)",
+    },
+
+  ],
+  description: `Embark on a romantic honeymoon journey through Bhutan’s most enchanting valleys. This exclusive package blends nature, culture, spirituality, and intimate experiences—designed to give newlyweds a memorable and meaningful escape in the Land of Happiness.`,
+};
+export const viaPhuentsholingBhutanData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "7 Days, 6 Nights ",       // ✅ dynamic duration
+  price: "(USD-1750-1950)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Entry to Bhutan via Phuentsholing",
+      description:
+        "",
+    },
+    {
+      title: "Scenic drives along rivers, forests, and mountains",
+      description:
+        "",
+    },
+    {
+      title: "Cultural exploration in Gedu, Paro, and Thimphu",
+      description:
+        "",
+    },
+
+  ],
+  description: `Bhutan is one of the safest and most enchanting destinations for families. With clean air, serene landscapes, friendly locals, and cultural experiences that spark curiosity, this itinerary is designed for families seeking quality time together.
+Enjoy easy walks, interactive cultural visits, gentle outdoor adventures, and plenty of time for bonding and relaxation.
+`,
+};
+export const eaternBhutanData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "8 Days, 6 Nights",       // ✅ dynamic duration
+  price: "(USD-2000-2200)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Entry to Bhutan via Samdrup Jongkhar",
+      description:
+        "",
+    },
+    {
+      title: "Scenic drives along rivers, forests, and mountains",
+      description:
+        "",
+    },
+    {
+      title: "Cultural exploration in Trashigang, Trashiyangtse, and Pema Gatshel",
+      description:
+        "",
+    },
+    {
+      title: "Village walks, artisan workshops, and local cuisine experiences",
+      description:
+        "",
+    },
+    {
+      title: "Visits to monasteries, dzongs, and chortens from the exterior",
+      description:
+        "",
+    },
+    {
+      title: "Flexible itinerary allowing personal exploration",
+      description:
+        "",
+    }
+  ],
+  description: `Explore the untouched landscapes and rich culture of Eastern Bhutan over 8 days, entering via Samdrup Jongkhar from Guwahati Airport (India). Visit Trashigang, Trashiyangtse, and Pema Gatshel, experiencing vibrant valleys, historic dzongs, artisan villages, and serene monasteries. The flexible itinerary allows time for photography, cultural immersion, and authentic local experiences.`,
+};
+export const newTourPackageData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "7 Days, 6 Nights",       // ✅ dynamic duration
+  price: "(USD-1850-2000)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: " 	Village walks and cultural immersion in Paro, Haa, Punakha, and Phobjikha",
+      description:
+        "",
+    },
+    {
+      title: "Two authentic homestay experiences",
+      description:
+        "",
+    },
+    {
+      title: "Hands-on activities",
+      description:
+        "farming, cooking, traditional games",
+    },
+    {
+      title: "Visits to artisan villages and craft communities",
+      description:
+        "",
+    },
+    {
+      title: "Scenic drives over Chelela Pass and Dochula Pass",
+      description:
+        "",
+    },
+    {
+      title: " Highland village life exploration in Phobjikha",
+      description:
+        "",
+    },
+    {
+      title: " 	Organic farmhouse dinners and family interactions",
+      description:
+        "",
+    },
+    {
+      title: " 	Panoramic Himalayan landscapes and pristine nature walks",
+      description:
+        "",
+    },
+  ],
+  description: `Bhutan Village Tours invite travelers to step into the peaceful rhythm of rural Bhutan, where daily life remains closely tied to tradition and nature. These journeys offer genuine cultural immersion through interactions with local families, farm experiences, traditional crafts, and scenic walks through terraced fields and forested valleys. Each village presents a unique glimpse into Bhutan’s heritage—its warm hospitality, timeless architecture, and deep-rooted spiritual values. Perfect for those seeking authenticity and quiet exploration, village tours reveal Bhutan’s soul through its people and their harmonious way of living.`,
+};
+export const culturegastronomyData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "6 Days, 5 Nights",       // ✅ dynamic duration
+  price: "(USD-1900-2200)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Destinations",
+      description:
+        " Thimphu – Punakha – Phobjikha – Trongsa – Bumthang – Yongkola (or customizable)",
+    },
+    {
+      title: "Tour Type",
+      description:
+        "Culture | Gastronomy | Culinary Experiences",
+    },
+
+  ],
+  description: `This 6-day Bhutan Culture and Gastronomy Tour invites you to experience the kingdom’s timeless heritage, sacred monasteries, and vibrant culinary traditions through an immersive journey across Paro, Thimphu, and Punakha. From exploring ancient temples and majestic dzongs to joining hands-on cooking sessions, farm-to-table experiences, and curated food walks, the tour blends culture and cuisine in perfect harmony. Scenic drives over mountain passes, serene valley walks, and authentic farmhouse dining enhance your connection to Bhutanese life, offering a rich and flavorful introduction to the Land of Happiness.
+`,
+};
+export const dagalatrekData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "8 Days, 7 Nights",       // ✅ dynamic duration
+  price: "(USD 1750-2050)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Destinations",
+      description:
+        " Thimphu – Punakha – Phobjikha –",
+    },
+    {
+      title: "Tour Type",
+      description:
+        "Trekking | Nature | Adventure",
+    },
+
+  ],
+  description: `The Dagala Thousand Lakes Trek is a stunning high-altitude journey through Bhutan’s pristine landscapes, known for its sparkling alpine lakes, dramatic mountain vistas, remote yak herder settlements, and peaceful trails far from the crowds. Located between Thimphu and Wangdue, this moderately challenging trek takes you across open meadows, rhododendron forests, and ridgelines offering panoramic views of the Himalayan giants—including Mt. Everest, Kanchenjunga, Jichu Drake, Masang Gang, and Tshering Ganga on clear days. Perfect for nature lovers and adventure seekers, the trek blends Bhutan’s natural beauty with serene wilderness and traditional nomadic culture.
+`,
+};
+export const birdsData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "8-12 Days (Flexible)",       // ✅ dynamic duration
+  price: "(USD-1550-2200)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Destinations",
+      description:
+        " Thimphu – Punakha – Phobjikha – Trongsa – Bumthang – Yongkola (or customizable)",
+    },
+    {
+      title: "Tour Type",
+      description:
+        "Birding | Nature | Photography | Wildlife",
+    },
+
+  ],
+  description: `Bhutan is one of Asia’s best birding destinations, home to over 770 bird species, including rare and endangered Himalayan birds. From lush subtropical forests to high mountain passes, this adventure takes you through diverse habitats rich with colorful pheasants, songbirds, raptors, and migratory species. With expert birding guides, quiet trails, and pristine landscapes, this journey is ideal for avid birders, photographers, and nature lovers.
+`,
+};
+export const easternbhutanbirdsData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "10 Days, 9 Nights",       // ✅ dynamic duration
+  price: "USD-1750-2150",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Destinations",
+      description:
+        " Samdrup Jongkhar – Trashigang – Trashiyangtse  – Trongsa – Mongar – Yongkola – Bumdeling Wildlife Sanctuary",
+    },
+    {
+      title: "Tour Type",
+      description:
+        "Birding | Nature | Photography | Wildlife",
+    },
+
+  ],
+  description: `Option: Customizable
+              Best Season: November–May (Peak birding) 
+               Eastern Bhutan offers some of the richest bird habitats in the Himalayas, with elevations ranging from subtropical foothills to cool alpine zones. This expedition is designed for passionate birders and nature photographers who want to explore remote valleys, untouched forests, and biodiversity hotspots such as the famous Lingmithang–Yongkola stretch, often called one of the best birding areas in Asia.
+You will be accompanied by a guide with birding experience, visit community forests, witness rural lifestyles, and enjoy comfortable accommodations throughout the journey.
+`,
+};
 export const mockTourData: TourAboutData = {
   city: "Thimphu",
   country: "Bhutan",
+  Season: "Autumn and Spring",
+
   duration: "3 Days, 2 Nights",       // ✅ dynamic duration
-  price: "USD-1850-2000",             // ✅ dynamic price
+  price: "(USD-1850-2000)",             // ✅ dynamic price
   highlights: [
     {
       title: "Thimphu City Exploration",
@@ -86,9 +326,158 @@ export const mockTourData: TourAboutData = {
   ],
   description: `Discover the magic of Bhutan in this short yet enriching journey designed for those with limited time but a deep sense of curiosity. Over three days, explore the capital city, Thimphu, where tradition meets modernity amidst serene mountain vistas. Visit iconic sites such as the Buddha Dordenma, Tashichho Dzong, and the National Memorial Chorten. Continue to Paro, home to the legendary Taktsang (Tiger’s Nest) Monastery, perched dramatically on a cliffside. Along the way, enjoy glimpses of rural life, colorful prayer flags fluttering in the breeze, and warm Bhutanese hospitality. This itinerary offers a perfect blend of culture, spirituality, and natural beauty—an ideal short escape into the heart of the Himalayas.`,
 };
+export const raftingTourData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "6 Days, 5Nights",       // ✅ dynamic duration
+  price: "USD-1750-2050",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Thimphu City Exploration",
+      description:
+        "Discover Bhutan’s charming capital, where traditional architecture blends seamlessly with modern life. Visit the Buddha Dordenma statue, Tashichho Dzong, and local markets.",
+    },
+    {
+      title: "Cultural Immersion",
+      description:
+        "Experience Bhutanese traditions through visits to monasteries, museums, and craft centers showcasing the country’s art, textiles, and heritage.",
+    },
+    {
+      title: "Paro Valley Sightseeing",
+      description:
+        "Wander through the scenic Paro Valley, known for its lush landscapes, ancient temples, and serene atmosphere.",
+    },
+    {
+      title: "Hike to Tiger’s Nest Monastery (Taktsang)",
+      description:
+        "Embark on a memorable trek to Bhutan’s most iconic landmark, dramatically perched on a cliff overlooking the Paro Valley.",
+    },
+    {
+      title: "Breathtaking Himalayan Landscapes",
+      description:
+        "Enjoy panoramic mountain views, prayer-flag-strewn passes, and tranquil moments surrounded by the pristine natural beauty of the Himalayas.",
+    },
+  ],
+  description: `The Bhutan White Water Rafting Tour blends exhilarating river adventures with immersive cultural experiences in Punakha, Paro, and Thimphu. Known for its pristine rivers, Bhutan offers safe yet exciting rafting opportunities suitable for beginners and adventure enthusiasts alike. Float through the turquoise waters of the Pho Chhu and Mo Chhu Rivers, navigate gentle-to-moderate rapids, pass traditional farming villages, and enjoy dramatic views of Punakha Dzong—the country’s most beautiful fortress. This tour is perfect for those seeking an adventurous twist to their Bhutan journey.`,
+};
+export const generalFestivalData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+  duration: "6-8 Days (Flexible)",       // ✅ dynamic duration
+  price: "(USD 1450-2000)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Thimphu City Exploration",
+      description:
+        "Discover Bhutan’s charming capital, where traditional architecture blends seamlessly with modern life. Visit the Buddha Dordenma statue, Tashichho Dzong, and local markets.",
+    },
+    {
+      title: "Cultural Immersion",
+      description:
+        "Experience Bhutanese traditions through visits to monasteries, museums, and craft centers showcasing the country’s art, textiles, and heritage.",
+    },
+    {
+      title: "Paro Valley Sightseeing",
+      description:
+        "Wander through the scenic Paro Valley, known for its lush landscapes, ancient temples, and serene atmosphere.",
+    },
+    {
+      title: "Hike to Tiger’s Nest Monastery (Taktsang)",
+      description:
+        "Embark on a memorable trek to Bhutan’s most iconic landmark, dramatically perched on a cliff overlooking the Paro Valley.",
+    },
+    {
+      title: "Breathtaking Himalayan Landscapes",
+      description:
+        "Enjoy panoramic mountain views, prayer-flag-strewn passes, and tranquil moments surrounded by the pristine natural beauty of the Himalayas.",
+    },
+  ],
+  description: `The Tshechu Festival is Bhutan’s most important annual religious celebration, held in every district during different months of the year. Dedicated to Guru Padmasambhava, Tshechus feature sacred mask dances, colorful costumes, traditional music, blessings, and vibrant community gatherings. This tour allows visitors to experience the deep spiritual and cultural essence of Bhutan while exploring its scenic valleys, monasteries, and fortresses.`,
+};
+export const introBhutanData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+  duration: "6 Days / 5 Nights",       // ✅ dynamic duration
+  price: "(US $1850–2150)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Thimphu City Exploration",
+      description:
+        "Discover Bhutan’s charming capital, where traditional architecture blends seamlessly with modern life. Visit the Buddha Dordenma statue, Tashichho Dzong, and local markets.",
+    },
+    {
+      title: "Cultural Immersion",
+      description:
+        "Experience Bhutanese traditions through visits to monasteries, museums, and craft centers showcasing the country’s art, textiles, and heritage.",
+    },
+    {
+      title: "Paro Valley Sightseeing",
+      description:
+        "Wander through the scenic Paro Valley, known for its lush landscapes, ancient temples, and serene atmosphere.",
+    },
+    {
+      title: "Hike to Tiger’s Nest Monastery (Taktsang)",
+      description:
+        "Embark on a memorable trek to Bhutan’s most iconic landmark, dramatically perched on a cliff overlooking the Paro Valley.",
+    },
+    {
+      title: "Breathtaking Himalayan Landscapes",
+      description:
+        "Enjoy panoramic mountain views, prayer-flag-strewn passes, and tranquil moments surrounded by the pristine natural beauty of the Himalayas.",
+    },
+  ],
+  description: `A perfect first-timer package that blends culture, nature, cuisine, and authentic Bhutanese village life.
+
+The Intro Bhutan Tour is a compact yet enriching journey designed for first-time visitors seeking a meaningful taste of Bhutan. In just six days, the tour seamlessly combines sacred monasteries, majestic fortresses, scenic valleys, vibrant markets, and authentic rural experiences. A special highlight is the immersive farmstay, offering a rare opportunity to experience Bhutanese hospitality, traditional cooking, agriculture, and daily village life. Perfect for travelers seeking a deeper connection to Bhutan—the Land of Happiness—this tour promises unforgettable memories and a warm cultural welcome.
+`,
+};
+export const familyTourData: TourAboutData = {
+  city: "Thimphu",
+  country: "Bhutan",
+  Season: "Autumn and Spring",
+
+  duration: "7 Days, 6 Nights",       // ✅ dynamic duration
+  price: "(USD-1650-1850)",             // ✅ dynamic price
+  highlights: [
+    {
+      title: "Thimphu City Exploration",
+      description:
+        "Discover Bhutan’s charming capital, where traditional architecture blends seamlessly with modern life. Visit the Buddha Dordenma statue, Tashichho Dzong, and local markets.",
+    },
+    {
+      title: "Cultural Immersion",
+      description:
+        "Experience Bhutanese traditions through visits to monasteries, museums, and craft centers showcasing the country’s art, textiles, and heritage.",
+    },
+    {
+      title: "Paro Valley Sightseeing",
+      description:
+        "Wander through the scenic Paro Valley, known for its lush landscapes, ancient temples, and serene atmosphere.",
+    },
+    {
+      title: "Hike to Tiger’s Nest Monastery (Taktsang)",
+      description:
+        "Embark on a memorable trek to Bhutan’s most iconic landmark, dramatically perched on a cliff overlooking the Paro Valley.",
+    },
+    {
+      title: "Breathtaking Himalayan Landscapes",
+      description:
+        "Enjoy panoramic mountain views, prayer-flag-strewn passes, and tranquil moments surrounded by the pristine natural beauty of the Himalayas.",
+    },
+  ],
+  description: `Bhutan is one of the safest and most enchanting destinations for families. With clean air, serene landscapes, friendly locals, and cultural experiences that spark curiosity, this itinerary is designed for families seeking quality time together.
+Enjoy easy walks, interactive cultural visits, gentle outdoor adventures, and plenty of time for bonding and relaxation.
+`,
+};
 export const bumthangTourData: TourAboutData = {
   city: "Thimphu",
   country: "Bhutan",
+  Season: "Autumn and Spring",
+
   duration: "7 Days, 6 Nights",       // ✅ dynamic duration
   price: "USD 2000-2200",             // ✅ dynamic price
   highlights: [
@@ -117,12 +506,12 @@ export const bumthangTourData: TourAboutData = {
       description:
         "A site of profound spiritual importance.",
     },
-     {
+    {
       title: "Visit local farms and cheese factories ",
       description:
         "For a taste of Bumthang’s countryside life.",
     },
-     {
+    {
       title: "Enjoy scenic walks through Chokhor Valley",
       description:
         "Surrounded by apple orchards and buckwheat fields.",
@@ -133,6 +522,8 @@ export const bumthangTourData: TourAboutData = {
 export const ParoTshechu: TourAboutData = {
   city: "Thimphu",
   country: "Bhutan",
+  Season: "Autumn and Spring",
+
   duration: "Days, 2 Nights ",       // ✅ dynamic duration
   price: "USD: 1900-2200",             // ✅ dynamic price
   highlights: [
@@ -169,6 +560,8 @@ export const ParoTshechu: TourAboutData = {
 export const FeelBhutanTour: TourAboutData = {
   city: "Thimphu",
   country: "Bhutan",
+  Season: "Autumn and Spring",
+
   duration: "5 Days, 4 Nights",       // ✅ dynamic duration
   price: "USD-1850-2200",             // ✅ dynamic price
   highlights: [
@@ -202,6 +595,8 @@ Experience the true essence of Bhutan in this 4-day journey that beautifully ble
 export const oneWeekInBhutan: TourAboutData = {
   city: "Noriva",
   country: "Bhutan",
+  Season: "Autumn and Spring",
+
   duration: "7 Days, 6 Nights",       // ✅ dynamic duration
   price: "USD 2200-2500",             // ✅ dynamic price
   highlights: [

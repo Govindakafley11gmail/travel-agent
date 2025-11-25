@@ -64,7 +64,6 @@ export default function ContactCard() {
     const fetch = async () => {
       try {
         const res = await apiClient.get<ApiResponse>(getApiEndpoint.getContact());
-        console.log(res.data)
         setContacts(Array.isArray(res.data) ? res.data : []);
       } catch (err: any) {
         showToast.error(err?.response?.data?.message || "Failed to load contacts.", {

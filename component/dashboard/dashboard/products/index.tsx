@@ -12,123 +12,187 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Trash2, Edit, Plus, ChevronLeft, ChevronRight } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
-
-import { ProductDrawer, ProductType } from "./form"; // create/edit drawer
+import { Edit, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import apiClient from "@/app/api/apiClient";
 import { getApiEndpoint } from "@/app/api";
+import { ProductDrawer } from "./form";
+import { showToast } from "nextjs-toast-notify";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { usePermissions } from "@/app/(root)/dashboard/permission";
 
-
+// ← ONLY THIS LINE ADDED
 
 export default function ProductCard() {
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [editingProduct, setEditingProduct] = useState<any | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-const [editingProduct, setEditingProduct] = useState<ProductType | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+
   const pageSize = 10;
 
+  // ← ONLY THIS LINE ADDED
+  const { hasPermission, isLoading: permissionsLoading } = usePermissions();
+
+  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await apiClient.get(getApiEndpoint.getproduct());
-        setProducts(response.data.data);
+        const normalized = response.data?.data || [];
+        setProducts(normalized);
       } catch (err) {
         console.error("Error fetching products", err);
+        setProducts([]);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter(
+  const filteredProducts = (products || []).filter(
     (p) =>
-      p.product_name.toLowerCase().includes(search.toLowerCase()) ||
-      p.category.toLowerCase().includes(search.toLowerCase())
+      (p.product_name?.toLowerCase() || "").includes(search.toLowerCase()) ||
+      (p.category?.toLowerCase() || "").includes(search.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredProducts.length / pageSize);
-  const paginatedProducts = filteredProducts.slice(
+  const paginated = (filteredProducts || []).slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
 
-  const handleDelete = async (id?: number) => {
-    if (!id) return;
+  const handleSave = (updatedProduct: any) => {
+    setProducts((prev) => {
+      const exists = prev.find((p) => p.id === updatedProduct.id);
+      if (exists) {
+        return prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
+      } else {
+        return [updatedProduct, ...prev];
+      }
+    });
+    setIsDrawerOpen(false);
+    setEditingProduct(null);
+  };
+
+  const handleDelete = async (id: number) => {
     try {
       await apiClient.delete(getApiEndpoint.deleteproduct(id));
-      setProducts(products.filter((p) => p.id !== id));
-    } catch (err) {
-      console.error("Delete product failed", err);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+      showToast.success("Product deleted successfully!");
+    } catch (err: any) {
+      const errorMsg =
+        err?.response?.data?.message || err?.message || "Failed to delete product.";
+      showToast.error(errorMsg);
     }
   };
 
+  // ← Show loading only for data, not permissions (optional, keeps your current UX)
+  if (loading) {
+    return <p className="text-center text-gray-500 py-4">Loading products...</p>;
+  }
+
   return (
     <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-auto">
-      {/* Header */}
-      <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+      {/* Search + Add Product */}
+      <div className="flex justify-between items-center mb-4">
         <Input
-          placeholder="Search products..."
+          placeholder="Search product..."
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
             setCurrentPage(1);
           }}
-          className="max-w-sm flex-1 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+          className="max-w-sm"
         />
-        <Button
-          variant="default"
-          onClick={() => setIsDrawerOpen(true)}
-          className="dark:bg-gray-700 dark:hover:bg-gray-600"
-        >
-          <Plus className="mr-2 h-4 w-4" /> Create Product
-        </Button>
+
+        {/* ← ONLY THIS BLOCK CHANGED: Added permission check */}
+        {hasPermission("product:create") && (
+          <Button
+            onClick={() => {
+              setEditingProduct(null);
+              setIsDrawerOpen(true);
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            Add Product
+          </Button>
+        )}
       </div>
 
-      {/* Table */}
+      {/* Product Table */}
       <Table>
-        <TableCaption className="dark:text-gray-400">List of all products</TableCaption>
+        <TableCaption>List of all products</TableCaption>
         <TableHeader>
-          <TableRow className="dark:border-gray-700">
-            <TableHead className="dark:text-gray-300">ID</TableHead>
-            <TableHead className="dark:text-gray-300">Name</TableHead>
-            <TableHead className="dark:text-gray-300">Category</TableHead>
-            <TableHead className="dark:text-gray-300">Price</TableHead>
-            <TableHead className="dark:text-gray-300">Actions</TableHead>
+          <TableRow>
+            <TableHead>ID</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Product Name</TableHead>
+            <TableHead>Original Price</TableHead>
+            <TableHead>Discount %</TableHead>
+            <TableHead>Final Price</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Images</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
-          <AnimatePresence>
-            {paginatedProducts?.map((p) => (
-              <TableRow key={p.id} className="border-b dark:border-gray-700">
-                <TableCell className="dark:text-gray-200">{p.id}</TableCell>
-                <TableCell className="dark:text-gray-200">{p.product_name}</TableCell>
-                <TableCell className="dark:text-gray-200">{p.category}</TableCell>
-                <TableCell className="dark:text-gray-200">${p.final_price}</TableCell>
+          {paginated && paginated.length > 0 ? (
+            paginated.map((p, index) => (
+              <TableRow key={p.id || index}>
+                <TableCell>{(currentPage - 1) * pageSize + index + 1}</TableCell>
+                <TableCell>{p.category || "-"}</TableCell>
+                <TableCell>{p.product_name || "-"}</TableCell>
+                <TableCell>${p.original_price ?? "-"}</TableCell>
+                <TableCell>{p.discount_percent ?? 0}%</TableCell>
+                <TableCell className="font-semibold text-green-600">${p.final_price ?? 0}</TableCell>
+                <TableCell className="max-w-[200px] truncate">{p.description || "-"}</TableCell>
+                <TableCell>
+                  <div className="flex gap-2">
+                    {(p.images || []).map((img: string) => (
+                      <img key={img} src={img} className="w-12 h-12 rounded-md object-cover border" alt="product" />
+                    ))}
+                  </div>
+                </TableCell>
+
+                {/* ← ONLY THIS PART CHANGED: Wrapped buttons in permission checks */}
                 <TableCell className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      setIsDrawerOpen(true);
-                      setEditingProduct(p);
-                    }}
-                    className="dark:border-gray-600 dark:text-gray-300"
-                  >
-                    <Edit size={16} />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(p.id)}
-                    className="dark:bg-red-900 dark:hover:bg-red-800"
-                  >
-                    <Trash2 size={16} />
-                  </Button>
+                  {hasPermission("product:update") && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setEditingProduct(p);
+                        setIsDrawerOpen(true);
+                      }}
+                    >
+                      <Edit size={16} />
+                    </Button>
+                  )}
+
+                  {hasPermission("product:delete") && (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => setConfirmDeleteId(p.id)}
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
-            ))}
-          </AnimatePresence>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={9} className="text-center text-gray-500">
+                No products found.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
 
@@ -139,30 +203,64 @@ const [editingProduct, setEditingProduct] = useState<ProductType | undefined>(un
           variant="outline"
           onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
           disabled={currentPage === 1}
-          className="dark:border-gray-600 dark:text-gray-300"
         >
           <ChevronLeft size={16} />
         </Button>
-        <span className="dark:text-gray-400">
-          Page {currentPage} of {totalPages}
+
+        <span>
+          Page {currentPage} of {totalPages || 1}
         </span>
+
         <Button
           size="sm"
           variant="outline"
           onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className="dark:border-gray-600 dark:text-gray-300"
+          disabled={currentPage === totalPages || totalPages === 0}
         >
           <ChevronRight size={16} />
         </Button>
       </div>
 
-      {/* Drawer */}
-      <ProductDrawer
-        open={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-        editingProduct={editingProduct}
-      />
+      {/* Product Drawer */}
+      {isDrawerOpen && (
+        <ProductDrawer
+          open={isDrawerOpen}
+          editingProduct={editingProduct || undefined}
+          onOpenChange={(open: boolean) => {
+            setIsDrawerOpen(open);
+            if (!open) setEditingProduct(null);
+          }}
+          onSaveSuccess={handleSave}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={confirmDeleteId !== null} onOpenChange={() => setConfirmDeleteId(null)}>
+        <DialogContent className="dark:bg-gray-800">
+          <DialogHeader>
+            <DialogTitle className="dark:text-white">Are you sure?</DialogTitle>
+            <DialogDescription className="dark:text-gray-300">
+              This will permanently delete the product.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-3 mt-4">
+            <Button variant="outline" onClick={() => setConfirmDeleteId(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                if (confirmDeleteId) {
+                  await handleDelete(confirmDeleteId);
+                  setConfirmDeleteId(null);
+                }
+              }}
+            >
+              Yes, Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

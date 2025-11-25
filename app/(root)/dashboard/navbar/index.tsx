@@ -102,16 +102,16 @@ export default function Navbar({
 
             {/* RIGHT */}
             <div className="flex items-center space-x-2 ml-auto">
-                <button
+                {/* <button
                     onClick={() => setSearchOpen(true)}
                     className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 md:hidden"
                     aria-label="Open search"
                 >
                     <Search className="w-5 h-5 text-gray-700 dark:text-gray-200" />
-                </button>
+                </button> */}
 
                 {/* SINGLE SEARCH FORM */}
-                <form
+                {/* <form
                     onSubmit={handleSearch}
                     className={`${searchOpen
                             ? "fixed inset-0 z-50 flex items-center bg-white dark:bg-gray-900 p-4"
@@ -149,7 +149,7 @@ export default function Navbar({
                             Search
                         </button>
                     )}
-                </form>
+                </form> */}
 
                 {/* DARK MODE TOGGLE */}
                 <button

@@ -27,7 +27,16 @@ import CountUp from "react-countup";
 import { TripsDrawer } from "./form";
 import { getApiEndpoint } from "@/app/api";
 import apiClient from "@/app/api/apiClient";
-import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { usePermissions } from "../permission";
+
 
 export interface TripType {
   id?: number;
@@ -43,7 +52,7 @@ export interface TripType {
   status?: string;
   isTrending?: boolean;
   category?: string;
-  images?: string[]; // URLs from server
+  images?: string[];
 }
 
 export default function TripsCard() {
@@ -53,9 +62,17 @@ export default function TripsCard() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [editingTrip, setEditingTrip] = useState<TripType | undefined>(undefined);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Delete confirmation
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [tripToDelete, setTripToDelete] = useState<number | null>(null);
+
   const pageSize = 10;
 
-  // Detect dark mode
+  // Permissions
+  const { hasPermission, isLoading: permissionsLoading } = usePermissions();
+
+  // Dark mode detection
   useEffect(() => {
     const checkDarkMode = () => setIsDarkMode(document.documentElement.classList.contains("dark"));
     checkDarkMode();
@@ -68,38 +85,71 @@ export default function TripsCard() {
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        const response = await apiClient.get(getApiEndpoint.getTrips());
-        console.log()
-        setTrips(response.data.data);
+        const response = await apiClient.get<{ data: TripType[] }>(getApiEndpoint.getTrips());
+        setTrips(response.data.data || []);
       } catch (err) {
         console.error("Error fetching trips", err);
+        setTrips([]);
       }
     };
     fetchTrips();
   }, []);
 
-  const filteredTrips = trips.filter(
-    (t) =>
-      t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.category?.toLowerCase().includes(search.toLowerCase()) ||
-      t.status?.toLowerCase().includes(search.toLowerCase()) ||
-      t.ages?.toLowerCase().includes(search.toLowerCase()) ||
-      t.slug?.toLowerCase().includes(search.toLowerCase())
+  const filteredTrips = trips.filter((t) =>
+    [t.title, t.slug, t.category, t.status, t.ages].some(
+      (field) => field?.toLowerCase().includes(search.toLowerCase())
+    )
   );
 
   const totalPages = Math.ceil(filteredTrips.length / pageSize);
   const paginatedTrips = filteredTrips.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const stats = [
-    { title: "Total Trips", value: trips.length, icon: <Activity className="h-7 w-7 text-white" />, bg: "bg-gradient-to-r from-purple-500 to-indigo-500" },
-    { title: "Trending Trips", value: trips.filter((t) => t.isTrending).length, icon: <Star className="h-7 w-7 text-white" />, bg: "bg-gradient-to-r from-pink-500 to-rose-500" },
-    { title: "Active Trips", value: trips.filter((t) => t.status?.toLowerCase() === "active").length, icon: <Package className="h-7 w-7 text-white" />, bg: "bg-gradient-to-r from-green-400 to-teal-500" },
+    {
+      title: "Total Trips",
+      value: trips.length,
+      icon: <Activity className="h-7 w-7 text-white" />,
+      bg: "bg-gradient-to-r from-purple-500 to-indigo-500",
+    },
+    {
+      title: "Trending",
+      value: trips.filter((t) => t.isTrending).length,
+      icon: <Star className="h-7 w-7 text-white" />,
+      bg: "bg-gradient-to-r from-pink-500 to-rose-500",
+    },
+    {
+      title: "Active Trips",
+      value: trips.filter((t) => t.status?.toLowerCase() === "active").length,
+      icon: <Package className="h-7 w-7 text-white" />,
+      bg: "bg-gradient-to-r from-green-400 to-teal-500",
+    },
   ];
+
+ 
+
+  const openEditDrawer = (trip: TripType) => {
+    setEditingTrip(trip);
+    setIsDrawerOpen(true);
+  };
+
+  const openCreateDrawer = () => {
+    setEditingTrip(undefined);
+    setIsDrawerOpen(true);
+  };
+
+  // Show loading while permissions are being checked
+  if (permissionsLoading) {
+    return (
+      <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+        Loading permissions...
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md overflow-auto">
       <div className={`transition-filter duration-300 ${isDarkMode ? "filter grayscale" : ""}`}>
-        {/* Stats */}
+        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {stats.map((stat, idx) => (
             <motion.div
@@ -112,25 +162,33 @@ export default function TripsCard() {
               <div className="p-3 rounded-full bg-white/20">{stat.icon}</div>
               <div>
                 <p className="text-white/80 text-sm">{stat.title}</p>
-                <p className="text-white text-2xl font-bold"><CountUp end={stat.value} duration={1.5} /></p>
+                <p className="text-white text-2xl font-bold">
+                  <CountUp end={stat.value} duration={1.5} />
+                </p>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Header */}
-        <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <Input
-            placeholder="Search trips..."
+            placeholder="Search by title, slug, category, status..."
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-            className="max-w-sm flex-1 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="max-w-md flex-1 dark:bg-gray-800 dark:text-white dark:border-gray-700"
           />
-          <div className="flex gap-2">
-            <Button variant="default" onClick={() => { setEditingTrip(undefined); setIsDrawerOpen(true); }} className="dark:bg-gray-700 dark:hover:bg-gray-600">
-              <Plus className="mr-2 h-4 w-4" /> Create Trip
+
+          {/* Create Button */}
+          {hasPermission("trips:create") && (
+            <Button onClick={openCreateDrawer} className="dark:bg-gray-700 dark:hover:bg-gray-600">
+              <Plus className="mr-2 h-4 w-4" />
+              Create Trip
             </Button>
-          </div>
+          )}
         </div>
 
         {/* Table */}
@@ -145,7 +203,7 @@ export default function TripsCard() {
               <TableHead className="dark:text-gray-300">Duration</TableHead>
               <TableHead className="dark:text-gray-300">Price</TableHead>
               <TableHead className="dark:text-gray-300">Discount</TableHead>
-              <TableHead className="dark:text-gray-300">Final Price</TableHead>
+              <TableHead className="dark:text-gray-300">Final</TableHead>
               <TableHead className="dark:text-gray-300">Status</TableHead>
               <TableHead className="dark:text-gray-300">Trending</TableHead>
               <TableHead className="dark:text-gray-300">Actions</TableHead>
@@ -155,26 +213,66 @@ export default function TripsCard() {
             <AnimatePresence>
               {paginatedTrips.map((t) => (
                 <TableRow key={t.id} className="border-b dark:border-gray-700">
-                  <TableCell className="dark:text-gray-200">{t.id}</TableCell>
-                  <TableCell className="dark:text-gray-200">{t.title}</TableCell>
-                  <TableCell className="dark:text-gray-200">{t.slug}</TableCell>
-                  <TableCell className="dark:text-gray-200">{t.category}</TableCell>
-                  <TableCell className="dark:text-gray-200">{t.durationDays} days</TableCell>
-                  <TableCell className="dark:text-gray-200">${t.originalPrice}</TableCell>
-                  <TableCell className="dark:text-gray-200">{t.discountPercent}%</TableCell>
-                  <TableCell className="dark:text-gray-200">${t.finalPrice}</TableCell>
-                  <TableCell className="dark:text-gray-200">{t.status}</TableCell>
-                  <TableCell className="dark:text-gray-200">{t.isTrending ? "Yes" : "No"}</TableCell>
-                  
-                  <TableCell className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => { setIsDrawerOpen(true); setEditingTrip(t); }}
-                      className="dark:border-gray-600 dark:text-gray-300"
+                  <TableCell className="dark:text-gray-200 font-medium">{t.id}</TableCell>
+                  <TableCell className="dark:text-gray-200 font-medium max-w-xs truncate">
+                    {t.title}
+                  </TableCell>
+                  <TableCell className="dark:text-gray-200 text-sm">{t.slug || "—"}</TableCell>
+                  <TableCell className="dark:text-gray-200">{t.category || "—"}</TableCell>
+                  <TableCell className="dark:text-gray-200">{t.durationDays || "?"} days</TableCell>
+                  <TableCell className="dark:text-gray-200">${t.originalPrice || 0}</TableCell>
+                  <TableCell className="dark:text-gray-200 text-green-600">
+                    {t.discountPercent ? `${t.discountPercent}%` : "—"}
+                  </TableCell>
+                  <TableCell className="dark:text-gray-...
+                    font-semibold text-lg text-emerald-600 dark:text-emerald-400">
+                    ${t.finalPrice || t.originalPrice || 0}
+                  </TableCell>
+                  <TableCell className="dark:text-gray-200">
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full font-medium ${
+                        t.status?.toLowerCase() === "active"
+                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                          : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                      }`}
                     >
-                      <Edit size={16} />
-                    </Button>
+                      {t.status || "Draft"}
+                    </span>
+                  </TableCell>
+                  <TableCell className="dark:text-gray-200 text-center">
+                    {t.isTrending ? (
+                      <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                    ) : (
+                      "—"
+                    )}
+                  </TableCell>
+
+                  {/* Actions */}
+                  <TableCell className="flex gap-2 justify-end">
+                    {hasPermission("trips:update") && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => openEditDrawer(t)}
+                        className="dark:border-gray-600 dark:text-gray-300"
+                      >
+                        <Edit size={16} />
+                      </Button>
+                    )}
+
+                    {hasPermission("trips:delete") && (
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => {
+                          setTripToDelete(t.id!);
+                          setDeleteDialogOpen(true);
+                        }}
+                        className="dark:bg-red-900 dark:hover:bg-red-800"
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -183,19 +281,39 @@ export default function TripsCard() {
         </Table>
 
         {/* Pagination */}
-        <div className="flex justify-end items-center gap-2 mt-4">
-          <Button size="sm" variant="outline" onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} disabled={currentPage === 1} className="dark:border-gray-600 dark:text-gray-300">
+        <div className="flex justify-end items-center gap-2 mt-6">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+            className="dark:border-gray-600 dark:text-gray-300"
+          >
             <ChevronLeft size={16} />
           </Button>
-          <span className="dark:text-gray-400">Page {currentPage} of {totalPages}</span>
-          <Button size="sm" variant="outline" onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages} className="dark:border-gray-600 dark:text-gray-300">
+          <span className="dark:text-gray-400">
+            Page {currentPage} of {totalPages || 1}
+          </span>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="dark:border-gray-600 dark:text-gray-300"
+          >
             <ChevronRight size={16} />
           </Button>
         </div>
       </div>
 
       {/* Drawer */}
-      <TripsDrawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen} editingTrip={editingTrip} />
+      <TripsDrawer
+        open={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+        editingTrip={editingTrip}
+      />
+
+      {/* Delete Confirmation Dialog */}
     </div>
   );
 }

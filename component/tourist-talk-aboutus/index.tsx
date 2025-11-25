@@ -84,8 +84,8 @@ useEffect(() => {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <div>
-            <p className="text-green-600 font-medium text-base mb-2 font-mono">GENUINE REVIEWS</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Tourists talk about us</h2>
+            <p className="text-green-600 text-sm mb-2 font-sans">GENUINE REVIEWS</p>
+            <h2 className="text-3xl md:text-xl font-bold text-gray-900">Tourists talk about us</h2>
           </div>
           <div className="flex items-center gap-6 mt-4 md:mt-0">
             <div className="text-right">
@@ -133,7 +133,14 @@ useEffect(() => {
                   </div>
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex">{[...Array(t.rating)].map((_, i) => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}</div>
-                    <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs font-medium">{t.createdAt}</Badge>
+                    {/* <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs font-medium">{t.createdAt}</Badge> */}
+                    <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs font-medium">
+  {new Date(t.createdAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  })}
+</Badge>
                   </div>
                 </Card>
               </CarouselItem>

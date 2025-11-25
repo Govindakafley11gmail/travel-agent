@@ -39,8 +39,8 @@ const TeamSection: React.FC<TeamSectionProps> = ({ data }) => {
   useEffect(() => {
     const handleResize = (): void => {
       if (window.innerWidth < 768) setSlidesToScroll(1);
-      else if (window.innerWidth < 1024) setSlidesToScroll(2);
-      else setSlidesToScroll(4);
+      else if (window.innerWidth < 1024) setSlidesToScroll(1);
+      else setSlidesToScroll(1);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -51,7 +51,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({ data }) => {
   useEffect(() => {
     if (api) {
       api.reInit({
-        align: "start",
+        align: "center",
         containScroll: "trimSnaps",
         slidesToScroll,
       });
@@ -98,7 +98,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({ data }) => {
       </div>
 
       {/* Carousel */}
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full max-w-4xl mx-auto  overflow-y-auto">
         <Carousel
           setApi={setApi}
           opts={{

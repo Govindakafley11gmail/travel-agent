@@ -31,11 +31,11 @@ interface ContactDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   editingContact?: {
-    id: number;
-    name: string;
-    email: string;
-    subject: string;
-    message: string;
+    id?: number;
+    name?: string;
+    email?: string;
+    subject?: string;
+    message?: string;
   };
   onSaveSuccess?: (contact: any) => void; // Optional: notify parent
 }

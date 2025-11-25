@@ -16,10 +16,14 @@ import { MapPin, Calendar, Search, ChevronDown, Play } from "lucide-react";
 // Import a sample image for destinations
 import destImg from "../../image/Paro_Taktsang.jpg";
 import StatsSection from "../stats/statsSection";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { BookingForm } from "../booking-alert/booking-alert";
 
 export default function HomePage() {
   const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
+  const [openBooking, setOpenBooking] = useState(false);
 
   useEffect(() => {
     if (!api) return;
@@ -31,11 +35,7 @@ export default function HomePage() {
     });
   }, [api]);
 
-  const destinations = [
-    { title: "Paris, France", img: destImg },
-    { title: "Tokyo, Japan", img: destImg },
-    { title: "Bali, Indonesia", img: destImg },
-  ];
+
 
   const slides = [
     {
@@ -134,29 +134,16 @@ export default function HomePage() {
                         >
                           <Button
                             size="lg"
-                            className="bg-transparent border-1 border-white hover:bg-white hover:text-gray-900 text-white font-semibold rounded-md px-6 md:px-8 transition-all group"
+                            className="bg-green-600 hover:bg-white hover:text-gray-900 text-white font-semibold rounded-md px-6 md:px-8 transition-all group"
+                            onClick={() => setOpenBooking(true)}
                           >
-                            EXPLORE
-                            <span className="ml-2 group-hover:translate-x-1 transition-transform">
-                              →
-                            </span>
+                            Book Now
+
                           </Button>
-                          <div className="relative w-12 h-12 bg-playbuttongreen rounded-4xl p-[2px] overflow-hidden">
-                            {/* Ripple container */}
-                            <button
-                              className={`
-      relative w-full h-full rounded-full bg-playbuttongreen opacity-80 shadow-lg
-      flex items-center justify-center text-white
-      transition-all duration-300
-      focus:outline-none
-      ripple-btn
-    `}
-                              aria-label="Play"
-                            >
-                              <Play className="w-5 h-5 md:w-6 md:h-6 fill-white" />
-                            </button>
-                          </div>
                         </motion.div>
+
+                      
+
                       </div>
 
                       {/* Search Bar */}
@@ -184,11 +171,10 @@ export default function HomePage() {
                     className={`
           relative w-4 h-4 rounded-full
           border transition-all duration-300
-          ${
-            isActive
-              ? "border-2 border-green-400 bg-transparent scale-125 shadow-md"
-              : "border border-white/50 bg-dotcolor hover:border-white/80 hover:scale-110"
-          }
+          ${isActive
+                        ? "border-2 border-green-400 bg-transparent scale-125 shadow-md"
+                        : "border border-white/50 bg-dotcolor hover:border-white/80 hover:scale-110"
+                      }
         `}
                     onClick={() => api?.scrollTo(index)}
                     aria-label={`Go to slide ${index + 1}`}
@@ -217,44 +203,24 @@ export default function HomePage() {
     px-6 md:px-14 
   "
         >
-          <div className="bg-icongrey rounded-tl-xl rounded-tr-xl lg:ml-[300px] lg:mb-7  p-4 md:p-6 max-w-2xl md:max-w-4xl lg:max-w-2xl mx-auto shadow-2xl lg:shadow-none">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 ">
-              {/* Destination Input */}
-              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg">
-                <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                <input
-                  type="text"
-                  placeholder="Where are you going?"
-                  className="bg-transparent outline-none text-gray-700 placeholder:text-gray-400 w-full"
-                />
-              </div>
 
-              {/* Date Picker */}
-              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg cursor-pointer">
-                <Calendar className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                <span className="text-gray-400 flex-1">Tour date</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
-              </div>
-
-              {/* Category Dropdown */}
-              <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg cursor-pointer  lg:flex">
-                <span className="text-gray-400 flex-1">All categories</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
-              </div>
-
-              {/* Search Button */}
-              <Button
-                size="lg"
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg w-full lg:col-span-1"
-              >
-                <Search className="w-5 h-5 mr-2" />
-                SEARCH
-              </Button>
-            </div>
-          </div>
         </motion.div>
       </section>
       <StatsSection />
+
+        <Dialog open={openBooking} onOpenChange={setOpenBooking}>
+
+
+                          {/* Booking Popup */}
+                          <DialogContent className="max-w-md rounded-2xl p-6 bg-white">
+                            <VisuallyHidden>
+                              <DialogTitle>Booking Form</DialogTitle>
+                            </VisuallyHidden>
+
+                            {/* Reusable BookingForm component */}
+                            <BookingForm onClose={() => setOpenBooking(false)} />
+                          </DialogContent>
+                        </Dialog>
     </div>
   );
 }

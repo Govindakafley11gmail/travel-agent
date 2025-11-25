@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lato } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/component/navbar/navbar";
-import { CartProvider } from "@/component/shopping-ui/product/cartContext";
+import Providers from "./Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -10,10 +10,10 @@ const geistSans = Geist({
 });
 
 const lato = Lato({
-  subsets: ['latin'],
-  weight: ['300', '400', '700', '900'],
-  variable: '--font-lato',
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["300", "400", "700", "900"],
+  variable: "--font-lato",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -34,14 +34,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${lato.variable} antialiased relative`}
       >
-        <CartProvider>
+        <Providers>
           <Navbar />
           {children}
-
-          {/* WhatsApp Floating Button */}
-         
-        </CartProvider>
-       
+        </Providers>
       </body>
     </html>
   );
