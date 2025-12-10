@@ -43,12 +43,48 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-bold mb-4">Our Policies</h3>
           <ul className="space-y-2 text-gray-400 text-sm">
-            <li><Link href="#" className="hover:text-white">FAQs</Link></li>
-            <li><Link href="#" className="hover:text-white">Terms and Conditions</Link></li>
-            <li><Link href="#" className="hover:text-white">Travel Policy</Link></li>
-            <li><Link href="#" className="hover:text-white">Legal Documents</Link></li>
-
+            {/* <li>
+              <a
+                href="/faqs.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                FAQs
+              </a>
+            </li> */}
+            {/* <li>
+              <a
+                href="/terms.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                Terms and Conditions
+              </a>
+            </li> */}
+            <li>
+              <a
+                href="/Lumora Tours and Travels Policy.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                Travel Policy
+              </a>
+            </li>
+            <li>
+              <a
+                href="/Lumora Tours & Travels_Business__License.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                Legal Documents
+              </a>
+            </li>
           </ul>
+
         </div>
 
         {/* social media */}
@@ -62,12 +98,13 @@ export default function Footer() {
 
           <div className="flex gap-6 text-gray-700">
             {[
-              { src: "/instagram.png", link: "https://www.instagram.com/yourprofile" },
-              { src: "/facebook.png", link: "https://www.facebook.com/yourprofile" },
-              { src: "/linkedin.png", link: "https://www.linkedin.com/in/yourprofile" },
-              { src: "/twitter.png", link: "https://twitter.com/yourprofile" },
-              { src: "/tik-tok.png", link: "https://www.tiktok.com/@yourprofile" },
-              { src: "/pinterest.png", link: "https://www.pinterest.com/yourprofile" }
+              { src: "/instagram.png", link: "https://www.instagram.com/lumorabhutan/" },
+              { src: "/facebook.png", link: "https://www.facebook.com/profile.php?id=61580366382758" },
+              { src: "/linkedin.png", link: "https://www.linkedin.com/in/lumora-tours-and-travels-b0b535380" },
+
+              // { src: "/twitter.png", link: "https://twitter.com/yourprofile" },
+              { src: "/tik-tok.png", link: "https://www.tiktok.com/@lumora.bhutan?lang=en" },
+              // { src: "/pinterest.png", link: "https://www.pinterest.com/yourprofile" }
             ].map((item, i) => (
               <div
                 key={i}
