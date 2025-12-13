@@ -162,7 +162,7 @@ export default function Footer() {
 
       {/* Bottom */}
       <div className="mt-10 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-        <p>© 2024 Lumora Tours and Travel. All rights reserved.</p>
+        <p>© 2025 Lumora Tours and Travels. All rights reserved.</p>
         <div className="flex space-x-4 mt-2 md:mt-0">
           <Link href="#" className="hover:text-white">Privacy Policy</Link>
           <Link href="#" className="hover:text-white">Terms of Use</Link>
