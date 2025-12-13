@@ -16,8 +16,8 @@ import TripsForFistTimer from "../pages/trips-for-first-timer";
 import TeamSection from "@/component/teams-picture-card/team-picture-card";
 import WhyChooseUs from "@/component/why-us/why-us";
 import TravelContactUS from "@/component/contactus";
-import ToursSection, { Tour } from "@/component/how-it-works/how-it-works";
-import { toursOptional } from "../../component/how-it-works/data";
+import ToursSection from "@/component/how-it-works/how-it-works";
+import { TourData, toursOptional } from "../../component/how-it-works/data";
 
 export default function AboutMain() {
   const bioData = [
@@ -38,7 +38,7 @@ export default function AboutMain() {
       aboutDescription: `We are the custodians and storytellers of Bhutan, crafting expeditions that transcend travel. Rooted in the profound principles of Gross National Happiness, we invite you to explore our sacred valleys, timeless traditions, and untouched landscapes with purpose and mindfulness. As guardians of sustainability, culture, and luxury, we curate experiences that connect your soul to the heart of Bhutan—leaving you inspired, enriched, and forever transformed.`,
     },
   ];
-const toursOptionals: Tour[] = toursOptional;
+const toursOptionals: TourData[] = toursOptional;
   const teamData = [
     {
       img: "/Zayn-Malik.jpg",

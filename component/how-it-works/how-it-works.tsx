@@ -2,7 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { Leaf, Users, Brain, RefreshCw } from "lucide-react";
-import { TourData, tours } from "./data";
+import { TourData } from "./data";
 
 interface ToursSectionProps {
   tours?: TourData[];
