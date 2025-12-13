@@ -41,7 +41,7 @@ export default function TripsForFistTimer() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 lg:gap-8">
             {/* Left: Title */}
             <div className="flex flex-col gap-1">
-              <p className="uppercase tracking-wide text-gray-600 font-base font-sans">
+              <p className="uppercase font-mono text-xl text-green-600 font-medium tracking-wider text-sm">
                 Trips for First-Timers
               </p>
               <h2 className="text-base font-bold text-gray-900 mt-2 font-mono">

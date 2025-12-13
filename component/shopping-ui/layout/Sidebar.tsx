@@ -25,6 +25,8 @@ const categories = [
   { name: "Snacks", icon: Sparkles },
   { name: "Lumora Magazine", icon: Flower2 },
   { name: "Lumora Choice", icon: ShoppingBag },
+  { name: "Bhutan Herbal", icon: ShoppingBag },
+  { name: "Grown in Bhutan", icon: ShoppingBag }
 ];
 
 export default function SidebarLayout() {
@@ -119,17 +121,19 @@ export default function SidebarLayout() {
         <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
           <div className="mx-auto max-w-9xl  md:p-6 md:pt-20 pt-2">
             {/* Search Bar */}
-           
+
 
             {/* Dynamic Content */}
             <div className="space-y-16 ">
-              {selectedCategory === "Lumora Merch" && <TripCard/>}
+              {selectedCategory === "Lumora Merch" && <TripCard />}
               {selectedCategory === "Made in Bhutan" && <MadeInBhutan />}
               {selectedCategory === "OGOP" && <OGOP />}
               {selectedCategory === "Crafts and Dress" && <CraftsandDress />}
               {selectedCategory === "Snacks" && <Snacks />}
               {selectedCategory === "Lumora Magazine" && <LumoraMagazine />}
               {selectedCategory === "Lumora Choice" && <LumoraChoice />}
+              {selectedCategory === "Bhutan Herbal" && <LumoraChoice />}
+              {selectedCategory === "Grown in Bhutan" && <LumoraChoice />}
             </div>
           </div>
         </main>

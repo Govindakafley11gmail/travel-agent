@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* About */}
         <div>
-          <h3 className="text-lg font-bold mb-4">Lumora Tours and Travel</h3>
+          <h3 className="text-lg font-bold mb-4">Lumora Tours and Travels</h3>
           <p className="text-gray-400 text-sm">
             Discover the wonders of Bhutan with Lumora Tours & Travels, offering one-of-a-kind experiences that leave lasting memories and enrich your journey.
           </p>
@@ -19,7 +19,7 @@ export default function Footer() {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-bold mb-4">Contact Info</h3>
-          <p className="text-gray-400 text-sm">Lumora Tours and Travel.</p>
+          <p className="text-gray-400 text-sm">Lumora Tours and Travels.</p>
           <p className="text-gray-400 text-sm mt-2">Taba,Thimphu,Bhutan</p>
           <p className="text-gray-400 text-sm mt-2">+975-77893346</p>
           <p className="text-gray-400 text-sm mt-2">info@lumorabhutan.com</p>

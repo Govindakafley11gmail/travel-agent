@@ -38,10 +38,10 @@ export default function ToursSection({
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-16">
-      <p className="uppercase text-green-600 font-medium tracking-wider text-sm mb-2">
-        {subHeading || defaultSubHeading}
+      <p className="uppercase font-mono text-xl text-green-600 font-medium tracking-wider text-sm mb-2">
+        {subHeading=='a'?'':subHeading || defaultSubHeading}
       </p>
-      <h2 className="text-base font-mono font-bold text-gray-900 mb-4">
+      <h2 className="uppercase font-mono text-xl text-green-600 font-medium tracking-wider text-sm mb-2">
         {heading=='a'?'':heading || defaultHeading}
       </h2>
 

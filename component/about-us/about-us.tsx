@@ -10,8 +10,8 @@ import { useRouter } from "next/navigation";
 export default function AboutUs() {
     const router = useRouter();
   const features = [
-    { icon: CheckCircle2, title: "Keep Why Choose Us?", color: "text-lime-600" },
-    { icon: Calendar, title: "Itinerary  options", color: "text-lime-600" },
+    { icon: CheckCircle2, title: "Great travel experiences?", color: "text-lime-600" },
+    { icon: Calendar, title: "Customizable Itinerary", color: "text-lime-600" },
     { icon: TrendingUp, title: "Competitive pricing offers", color: "text-lime-600" },
     { icon: Award, title: "Sustainable travel options ", color: "text-lime-600" },
   ];

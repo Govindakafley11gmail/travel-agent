@@ -26,12 +26,12 @@ export default function Home() {
       <ToursSection
         tours={toursOptionals}
         heading="Why choose us?"
-        subHeading="Four Pillars That Define Lumora Tours & Travels"
+        subHeading="a"
       />
 
       <TripsForFistTimer />
       <Destinations
-        title="Lumora Tours and Travel video"
+        title="Lumora Tours and Travels video"
         subtitle="Beautiful & Romantic"
         backgroundImage={image1}
         video={true}
