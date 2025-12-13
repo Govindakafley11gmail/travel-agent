@@ -41,7 +41,7 @@ export default function AboutMain() {
     img: "/indralal.jpg",
     name: "Indra Lal Acharja ",
     email:"ceo@lumorabhutan.com",
-    role: "Managing Director & Co-Founder",
+    role: "Chief Executive Officer & Co-Founder",
     description: "Indra brings over a decade of leadership experience, honed through the implementation of numerous developmental and research projects in Bhutan. His work has taken him to various parts of the country, uncovering hidden gems—people, places, culture, and cuisines—those travelers deserve to experience firsthand. With a strong foundation in Sustainable Development, Indra is passionate about promoting tourism that respects the environment, preserves cultural heritage, and supports local communities. He combines this vision with international insights and a strong client-focused approach to drive Lumora’s operational excellence and strategic expansion Through thoughtful planning and eco-conscious practices, he ensures that every journey balances exploration with sustainability, allowing travelers to experience Bhutan responsibly while leaving a positive impact."
   },
   {
