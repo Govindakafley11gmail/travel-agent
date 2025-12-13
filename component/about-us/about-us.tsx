@@ -10,10 +10,10 @@ import { useRouter } from "next/navigation";
 export default function AboutUs() {
     const router = useRouter();
   const features = [
-    { icon: CheckCircle2, title: "Great travel experiences", color: "text-lime-600" },
-    { icon: Calendar, title: "& itinerary options", color: "text-lime-600" },
+    { icon: CheckCircle2, title: "Keep Why Choose Us?", color: "text-lime-600" },
+    { icon: Calendar, title: "Itinerary  options", color: "text-lime-600" },
     { icon: TrendingUp, title: "Competitive pricing offers", color: "text-lime-600" },
-    { icon: Award, title: "Leading industry reputation", color: "text-lime-600" },
+    { icon: Award, title: "Sustainable travel options ", color: "text-lime-600" },
   ];
 
   return (
@@ -63,24 +63,15 @@ export default function AboutUs() {
             className="space-y-8"
           >
             {/* Header */}
-            <div>
               <motion.p
-                className="text-lime-600 font-bold uppercase text-sm mb-3 font-sans"
+                className="text-lime-600 font-bold uppercase text-sm font-sans"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
                 About Us
               </motion.p>
-              <motion.h4
-                className="text-xl md:text-xl font-extrabold text-gray-900 leading-tight  font-lato"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-               Lumora Tours and Travel
-              </motion.h4>
-            </div>
+            
      
 
             {/* Description */}
@@ -90,9 +81,8 @@ export default function AboutUs() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              Explore the world with confidence.Lumora Tours and Travel Agency curates unforgettable
-              adventures across breathtaking destinations, ensuring comfort, safety, and cultural
-              depth on every journey.
+              Explore Bhutan with Lumora Tours and Travels. We light the way to breathtaking views, soul-soothing journeys, and refreshing experiences, wrapped in comfort, safety, and the timeless beauty of Bhutanese culture. 
+
             </motion.p>
 
             {/* Features */}

@@ -45,7 +45,7 @@ export default function TripsForFistTimer() {
                 Trips for First-Timers
               </p>
               <h2 className="text-base font-bold text-gray-900 mt-2 font-mono">
-                New to Lumora Tour and Travel?
+                New to Bhutan? These packages are the perfect introduction.
               </h2>
             </div>
 

@@ -12,7 +12,7 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-bold mb-4">Lumora Tours and Travel</h3>
           <p className="text-gray-400 text-sm">
-            Lumora Tours and Travel offers unique and memorable tours, providing rich experiences in the beautiful country of Lumora Tours and Travel. <span className="text-green-500 font-semibold cursor-pointer">[+]</span>
+            Discover the wonders of Bhutan with Lumora Tours & Travels, offering one-of-a-kind experiences that leave lasting memories and enrich your journey.
           </p>
         </div>
 
@@ -29,7 +29,6 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-bold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-gray-400 text-sm">
-            <li><Link href="#" className="hover:text-white">Lumora Tours and Travel Travel</Link></li>
             <li><Link href="All-Trips" className="hover:text-white">All-Trips</Link></li>
             <li><Link href="Blogs" className="hover:text-white">Blogs</Link></li>
             <li><Link href="About-Us" className="hover:text-white">About-Us</Link></li>

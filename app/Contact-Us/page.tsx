@@ -16,7 +16,8 @@ import TripsForFistTimer from "../pages/trips-for-first-timer";
 import TeamSection from "@/component/teams-picture-card/team-picture-card";
 import WhyChooseUs from "@/component/why-us/why-us";
 import TravelContactUS from "@/component/contactus";
-import ToursSection from "@/component/how-it-works/how-it-works";
+import ToursSection, { Tour } from "@/component/how-it-works/how-it-works";
+import { toursOptional } from "../../component/how-it-works/data";
 
 export default function AboutMain() {
   const bioData = [
@@ -37,44 +38,46 @@ export default function AboutMain() {
       aboutDescription: `We are the custodians and storytellers of Bhutan, crafting expeditions that transcend travel. Rooted in the profound principles of Gross National Happiness, we invite you to explore our sacred valleys, timeless traditions, and untouched landscapes with purpose and mindfulness. As guardians of sustainability, culture, and luxury, we curate experiences that connect your soul to the heart of Bhutan—leaving you inspired, enriched, and forever transformed.`,
     },
   ];
+const toursOptionals: Tour[] = toursOptional;
   const teamData = [
-  {
-    img: "/Zayn-Malik.jpg",
-    name: "Tom Cruise",
-    email:"govindagunda@gmail.com",
-    role: "Financial Management",
-  },
-  {
-    img: "/Zayn-Malik.jpg",
-    name: "Anna Lee",
-      email:"govindagunda@gmail.com",
-    role: "Tour Operator",
-  },
-  {
-    img: "/Zayn-Malik.jpg",
-    name: "John Doe",
-      email:"govindagunda@gmail.com",
-    role: "CEO",
-  },
-  {
-    img: "/Zayn-Malik.jpg",
-    name: "Emily Smith",
-      email:"govindagunda@gmail.com",
-    role: "Marketing Manager",
-  },
-   {
-    img: "/Zayn-Malik.jpg",
-    name: "Emily Smith",
-      email:"govindagunda@gmail.com",
-    role: "Marketing Manager",
-  },
-   {
-    img: "/Zayn-Malik.jpg",
-    name: "Emily Smith",
-      email:"govindagunda@gmail.com",
-    role: "Marketing Manager",
-  },
-];
+    {
+      img: "/Zayn-Malik.jpg",
+      name: "Tom Cruise",
+      email: "govindagunda@gmail.com",
+      role: "Financial Management",
+    },
+    {
+      img: "/Zayn-Malik.jpg",
+      name: "Anna Lee",
+      email: "govindagunda@gmail.com",
+      role: "Tour Operator",
+    },
+    {
+      img: "/Zayn-Malik.jpg",
+      name: "John Doe",
+      email: "govindagunda@gmail.com",
+      role: "CEO",
+    },
+    {
+      img: "/Zayn-Malik.jpg",
+      name: "Emily Smith",
+      email: "govindagunda@gmail.com",
+      role: "Marketing Manager",
+    },
+    {
+      img: "/Zayn-Malik.jpg",
+      name: "Emily Smith",
+      email: "govindagunda@gmail.com",
+      role: "Marketing Manager",
+    },
+    {
+      img: "/Zayn-Malik.jpg",
+      name: "Emily Smith",
+      email: "govindagunda@gmail.com",
+      role: "Marketing Manager",
+    },
+  ];
+
 
   return (
     <main className="w-full h-full">
@@ -92,9 +95,10 @@ export default function AboutMain() {
 
       <TravelContactUS />
 
-      
+
       <div>
-      <ToursSection />
+        <ToursSection tours={toursOptionals} heading="a" 
+          subHeading="Four Pillars That Define Lumora Tours & Travels" />
         <Footer />
       </div>
     </main>

@@ -27,12 +27,6 @@ export default function TouristTalkAboutUs() {
   const [review, setReviews] = useState();
   const [testimonials, setTestimonials] = useState([
  { name: "John Doe", email: "Venice, Italy", comment: "Our trip to Lumora Tours and Travel was amazing! Lumora Tours and Travel organized everything perfectly, from the hotels to the sightseeing spots. I was very impressed and will definitely return!", createdAt: "Jun 25 24", rating: 5 },
-    { name: "Emily Smith", email: "Chicago, USA", comment: "We had an unforgettable vacation in Lumora Tours and Travel thanks to the excellent service of Lumora Tours and Travel. The itinerary was well-arranged, and the support team was very helpful. Best trip ever!", createdAt: "Jun 28 24", rating: 5 },
-    { name: "Alex Mark", email: "Texas, USA", comment: "Lumora Tours and Travel is a perfect destination, and Lumora Tours and Travel made our trip flawless. From booking to sightseeing activities, everything was wonderful. I am very satisfied!", createdAt: "Jun 28 24", rating: 5 },
-    { name: "Sarah Lee", email: "Sydney, Australia", comment: "The team at Lumora Tours and Travel exceeded our expectations. Every detail was taken care of, and we had the most relaxing vacation. Highly recommend!", createdAt: "Jul 01 24", rating: 5 },
-    { name: "Michael Brown", email: "Toronto, Canada", comment: "From the moment we landed, everything was seamless. The guides were knowledgeable and friendly. Lumora Tours and Travel is now our go-to travel agency!", createdAt: "Jul 03 24", rating: 5 },
-    { name: "Lisa Wong", email: "Singapore", comment: "Amazing experience! The personalized itinerary made our family trip unforgettable. Thank you, Lumora Tours and Travel!", createdAt: "Jul 05 24", rating: 5 },
-  
 ]);
   // Update slidesPerView based on = viewport
   const updateSlidesPerView = useCallback(() => {
@@ -84,8 +78,8 @@ useEffect(() => {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <div>
-            <p className="text-green-600 text-sm mb-2 font-sans">GENUINE REVIEWS</p>
-            <h2 className="text-3xl md:text-xl font-bold text-gray-900">Tourists talk about us</h2>
+            <p className="text-green-600 text-sm mb-2 font-sans">SHARED EXPERIENCES</p>
+            <h2 className="text-3xl md:text-xl font-bold text-gray-900">What clients say about us?</h2>
           </div>
           <div className="flex items-center gap-6 mt-4 md:mt-0">
             <div className="text-right">

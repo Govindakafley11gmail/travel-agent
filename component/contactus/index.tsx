@@ -120,19 +120,12 @@ export default function TravelContactUS() {
                 {/* RIGHT CONTENT (on desktop), ABOVE ON MOBILE */}
                 <div className="order-1 md:order-2 max-w-xl  md:mr-20 text-left md:text-left">
                     <p className="text-green-500 font-medium  tracking-widest uppercase text-2xl not-visited: mb-3 font-sans">
-                        Lumora Tours and Travel
-                    </p>
+We are waiting for your message/call 😊                    </p>
                     <p className="text-black  font-lato  tracking-widest  text-xl not-visited: mb-3">
                         We are the tour service provider in Bhutan
                     </p>
                     <p className="text-gray-700 text-lg">
-                        Lumora Tours and Travel is a Bhutanese travel agency dedicated to
-                        providing sustainable and mindful travel experiences. With a focus
-                        on authentic cultural immersion, pristine natural landscapes, and
-                        personalized itineraries, we help travelers explore Bhutan
-                        responsibly while creating unforgettable memories. Our team of local
-                        experts ensures seamless travel, from accommodations and guided
-                        tours to unique adventures that celebrate the spirit of Bhutan.
+                       We’d love to hear from you! Whether you have questions, feedback, or just want to say hello, please fill out the form below. Alternatively, you can scan the QR code to contact us directly or access our WhatsApp. Our team is always ready to listen and will get back to you as quickly as possible. Your thoughts matter to us, and we’re excited to connect!
                     </p>
 
                     <div className="my-4">

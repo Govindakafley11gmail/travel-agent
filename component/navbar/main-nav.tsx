@@ -36,14 +36,14 @@ export default function MainNav() {
             style={{ color: "transparent", animation: "spin 5s linear infinite" }}
           />
           <a href="/">
-            <h1 className="text-base font-sans sm:text-base md:text-base lg:text-xl text-gray-800 ml-[-10px] leading-none font-bold">
+            <h1 className="text-base font-sans sm:text-xl md:text-xl lg:text-xl text-gray-800 ml-[-10px] leading-none font-bold">
               {/* Lumora Tours and Travel */}
               <Image
                 src="/lumora_logo-1.png"
                 alt="Lumora Logo"
                 width={300}
                 height={150}
-                className="w-16 sm:w-34 md:w-34 lg:w-34 h-auto"
+                className="w-18 sm:w-100 md:w-30 lg:w-30 h-auto"
               // style={{ color: "transparent", animation: "spin 5s linear infinite" }}
               />
             </h1>
